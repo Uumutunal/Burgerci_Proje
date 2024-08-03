@@ -1,3 +1,6 @@
+using DAL.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace Burgerci_Proje
 {
     public class Program
@@ -11,6 +14,9 @@ namespace Burgerci_Proje
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<AppDbContext>(options =>
+           options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
 
