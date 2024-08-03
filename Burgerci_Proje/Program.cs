@@ -4,6 +4,9 @@ namespace Burgerci_Proje
     {
         public static void Main(string[] args)
         {
+
+            //asdasd
+
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
