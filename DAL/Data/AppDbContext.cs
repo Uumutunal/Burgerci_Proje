@@ -15,11 +15,11 @@ namespace DAL.Data
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Menu> Menus { get; set; }
-        public DbSet<Hambuger> Hambugers { get; set; }
+        public DbSet<Hamburger> Hamburgers { get; set; }
         public DbSet<Garniture> Garnitures { get; set; }
         public DbSet<Extra> Extras { get; set; }
         public DbSet<Drink> Drinks { get; set; }
-        public DbSet<BurgerGarniture> BurgerGarnitures { get; set; }
+        public DbSet<HamburgerGarniture> HamburgerGarnitures { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 

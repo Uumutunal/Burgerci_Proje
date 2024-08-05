@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace DAL.Entities
 {
-    public class BurgerGarniture : BaseEntity
+    public class HamburgerGarniture : BaseEntity
     {
-        public Guid BurgerId { get; set; }
+        public Guid HamburgerId { get; set; }
         public Guid IngredientId { get; set; }
-        public Hambuger Burger { get; set; }
-        public Garniture Ingredient { get; set; }
+        public Hamburger Hamburger { get; set; }
+        public Garniture Garniture { get; set; }
     }
 }

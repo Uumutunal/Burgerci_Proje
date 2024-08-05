@@ -5,7 +5,9 @@ VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Burgerci_Proje", "Burgerci_Proje\Burgerci_Proje.csproj", "{9D038281-F091-4F71-A844-10B51C71BB3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{A281D6B6-FE03-41B0-8437-7A3A077B2786}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{A281D6B6-FE03-41B0-8437-7A3A077B2786}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{EF3DEC8A-3BF9-4815-A00C-E7AEEC041A18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{A281D6B6-FE03-41B0-8437-7A3A077B2786}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A281D6B6-FE03-41B0-8437-7A3A077B2786}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A281D6B6-FE03-41B0-8437-7A3A077B2786}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF3DEC8A-3BF9-4815-A00C-E7AEEC041A18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF3DEC8A-3BF9-4815-A00C-E7AEEC041A18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF3DEC8A-3BF9-4815-A00C-E7AEEC041A18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF3DEC8A-3BF9-4815-A00C-E7AEEC041A18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

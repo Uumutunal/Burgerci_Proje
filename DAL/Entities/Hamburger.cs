@@ -2,7 +2,7 @@
 
 namespace Burgerci_Proje.Entities
 {
-    public class Hambuger : BaseEntity
+    public class Hamburger : BaseEntity
     {
         public string Name { get; set; }
         public string Description { get; set; }

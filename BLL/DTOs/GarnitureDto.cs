@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Entities
+namespace BLL.DTOs
 {
-    public class Garniture : BaseEntity
+    public class GarnitureDto : BaseDto
     {
         public string Name { get; set; }
         public decimal Price { get; set; }
-        public List<HamburgerGarniture> HamburgerGarnitures { get; set; }
+        public List<HamburgerGarnitureDto> HamburgerGarnitureDtos { get; set; }
     }
 }

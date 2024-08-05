@@ -1,4 +1,10 @@
+using BLL.Abstract;
+using BLL.Concrete;
+using BLL.Mapping;
+using DAL.AbstractRepositories;
+using DAL.ConcreteRepository;
 using DAL.Data;
+using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Burgerci_Proje
@@ -14,9 +20,17 @@ namespace Burgerci_Proje
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddSession();
+            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            builder.Services.AddDbContext<AppDbContext>(options =>
-           options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            // Dependency Injection
+
+            builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            builder.Services.AddScoped(typeof(IGarnitureService), typeof(GarnitureService));
+
+            // Automapper
+
+            builder.Services.AddAutoMapper(typeof(AutoMapperProfile), typeof(Burgerci_Proje.Mapping.AutoMapperProfile));
 
             var app = builder.Build();
 
@@ -32,7 +46,7 @@ namespace Burgerci_Proje
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthorization();
 
             app.MapControllerRoute(

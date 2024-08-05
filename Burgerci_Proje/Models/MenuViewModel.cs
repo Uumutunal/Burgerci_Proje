@@ -1,9 +1,8 @@
-﻿using DAL.Entities;
-using System;
+﻿using BLL.DTOs;
 
-namespace Burgerci_Proje.Entities
+namespace Burgerci_Proje.Models
 {
-    public class Menu : BaseEntity
+    public class MenuViewModel : BaseViewModel
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -12,8 +11,8 @@ namespace Burgerci_Proje.Entities
         public Guid HamburgerId { get; set; }
         public Guid DrinkId { get; set; }
         public Guid SnackId { get; set; }
-        public Hamburger Hamburger { get; set; }
-        public Drink Drink { get; set; }
-        public Extra Extra { get; set; }
+        public HamburgerViewModel HamburgerViewModel { get; set; }
+        public DrinkViewModel DrinkViewModel { get; set; }
+        public ExtraViewModel ExtraViewModel { get; set; }
     }
 }

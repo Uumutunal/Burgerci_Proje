@@ -1,9 +1,12 @@
-﻿using DAL.Entities;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Burgerci_Proje.Entities
+namespace BLL.DTOs
 {
-    public class Menu : BaseEntity
+    public class MenuDto : BaseDto
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -12,8 +15,8 @@ namespace Burgerci_Proje.Entities
         public Guid HamburgerId { get; set; }
         public Guid DrinkId { get; set; }
         public Guid SnackId { get; set; }
-        public Hamburger Hamburger { get; set; }
-        public Drink Drink { get; set; }
-        public Extra Extra { get; set; }
+        public HamburgerDto HamburgerDto { get; set; }
+        public DrinkDto DrinkDto { get; set; }
+        public ExtraDto ExtraDto { get; set; }
     }
 }
