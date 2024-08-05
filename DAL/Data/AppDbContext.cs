@@ -15,7 +15,7 @@ namespace DAL.Data
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Menu> Menus { get; set; }
-        public DbSet<Hambuger> Hambugers { get; set; }
+        public DbSet<Hamburger> Hambugers { get; set; }
         public DbSet<Garniture> Garnitures { get; set; }
         public DbSet<Extra> Extras { get; set; }
         public DbSet<Drink> Drinks { get; set; }

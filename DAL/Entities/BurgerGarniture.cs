@@ -11,7 +11,7 @@ namespace DAL.Entities
     {
         public Guid BurgerId { get; set; }
         public Guid IngredientId { get; set; }
-        public Hambuger Burger { get; set; }
+        public Hamburger Burger { get; set; }
         public Garniture Ingredient { get; set; }
     }
 }
