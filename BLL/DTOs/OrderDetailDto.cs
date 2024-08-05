@@ -11,7 +11,7 @@ namespace BLL.DTOs
         public Guid OrderId { get; set; }
         public Guid MenuId { get; set; }
         public int Quantity { get; set; }
-        public decimal Price { get; set; }
+        public double Price { get; set; }
         public OrderDto OrderDto { get; set; }
         public MenuDto MenuDto { get; set; }
     }
