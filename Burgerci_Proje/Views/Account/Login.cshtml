@@ -1,0 +1,21 @@
+﻿@using Burgerci_Proje.Models
+@model UserViewModel
+
+<form asp-action="Login" method="post">
+    <div data-mdb-input-init class="form-group form-outline form-white mb-4">
+        <label asp-for="Username" class="form-label" for="typeUsername"></label>
+        <input asp-for="Username" class="form-control form-control-lg" id="typeUsername" /> 
+
+    </div>
+    <div data-mdb-input-init class="form-group form-outline form-white mb-4">
+        <label asp-for="Password" class="form-label" for="typePassword"></label>
+        <input asp-for="Password" class="form-control form-control-lg" type="password" id="typePassword" />
+
+    </div>
+    <div class="form-group">
+        <button data-mdb-button-init data-mdb-ripple-init-class type="submit" value="Login" class="btn btn-outline-primary btn-lg px-5">Login</button>
+    </div>
+</form>
+<div>
+    <p class="mb-0">Don't have an account? <a asp-action="Register" class="text-ehite-50 fw-bold">Sign Up!</a></p>
+</div>

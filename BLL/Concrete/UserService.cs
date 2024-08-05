@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using BLL.Abstract;
 using BLL.DTOs;
 using Burgerci_Proje.Entities;
 using DAL.AbstractRepositories;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Concrete
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private readonly IRepository<User> _userRepository;
         private readonly IMapper _mapper;
@@ -47,6 +49,9 @@ namespace BLL.Concrete
         public async Task Register(UserDto userDto)
         {
             var user = _mapper.Map<User>(userDto);
+            user.Id = Guid.NewGuid();
+           
+            //user.Password = userDto.Password;
             await _userRepository.AddAsync(user);
         }
 
@@ -54,7 +59,7 @@ namespace BLL.Concrete
         {
             var user = await _userRepository.GetByIdAsync(userDto.Id);
 
-            user.Photo = userDto.Photo;
+            user.PhotoUrl = userDto.Photo;
             user.Email = userDto.Email;
             user.PhoneNumber = userDto.PhoneNumber;
             user.Address = userDto.Address;

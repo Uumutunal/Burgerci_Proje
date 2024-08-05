@@ -1,1 +1,45 @@
-﻿@model UserViewModel
+﻿@using Burgerci_Proje.Models
+@model UserViewModel
+
+
+<form action="Register" method="post">
+    <div data-mdb-input-init class="form-group form-outline">
+        <label asp-for="Name" class="form-label">FIRST NAME</label>
+        <input asp-for="Name" class="form-control form-control-lg" />
+    </div>
+    <div data-mdb-input-init class="form-group form-outline">
+        <label asp-for="Surname" class="form-label">LAST NAME</label>
+        <input asp-for="Surname" class="form-control form-control-lg" />
+    </div>
+    <div data-mdb-input-init class="form-group form-outline mb-4">
+        <label asp-for="Email" class="form-label">E-MAIL</label>
+        <input asp-for="Email" class="form-control form-control-lg" type="text" />
+    </div>
+    <div data-mdb-input-init class="form-group form-outline mb-4">
+        <label asp-for="Username" class="form-label">USERNAME</label>
+        <input asp-for="Username" class="form-control form-control-lg" type="text" />
+    </div>
+    <div data-mdb-input-init class="form-group form-outline mb-4">
+        <label asp-for="Password" class="form-label">PASSWORD</label>
+        <input asp-for="Password" class="form-control form-control-lg" type="password" />
+    </div>
+    <div data-mdb-input-init class="form-group form-outline mb-4">
+        <label asp-for="PhoneNumber" class="form-label">PHONE NUMBER</label>
+        <input asp-for="PhoneNumber" class="form-control form-control-lg" />
+    </div>
+    <div data-mdb-input-init class="form-group form-outline mb-4">
+        <label asp-for="Address" class="form-label">ADDRESS</label>
+        <input asp-for="Address" class="form-control form-control-lg" type="text" />
+    </div>
+    <div data-mdb-input-init class="form-group form-outline mb-4">
+        <label asp-for="PhotoUrl" class="form-label">ADD PHOTO</label>
+        <input asp-for="PhotoUrl" class="form-control form-control-lg" type="file" id="PhotoUrl" />
+    </div>
+   
+        <button type="submit" data-mdb-button-init
+                data-mdb-ripple-init class="btn btn-outline-primary btn-block btn-lg px-5  text-dark">
+            REGISTER
+        </button>
+    
+</form>
+

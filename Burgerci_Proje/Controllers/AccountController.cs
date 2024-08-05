@@ -40,13 +40,11 @@ namespace Burgerci_Proje.Controllers
                 userViewModel.Photo = fileName;
             }
 
-            if (ModelState.IsValid)
-            {
-                var userDto = _mapper.Map<UserDto>(userViewModel);
-                await _userService.Register(userDto);
-                return RedirectToAction("Login");
-            }
-            return View(userViewModel);
+            var userDto = _mapper.Map<UserDto>(userViewModel);
+            await _userService.Register(userDto);
+            return RedirectToAction("Login");
+            
+            //return View(userViewModel);
         }
         public IActionResult Login()
         {
