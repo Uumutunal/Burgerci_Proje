@@ -94,7 +94,7 @@ namespace DAL.Migrations
                     b.ToTable("Extras");
                 });
 
-            modelBuilder.Entity("Burgerci_Proje.Entities.Hambuger", b =>
+            modelBuilder.Entity("Burgerci_Proje.Entities.Hamburger", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -129,7 +129,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Hambugers");
+                    b.ToTable("Hamburgers");
                 });
 
             modelBuilder.Entity("Burgerci_Proje.Entities.Menu", b =>
@@ -273,39 +273,6 @@ namespace DAL.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("DAL.Entities.BurgerGarniture", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BurgerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DeletedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("IngredientId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BurgerId");
-
-                    b.HasIndex("IngredientId");
-
-                    b.ToTable("BurgerGarnitures");
-                });
-
             modelBuilder.Entity("DAL.Entities.Garniture", b =>
                 {
                     b.Property<Guid>("Id")
@@ -334,6 +301,42 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Garnitures");
+                });
+
+            modelBuilder.Entity("DAL.Entities.HamburgerGarniture", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("GarnitureId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("HamburgerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IngredientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GarnitureId");
+
+                    b.HasIndex("HamburgerId");
+
+                    b.ToTable("HamburgerGarnitures");
                 });
 
             modelBuilder.Entity("DAL.Entities.OrderDetail", b =>
@@ -389,7 +392,7 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Burgerci_Proje.Entities.Hambuger", "Hamburger")
+                    b.HasOne("Burgerci_Proje.Entities.Hamburger", "Hamburger")
                         .WithMany("Menus")
                         .HasForeignKey("HamburgerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -413,23 +416,23 @@ namespace DAL.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DAL.Entities.BurgerGarniture", b =>
+            modelBuilder.Entity("DAL.Entities.HamburgerGarniture", b =>
                 {
-                    b.HasOne("Burgerci_Proje.Entities.Hambuger", "Burger")
+                    b.HasOne("DAL.Entities.Garniture", "Garniture")
+                        .WithMany("HamburgerGarnitures")
+                        .HasForeignKey("GarnitureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Burgerci_Proje.Entities.Hamburger", "Hamburger")
                         .WithMany()
-                        .HasForeignKey("BurgerId")
+                        .HasForeignKey("HamburgerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.Entities.Garniture", "Ingredient")
-                        .WithMany("BurgerGarnitures")
-                        .HasForeignKey("IngredientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Garniture");
 
-                    b.Navigation("Burger");
-
-                    b.Navigation("Ingredient");
+                    b.Navigation("Hamburger");
                 });
 
             modelBuilder.Entity("DAL.Entities.OrderDetail", b =>
@@ -461,7 +464,7 @@ namespace DAL.Migrations
                     b.Navigation("Menus");
                 });
 
-            modelBuilder.Entity("Burgerci_Proje.Entities.Hambuger", b =>
+            modelBuilder.Entity("Burgerci_Proje.Entities.Hamburger", b =>
                 {
                     b.Navigation("Menus");
                 });
@@ -478,7 +481,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Garniture", b =>
                 {
-                    b.Navigation("BurgerGarnitures");
+                    b.Navigation("HamburgerGarnitures");
                 });
 #pragma warning restore 612, 618
         }

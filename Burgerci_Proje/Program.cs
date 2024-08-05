@@ -27,6 +27,7 @@ namespace Burgerci_Proje
 
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped(typeof(IGarnitureService), typeof(GarnitureService));
+            builder.Services.AddScoped(typeof(IDrinkService), typeof(DrinkService));
 
             // Automapper
 
