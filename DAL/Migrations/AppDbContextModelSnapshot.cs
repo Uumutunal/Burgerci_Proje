@@ -127,6 +127,10 @@ namespace DAL.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
+                    b.Property<string>("SelectedGarnitureIds")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Hamburgers");
@@ -285,9 +289,9 @@ namespace DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9260798a-0fc2-40ad-b3f9-21cb8a216ace"),
+                            Id = new Guid("39121a5b-877a-42ce-a88b-e88ac4198aca"),
                             Address = "İstanbul",
-                            CreatedDate = new DateTime(2024, 8, 5, 16, 51, 15, 604, DateTimeKind.Local).AddTicks(2164),
+                            CreatedDate = new DateTime(2024, 8, 6, 13, 37, 41, 398, DateTimeKind.Local).AddTicks(4642),
                             DeletedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@admin.com",
                             IsAdmin = true,
@@ -323,10 +327,8 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -349,9 +351,6 @@ namespace DAL.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("HamburgerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("IngredientId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")

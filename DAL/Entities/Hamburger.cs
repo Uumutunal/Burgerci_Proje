@@ -8,6 +8,7 @@ namespace Burgerci_Proje.Entities
         public string Description { get; set; }
         public double Price { get; set; }
         public string ImageUrl { get; set; }
+        public List<Guid> SelectedGarnitureIds { get; set; }
         public List<Menu> Menus { get; set; }
     }
 }
