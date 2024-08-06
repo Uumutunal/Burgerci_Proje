@@ -36,6 +36,7 @@ namespace Burgerci_Proje.Controllers
         [HttpPost]
         public async Task<IActionResult> AddToBasket(MenuViewModel menuViewModel)
         {
+            //TODO:Include çalışmıyor
             var menu = await _menuService.GetMenuWithIncludes(new[] { "Hamburger" });
 
             TempData["MenuData"] = JsonConvert.SerializeObject(menu.FirstOrDefault());

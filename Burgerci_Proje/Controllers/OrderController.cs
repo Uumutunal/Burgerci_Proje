@@ -45,30 +45,45 @@ namespace Burgerci_Proje.Controllers
         }
 
 
+        //GUIDler deneme için eklendi
         [HttpPost]
         public async Task<IActionResult> AddMenuToOrder(MenuViewModel menuViewModel)
         {
             Guid.TryParse(HttpContext.Session.GetString("UserId"), out Guid userGuid);
 
+            Guid userGuiddeneme = new Guid("97A7EFFD-490D-4673-9C91-8F0C2401EFF4");
+
             var orders = await _orderService.GetAllOrders();
-            var userOrder = orders.Where(x => x.UserId == userGuid).ToList();
+            //var userOrder = orders.Where(x => x.UserId == userGuid).ToList();
+            var userOrder = orders.Where(x => x.UserId == userGuiddeneme).ToList();
 
             if(userOrder.Count == 0)
             {
                 var order = new OrderViewModel();
+                
+                Guid orderGuid = new Guid("22DAAD28-A7FE-4D6A-7FC0-08DCB640D8A5");
 
-                order.UserId = userGuid;
+                order.UserId = userGuiddeneme;
+                order.CreatedDate = DateTime.Now;
+                order.Status = "active";
+                order.IsActive = true;
+                order.TotalPrice = 0;
 
                 await _orderService.CreateOrder(_mapper.Map<OrderDto>(order));
 
+
+                Guid drinkDuid = new Guid("771459ef-ef8d-4a02-b5eb-6c446de04c74");
+
+
                 var orderDetail = new OrderDetailViewModel();
                 orderDetail.MenuId = menuViewModel.Id;
-                orderDetail.OrderId = order.Id;
+                orderDetail.OrderId = orderGuid;
                 orderDetail.Price = menuViewModel.Price;
-
-                order.OrderDetailViewModels.Add(orderDetail);
+                orderDetail.DrinkId = drinkDuid;
 
                 var orderDetailDto = _mapper.Map<OrderDetailDto>(orderDetail);
+
+
                 await _orderDetailService.CreateOrderDetail(orderDetailDto);
 
             }
@@ -124,7 +139,85 @@ namespace Burgerci_Proje.Controllers
                 await _orderDetailService.CreateOrderDetail(orderDetailDto);
             }
 
+            return View();
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> AddDrinkToOrder(DrinkViewModel drinkViewModel)
+        {
+            Guid.TryParse(HttpContext.Session.GetString("UserId"), out Guid userGuid);
+
+            var orders = await _orderService.GetAllOrders();
+            var userOrder = orders.Where(x => x.UserId == userGuid).ToList();
+
+            if (userOrder.Count == 0)
+            {
+                var order = new OrderViewModel();
+
+                order.UserId = userGuid;
+
+                await _orderService.CreateOrder(_mapper.Map<OrderDto>(order));
+
+                var orderDetail = new OrderDetailViewModel();
+                orderDetail.DrinkId = drinkViewModel.Id;
+                orderDetail.OrderId = order.Id;
+                orderDetail.Price = drinkViewModel.Price;
+
+                order.OrderDetailViewModels.Add(orderDetail);
+
+                var orderDetailDto = _mapper.Map<OrderDetailDto>(orderDetail);
+                await _orderDetailService.CreateOrderDetail(orderDetailDto);
+
+            }
+            else
+            {
+                var orderDetail = new OrderDetailViewModel();
+                orderDetail.DrinkId = drinkViewModel.Id;
+                orderDetail.OrderId = userOrder.FirstOrDefault().Id;
+
+                var orderDetailDto = _mapper.Map<OrderDetailDto>(orderDetail);
+                await _orderDetailService.CreateOrderDetail(orderDetailDto);
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddExtraToOrder(ExtraViewModel extraViewModel)
+        {
+            Guid.TryParse(HttpContext.Session.GetString("UserId"), out Guid userGuid);
+
+            var orders = await _orderService.GetAllOrders();
+            var userOrder = orders.Where(x => x.UserId == userGuid).ToList();
+
+            if (userOrder.Count == 0)
+            {
+                var order = new OrderViewModel();
+
+                order.UserId = userGuid;
+
+                await _orderService.CreateOrder(_mapper.Map<OrderDto>(order));
+
+                var orderDetail = new OrderDetailViewModel();
+                orderDetail.ExtraId = extraViewModel.Id;
+                orderDetail.OrderId = order.Id;
+                orderDetail.Price = extraViewModel.Price;
+
+                order.OrderDetailViewModels.Add(orderDetail);
+
+                var orderDetailDto = _mapper.Map<OrderDetailDto>(orderDetail);
+                await _orderDetailService.CreateOrderDetail(orderDetailDto);
+
+            }
+            else
+            {
+                var orderDetail = new OrderDetailViewModel();
+                orderDetail.ExtraId = extraViewModel.Id;
+                orderDetail.OrderId = userOrder.FirstOrDefault().Id;
+
+                var orderDetailDto = _mapper.Map<OrderDetailDto>(orderDetail);
+                await _orderDetailService.CreateOrderDetail(orderDetailDto);
+            }
 
             return View();
         }

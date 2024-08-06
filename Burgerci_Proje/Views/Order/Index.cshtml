@@ -1,28 +1,26 @@
 ﻿@using DAL.Data
 @model MenuViewModel
 
-@inject AppDbContext _db
-
 
 
 
 <div>
     <p>@Model.Name</p>
-    <p>@Model.HamburgerViewModel.Name</p>
+@*     <p>@Model.HamburgerViewModel.Name</p>
     <p>@Model.HamburgerViewModel.Description</p>
-    <p>@Model.HamburgerViewModel.Price</p>
+    <p>@Model.HamburgerViewModel.Price</p> *@
 </div>
 
 <div>
     <h3>Drink</h3>
-    <p>Id: @Model.DrinkId</p>
+    <p>Name: @Model.Name</p>
     <p>Name: @Model.DrinkViewModel?.Name</p>
     <p>Description: @Model.DrinkViewModel?.Price</p>
 </div>
 
 <div>
 
-    <p>Total Price: @Model.HamburgerViewModel.Price + @Model.DrinkViewModel?.Price</p>
+    @* <p>Total Price: @Model.HamburgerViewModel.Price + @Model.DrinkViewModel?.Price</p> *@
 
 </div>
 
@@ -31,8 +29,17 @@
 
     <input type="hidden" name="Name" value="@Model.Name" />
     <input type="hidden" name="Id" value="@Model.Id" />
+    <input type="hidden" name="Description" value="@Model.Description" />
+    <input type="hidden" name="Price" value="@Model.Price" />
+    <input type="hidden" name="PhotoUrl" value="@Model.PhotoUrl" />
+    <input type="hidden" name="HamburgerId" value="@Model.HamburgerId" />
+    <input type="hidden" name="DrinkId" value="@Model.DrinkId" />
+    <input type="hidden" name="ExtraId" value="@Model.ExtraId" />
+    <input type="hidden" name="HamburgerViewModel" value="@Model.HamburgerViewModel" />
+    <input type="hidden" name="DrinkViewModel" value="@Model.DrinkViewModel" />
+    <input type="hidden" name="ExtraViewModel" value="@Model.ExtraViewModel" />
 
-    <button type="submit" class="btn btn-outline-primary btn-sm me-2">
+    <button type="submit" class="btn btn-outline-primary btn-sm me-2">Onayla
 
 
     </button>
