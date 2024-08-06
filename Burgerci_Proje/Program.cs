@@ -27,6 +27,7 @@ namespace Burgerci_Proje
 
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped(typeof(IGarnitureService), typeof(GarnitureService));
+            builder.Services.AddScoped(typeof(IUserService), typeof(UserService));
             builder.Services.AddScoped(typeof(IDrinkService), typeof(DrinkService));
 
             // Automapper
@@ -52,7 +53,7 @@ namespace Burgerci_Proje
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Account}/{action=Login}/{id?}");
 
             app.Run();
         }

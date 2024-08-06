@@ -9,7 +9,7 @@ namespace DAL.Entities
     public class Garniture : BaseEntity
     {
         public string Name { get; set; }
-        public decimal Price { get; set; }
+        public double Price { get; set; }
         public List<HamburgerGarniture> HamburgerGarnitures { get; set; }
     }
 }

@@ -27,7 +27,19 @@ namespace DAL.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // seeddata
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                Id = Guid.NewGuid(),
+                Username = "admin",
+                Name ="adminadı",
+                Surname ="adminsoyadı",
+                Password = "123",
+                Email = "admin@admin.com",
+                PhoneNumber = "1234567890",
+                Address = "İstanbul",
+                IsAdmin = true
+
+            });
         }
     }
 }
