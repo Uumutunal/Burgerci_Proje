@@ -1,4 +1,7 @@
-﻿@model MenuViewModel
+﻿@using DAL.Data
+@model MenuViewModel
+
+@inject AppDbContext _db
 
 
 
@@ -26,8 +29,8 @@
 
 <form asp-action="AddMenuToOrder" method="POST" style="display:inline">
 
-    <input type="hidden" name="menuName" value="@Model.Name" />
-    <input type="hidden" name="menuId" value="@Model.Id" />
+    <input type="hidden" name="Name" value="@Model.Name" />
+    <input type="hidden" name="Id" value="@Model.Id" />
 
     <button type="submit" class="btn btn-outline-primary btn-sm me-2">
 

@@ -36,7 +36,7 @@ namespace BLL.Concrete
         public async Task<List<OrderDto>> GetAllOrders()
         {
             var orders = await _orderRepository.GetAllAsync();
-            var orderDtos = _mapper.Map<List<OrderDto>>(orders);
+            var orderDtos = _mapper.Map<List<OrderDto>>(orders.Where(w => w.IsActive));
             return orderDtos;
         }
     }

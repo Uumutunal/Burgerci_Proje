@@ -10,8 +10,8 @@ namespace Burgerci_Proje.Entities
         public double Price { get; set; }
         public string? Photo { get; set; }
         public Guid HamburgerId { get; set; }
-        public Guid DrinkId { get; set; }
-        public Guid ExtraId { get; set; }
+        public Guid? DrinkId { get; set; }
+        public Guid? ExtraId { get; set; }
         public Hamburger Hamburger { get; set; }
         public Drink Drink { get; set; }
         public Extra Extra { get; set; }

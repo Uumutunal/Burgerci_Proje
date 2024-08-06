@@ -1,17 +1,45 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using BLL.Abstract;
+using Burgerci_Proje.Entities;
+using Burgerci_Proje.Models;
+using DAL.Data;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Burgerci_Proje.Controllers
 {
     public class MenuController : Controller
     {
-        public IActionResult Index()
+
+        private readonly IMenuService _menuService;
+        private readonly IOrderDetailService _orderDetailService;
+        private readonly IMapper _mapper;
+        private readonly AppDbContext db;
+
+        public MenuController(IMenuService menuService, IMapper mapper, AppDbContext db)
         {
-            return View();
+            _menuService = menuService;
+            _mapper = mapper;
+            this.db = db;
         }
 
-        public IActionResult AddToBasket()
+        public async Task<IActionResult> Index() 
         {
-            //service ekle, tuşuna basılan menüyü getir
+        
+            var allMenus = await _menuService.GetAllMenus();
+            var allMenusMapped = _mapper.Map<List<MenuViewModel>>(allMenus);
+
+            return View(allMenusMapped);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddToBasket(MenuViewModel menuViewModel)
+        {
+            var menu = await _menuService.GetMenuWithIncludes(new[] { "Hamburger" });
+
+            TempData["MenuData"] = JsonConvert.SerializeObject(menu.FirstOrDefault());
+
             return RedirectToAction("Index", "Order");
         }
     }

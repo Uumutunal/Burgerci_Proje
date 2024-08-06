@@ -45,5 +45,15 @@ namespace BLL.Concrete
             var menu = _mapper.Map<Menu>(menuDto);
             await _menuRepository.UpdateAsync(menu);
         }
+
+        public async Task<List<MenuDto>> GetMenuWithIncludes(string[] includes)
+        {
+
+            var menus = await _menuRepository.GetAllWithIncludes(includes);
+
+            var menuDtos = _mapper.Map<List<MenuDto>>(menus);
+
+            return menuDtos;
+        }
     }
 }

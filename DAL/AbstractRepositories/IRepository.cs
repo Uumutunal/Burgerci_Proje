@@ -15,6 +15,7 @@ namespace DAL.AbstractRepositories
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(Guid id);
+        Task<IEnumerable<T>> GetAllWithIncludes(params string[] includes);
 
     }
 }

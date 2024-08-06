@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240805115238_m2")]
-    partial class m2
+    [Migration("20240806104836_m1")]
+    partial class m1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,10 +37,6 @@ namespace DAL.Migrations
                     b.Property<DateTime>("DeletedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -49,6 +45,9 @@ namespace DAL.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Photo")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Price")
@@ -75,10 +74,6 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -87,6 +82,9 @@ namespace DAL.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Photo")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Price")
@@ -113,10 +111,6 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -125,6 +119,9 @@ namespace DAL.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Photo")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Price")
@@ -160,10 +157,6 @@ namespace DAL.Migrations
                     b.Property<Guid>("HamburgerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -174,11 +167,11 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Photo")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("Price")
                         .HasColumnType("float");
-
-                    b.Property<Guid>("SnackId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -202,6 +195,9 @@ namespace DAL.Migrations
 
                     b.Property<DateTime>("DeletedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -288,9 +284,9 @@ namespace DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("c00d426e-32db-450a-b99c-b8ff136afd5e"),
+                            Id = new Guid("7e226943-7c2c-454f-98ac-48f0af95bb47"),
                             Address = "İstanbul",
-                            CreatedDate = new DateTime(2024, 8, 5, 14, 52, 38, 319, DateTimeKind.Local).AddTicks(2421),
+                            CreatedDate = new DateTime(2024, 8, 6, 13, 48, 35, 760, DateTimeKind.Local).AddTicks(7150),
                             DeletedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@admin.com",
                             IsAdmin = true,
@@ -382,10 +378,19 @@ namespace DAL.Migrations
                     b.Property<DateTime>("DeletedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid?>("DrinkId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ExtraId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("HamburgerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("MenuId")
+                    b.Property<Guid?>("MenuId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ModifiedDate")
@@ -401,6 +406,12 @@ namespace DAL.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DrinkId");
+
+                    b.HasIndex("ExtraId");
+
+                    b.HasIndex("HamburgerId");
 
                     b.HasIndex("MenuId");
 
@@ -456,7 +467,7 @@ namespace DAL.Migrations
                         .IsRequired();
 
                     b.HasOne("Burgerci_Proje.Entities.Hamburger", "Hamburger")
-                        .WithMany()
+                        .WithMany("HamburgerGarnitures")
                         .HasForeignKey("HamburgerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -468,17 +479,33 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.OrderDetail", b =>
                 {
+                    b.HasOne("Burgerci_Proje.Entities.Drink", "Drink")
+                        .WithMany()
+                        .HasForeignKey("DrinkId");
+
+                    b.HasOne("Burgerci_Proje.Entities.Extra", "Extra")
+                        .WithMany()
+                        .HasForeignKey("ExtraId");
+
+                    b.HasOne("Burgerci_Proje.Entities.Hamburger", "Hamburger")
+                        .WithMany()
+                        .HasForeignKey("HamburgerId");
+
                     b.HasOne("Burgerci_Proje.Entities.Menu", "Menu")
                         .WithMany()
-                        .HasForeignKey("MenuId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MenuId");
 
                     b.HasOne("Burgerci_Proje.Entities.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Drink");
+
+                    b.Navigation("Extra");
+
+                    b.Navigation("Hamburger");
 
                     b.Navigation("Menu");
 
@@ -497,6 +524,8 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Burgerci_Proje.Entities.Hamburger", b =>
                 {
+                    b.Navigation("HamburgerGarnitures");
+
                     b.Navigation("Menus");
                 });
 

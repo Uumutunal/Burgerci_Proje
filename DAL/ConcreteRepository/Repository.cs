@@ -49,12 +49,24 @@ namespace DAL.ConcreteRepository
         }
 
 
-
         public async Task UpdateAsync(T entity)
         {
             entity.ModifiedDate = DateTime.Now;
             _entities.Update(entity);
             await _context.SaveChangesAsync();
+        }
+
+
+        public async Task<IEnumerable<T>> GetAllWithIncludes(params string[] includes)
+        {
+            IQueryable<T> query = _entities;
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return await query.Where(x => !x.IsDeleted).ToListAsync();
         }
     }
 }
