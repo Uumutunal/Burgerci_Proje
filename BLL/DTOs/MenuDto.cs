@@ -10,11 +10,11 @@ namespace BLL.DTOs
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public decimal Price { get; set; }
+        public double Price { get; set; }
         public string ImageUrl { get; set; }
         public Guid HamburgerId { get; set; }
         public Guid DrinkId { get; set; }
-        public Guid SnackId { get; set; }
+        public Guid ExtraId { get; set; }
         public HamburgerDto HamburgerDto { get; set; }
         public DrinkDto DrinkDto { get; set; }
         public ExtraDto ExtraDto { get; set; }

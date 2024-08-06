@@ -48,8 +48,8 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -86,15 +86,15 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
                     b.ToTable("Extras");
                 });
 
-            modelBuilder.Entity("Burgerci_Proje.Entities.Hambuger", b =>
+            modelBuilder.Entity("Burgerci_Proje.Entities.Hamburger", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -124,12 +124,12 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Hambugers");
+                    b.ToTable("Hamburgers");
                 });
 
             modelBuilder.Entity("Burgerci_Proje.Entities.Menu", b =>
@@ -171,8 +171,8 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<Guid>("SnackId")
                         .HasColumnType("uniqueidentifier");
@@ -213,8 +213,8 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("TotalPrice")
+                        .HasColumnType("float");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -246,11 +246,18 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -260,7 +267,10 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Photo")
+                    b.Property<string>("PhotoUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Surname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -271,39 +281,24 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
 
-            modelBuilder.Entity("DAL.Entities.BurgerGarniture", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BurgerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DeletedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("IngredientId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BurgerId");
-
-                    b.HasIndex("IngredientId");
-
-                    b.ToTable("BurgerGarnitures");
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("9260798a-0fc2-40ad-b3f9-21cb8a216ace"),
+                            Address = "İstanbul",
+                            CreatedDate = new DateTime(2024, 8, 5, 16, 51, 15, 604, DateTimeKind.Local).AddTicks(2164),
+                            DeletedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "admin@admin.com",
+                            IsAdmin = true,
+                            IsDeleted = false,
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "adminadı",
+                            Password = "123",
+                            PhoneNumber = "1234567890",
+                            Surname = "adminsoyadı",
+                            Username = "admin"
+                        });
                 });
 
             modelBuilder.Entity("DAL.Entities.Garniture", b =>
@@ -328,12 +323,50 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
+
 
                     b.HasKey("Id");
 
                     b.ToTable("Garnitures");
+                });
+
+            modelBuilder.Entity("DAL.Entities.HamburgerGarniture", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("GarnitureId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("HamburgerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IngredientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GarnitureId");
+
+                    b.HasIndex("HamburgerId");
+
+                    b.ToTable("HamburgerGarnitures");
                 });
 
             modelBuilder.Entity("DAL.Entities.OrderDetail", b =>
@@ -360,8 +393,8 @@ namespace DAL.Migrations
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -389,7 +422,7 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Burgerci_Proje.Entities.Hambuger", "Hamburger")
+                    b.HasOne("Burgerci_Proje.Entities.Hamburger", "Hamburger")
                         .WithMany("Menus")
                         .HasForeignKey("HamburgerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -413,23 +446,23 @@ namespace DAL.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DAL.Entities.BurgerGarniture", b =>
+            modelBuilder.Entity("DAL.Entities.HamburgerGarniture", b =>
                 {
-                    b.HasOne("Burgerci_Proje.Entities.Hambuger", "Burger")
+                    b.HasOne("DAL.Entities.Garniture", "Garniture")
+                        .WithMany("HamburgerGarnitures")
+                        .HasForeignKey("GarnitureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Burgerci_Proje.Entities.Hamburger", "Hamburger")
                         .WithMany()
-                        .HasForeignKey("BurgerId")
+                        .HasForeignKey("HamburgerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.Entities.Garniture", "Ingredient")
-                        .WithMany("BurgerGarnitures")
-                        .HasForeignKey("IngredientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Garniture");
 
-                    b.Navigation("Burger");
-
-                    b.Navigation("Ingredient");
+                    b.Navigation("Hamburger");
                 });
 
             modelBuilder.Entity("DAL.Entities.OrderDetail", b =>
@@ -461,7 +494,7 @@ namespace DAL.Migrations
                     b.Navigation("Menus");
                 });
 
-            modelBuilder.Entity("Burgerci_Proje.Entities.Hambuger", b =>
+            modelBuilder.Entity("Burgerci_Proje.Entities.Hamburger", b =>
                 {
                     b.Navigation("Menus");
                 });
@@ -478,7 +511,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Garniture", b =>
                 {
-                    b.Navigation("BurgerGarnitures");
+                    b.Navigation("HamburgerGarnitures");
                 });
 #pragma warning restore 612, 618
         }

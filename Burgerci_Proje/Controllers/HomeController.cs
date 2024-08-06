@@ -6,6 +6,8 @@ namespace Burgerci_Proje.Controllers
 {
     public class HomeController : Controller
     {
+        // tüm menüler burada gözükecek sipariþ detayý vs burada olacak
+        // anasayfa ekraný
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)

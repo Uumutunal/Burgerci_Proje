@@ -9,7 +9,7 @@ namespace BLL.DTOs
     public class GarnitureDto : BaseDto
     {
         public string Name { get; set; }
-        public decimal Price { get; set; }
+        public double Price { get; set; }
         public List<HamburgerGarnitureDto> HamburgerGarnitureDtos { get; set; }
     }
 }

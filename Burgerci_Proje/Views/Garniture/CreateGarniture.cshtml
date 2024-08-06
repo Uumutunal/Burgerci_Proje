@@ -1,0 +1,58 @@
+﻿@model GarnitureViewModel
+@{
+    ViewData["Title"] = "CreateGarniture";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="container">
+    <div class="page-inner">
+        <div class="page-header">
+            <h3 class="fw-bold mb-3">Garnitures</h3>
+            <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                    <a href="#">
+                        <i class="icon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Garnitures</a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Create Garniture Panel</a>
+                </li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Add Garniture Operation</div>
+                    </div>
+                    <div class="card-body">
+                        <form class="form" asp-controller="Garniture" asp-action="CreateGarniture" method="post">
+                            <div class="form-group">
+                                <label for="Name">Garniture Name</label>
+                                <br />
+                                <input asp-for="Name" type="text" class="form-control" id="Name" placeholder="Enter garniture name" />
+                            </div>
+                            <div class="form-group">
+                                <label for="Price">Price</label>
+                                <br />
+                                <input asp-for="Price" type="number" class="form-control" id="Price" placeholder="Enter garniture price" step="0.01"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Create Garniture" class="btn btn-success btn-block"/>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

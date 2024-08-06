@@ -1,9 +1,14 @@
-﻿using AutoMapper;
+using AutoMapper;
 using BLL.Abstract;
 using BLL.DTOs;
 using Burgerci_Proje.Entities;
 using DAL.AbstractRepositories;
-using DAL.Entities;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace BLL.Concrete
 {
@@ -11,10 +16,11 @@ namespace BLL.Concrete
     {
         private readonly IMapper _mapper;
         private readonly IRepository<Menu> _menuRepository;
-        public MenuService(IRepository<Menu> menuRepository, IMapper mapper)
+
+        public MenuService(IMapper mapper,IRepository<Menu> menuRepository)
         {
+            this._mapper = mapper;
             _menuRepository = menuRepository;
-            _mapper = mapper;
         }
         public async Task CreateMenu(MenuDto menuDto)
         {
@@ -24,14 +30,20 @@ namespace BLL.Concrete
 
         public async Task DeleteMenu(Guid menuId)
         {
-            await _menuRepository.DeleteAsync(menuId);
+           await _menuRepository.DeleteAsync(menuId);
         }
 
         public async Task<List<MenuDto>> GetAllMenus()
         {
             var menus = await _menuRepository.GetAllAsync();
-            var garnitureDtos = _mapper.Map<List<MenuDto>>(menus);
-            return garnitureDtos;
+            var mappedMenus = _mapper.Map<List<MenuDto>>(menus);
+            return mappedMenus;
+        }
+
+        public async Task UpdateMenu(MenuDto menuDto)
+        {
+            var menu = _mapper.Map<Menu>(menuDto);
+            await _menuRepository.UpdateAsync(menu);
         }
     }
 }

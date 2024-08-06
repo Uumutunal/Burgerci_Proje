@@ -1,0 +1,74 @@
+﻿@model List<GarnitureViewModel>
+
+@{
+    ViewData["Title"] = "GarnitureList";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+
+<div class="container">
+    <div class="page-inner">
+        <div class="page-header">
+            <h3 class="fw-bold mb-3">Garnitures</h3>
+            <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                    <a href="#">
+                        <i class="icon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Garnitures</a>
+                </li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Garniture List</div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Garniture Name</th>
+                                    <th scope="col">Garniture Price</th>
+                                    <th scope="col">Delete</th>
+                                    <th scope="col">Update</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    var count = 1;
+                                }
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@count</td>
+                                        <td>@item.Name</td>
+                                        <td>@item.Price</td>
+                                        <td>
+                                            <form asp-action="DeleteGarniture" method="post" style="display:inline">
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <button type="submit" class="btn btn-danger"><i>Delete</i></button>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("UpdateGarniture", new { id = item.Id })" class="btn btn-success"><i>Update</i></a>
+                                        </td>
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+                        </table>
+                        <a href="/Garniture/CreateGarniture" class="btn btn-primary">Add New Garniture</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
