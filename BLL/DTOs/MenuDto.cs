@@ -14,7 +14,7 @@ namespace BLL.DTOs
         public string ImageUrl { get; set; }
         public Guid HamburgerId { get; set; }
         public Guid DrinkId { get; set; }
-        public Guid SnackId { get; set; }
+        public Guid ExtraId { get; set; }
         public HamburgerDto HamburgerDto { get; set; }
         public DrinkDto DrinkDto { get; set; }
         public ExtraDto ExtraDto { get; set; }
