@@ -1,0 +1,37 @@
+﻿@model MenuViewModel
+
+
+
+
+<div>
+    <p>@Model.Name</p>
+    <p>@Model.HamburgerViewModel.Name</p>
+    <p>@Model.HamburgerViewModel.Description</p>
+    <p>@Model.HamburgerViewModel.Price</p>
+</div>
+
+<div>
+    <h3>Drink</h3>
+    <p>Id: @Model.DrinkId</p>
+    <p>Name: @Model.DrinkViewModel?.Name</p>
+    <p>Description: @Model.DrinkViewModel?.Price</p>
+</div>
+
+<div>
+
+    <p>Total Price: @Model.HamburgerViewModel.Price + @Model.DrinkViewModel?.Price</p>
+
+</div>
+
+
+<form asp-action="AddMenuToOrder" method="POST" style="display:inline">
+
+    <input type="hidden" name="menuName" value="@Model.Name" />
+    <input type="hidden" name="menuId" value="@Model.Id" />
+
+    <button type="submit" class="btn btn-outline-primary btn-sm me-2">
+
+
+    </button>
+
+</form>

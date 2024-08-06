@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using BLL.Abstract;
 using BLL.DTOs;
 using Burgerci_Proje.Entities;

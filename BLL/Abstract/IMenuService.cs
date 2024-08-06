@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace BLL.Abstract
 {
-    internal interface IMenuService
+    public interface IMenuService
     {
         Task<List<MenuDto>> GetAllMenus();
         Task CreateMenu(MenuDto menuDto);
         Task DeleteMenu(Guid menuId);
-        Task UpdateMenu(MenuDto menuDto);
     }
 }
