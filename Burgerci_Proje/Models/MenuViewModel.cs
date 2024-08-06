@@ -7,7 +7,7 @@ namespace Burgerci_Proje.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public double Price { get; set; }
-        public string ImageUrl { get; set; }
+        public IFormFile? PhotoUrl { get; set; }
         public Guid HamburgerId { get; set; }
         public Guid DrinkId { get; set; }
         public Guid ExtraId { get; set; }
