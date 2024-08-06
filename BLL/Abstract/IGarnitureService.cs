@@ -12,5 +12,6 @@ namespace BLL.Abstract
         Task<List<GarnitureDto>> GetAllGarnitures();
         Task CreateGarniture(GarnitureDto garnitureDto);
         Task DeleteGarniture(Guid garnitureId);
+        Task UpdateGarniture(GarnitureDto garnitureDto);
     }
 }

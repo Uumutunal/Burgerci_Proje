@@ -32,5 +32,11 @@ namespace BLL.Concrete
             var garnitureDtos = _mapper.Map<List<GarnitureDto>>(garnitures);
             return garnitureDtos;
         }
+
+        public async Task UpdateGarniture(GarnitureDto garnitureDto)
+        {
+            var garniture = _mapper.Map<Garniture>(garnitureDto);
+            await _garnitureRepository.UpdateAsync(garniture);
+        }
     }
 }
