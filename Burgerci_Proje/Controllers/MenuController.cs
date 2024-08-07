@@ -3,6 +3,7 @@ using BLL.Abstract;
 using BLL.DTOs;
 using Burgerci_Proje.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Burgerci_Proje.Controllers
 {
@@ -21,7 +22,24 @@ namespace Burgerci_Proje.Controllers
             _garnitureService = garnitureService;
             _drinkService = drinkService;
         }
+        public async Task<IActionResult> Index()
+        {
 
+            var allMenus = await _menuService.GetAllMenus();
+            var allMenusMapped = _mapper.Map<List<MenuViewModel>>(allMenus);
+
+            return View(allMenusMapped);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddToBasket(MenuViewModel menuViewModel)
+        {
+            //TODO:Include çalýþmýyor
+            var menu = await _menuService.GetMenuWithIncludes(new[] { "Hamburger" });
+
+            TempData["MenuData"] = JsonConvert.SerializeObject(menu.FirstOrDefault());
+
+            return RedirectToAction("Index", "Order");
+        }
         public async Task<IActionResult> MenuList()
         {
             var menus = await _menuService.GetAllMenus();

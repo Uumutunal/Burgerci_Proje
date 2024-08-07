@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240807090437_mig2")]
-    partial class mig2
+    [Migration("20240807113422_mig1")]
+    partial class mig1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -141,6 +141,10 @@ namespace DAL.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
+
+                    b.Property<string>("SelectedGarnitureIds")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Size")
                         .HasColumnType("nvarchar(max)");
@@ -308,9 +312,9 @@ namespace DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b552f964-3a7e-44e8-b22e-d849ec558968"),
+                            Id = new Guid("fc3d6b00-0971-4a49-b240-4d74f4409e66"),
                             Address = "İstanbul",
-                            CreatedDate = new DateTime(2024, 8, 7, 12, 4, 36, 701, DateTimeKind.Local).AddTicks(3322),
+                            CreatedDate = new DateTime(2024, 8, 7, 14, 34, 21, 818, DateTimeKind.Local).AddTicks(5752),
                             Email = "admin@admin.com",
                             IsAdmin = true,
                             IsDeleted = false,
@@ -368,9 +372,6 @@ namespace DAL.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("HamburgerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("IngredientId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")

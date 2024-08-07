@@ -46,7 +46,7 @@ namespace Burgerci_Proje.Controllers
                         await hamburgerViewModel.PhotoUrl.CopyToAsync(stream);
                     }
 
-                    hamburgerViewModel.ImageUrl = fileName;
+                    hamburgerViewModel.Photo = fileName;
                 }
                 var hamburgerDto = _mapper.Map<HamburgerDto>(hamburgerViewModel);
                 var selectedGarnitureIds = hamburgerViewModel.SelectedGarnitureIds;
