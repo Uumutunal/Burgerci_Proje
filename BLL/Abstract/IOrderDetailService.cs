@@ -9,7 +9,7 @@ namespace BLL.Abstract
 {
     public interface IOrderDetailService
     {
-        Task<List<OrderDetailDto>> GetAllOrderDetails();
+        Task<List<OrderDetailDto>> GetAllOrderDetails(Guid orderId);
         Task CreateOrderDetail(OrderDetailDto orderDetailDto);
         Task DeleteOrderDetail(Guid orderDetailId);
     }

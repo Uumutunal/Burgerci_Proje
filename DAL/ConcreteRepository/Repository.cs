@@ -20,10 +20,11 @@ namespace DAL.ConcreteRepository
             _context = context;
             _entities = _context.Set<T>();
         }
-        public async Task AddAsync(T entity)
+        public async Task<Guid> AddAsync(T entity)
         {
             await _entities.AddAsync(entity);
             await _context.SaveChangesAsync();
+            return entity.Id;
         }
 
         public async Task DeleteAsync(Guid id)

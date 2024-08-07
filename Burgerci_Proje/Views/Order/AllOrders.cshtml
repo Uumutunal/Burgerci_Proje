@@ -1,0 +1,41 @@
+﻿@model List<OrderDetailViewModel>
+
+@{
+    ViewBag.Title = "Menu List";
+
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+
+<h2>Order List</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <p>No orders found.</p>
+}
+else
+{
+    <div class="container">
+        <div class="row">
+            @foreach (var order in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">@order.MenuId</h5>
+                            <p class="card-text">@order.Quantity</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">@($"{order.Price * order.Quantity:C}")</small>
+                            </div>
+                            <form asp-action="DeleteOrderDetail" method="post" style="display:inline;">
+                                <input type="hidden" name="Id" value="@order.Id" />
+                                <input type="hidden" name="OrderId" value="@order.OrderId" />
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

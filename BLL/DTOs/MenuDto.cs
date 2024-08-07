@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DAL.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ namespace BLL.DTOs
         public double Price { get; set; }
         public string ImageUrl { get; set; }
         public int Quantity { get; set; } = 1;
+        public string? Size { get; set; }
         public Guid HamburgerId { get; set; }
         public Guid DrinkId { get; set; }
         public Guid ExtraId { get; set; }

@@ -22,10 +22,11 @@ namespace BLL.Concrete
             throw new NotImplementedException();
         }
 
-        public async Task CreateOrder(OrderDto orderDto)
+        public async Task<Guid> CreateOrder(OrderDto orderDto)
         {
             var order = _mapper.Map<Order>(orderDto);
-            await _orderRepository.AddAsync(order);
+            var id = await _orderRepository.AddAsync(order);
+            return id;
         }
 
         public async Task DeleteOrder(Guid orderId)
@@ -57,6 +58,14 @@ namespace BLL.Concrete
             var activeOrders = allOrders.Where(x => x.IsActive && x.UserId == userId).ToList();
 
             return _mapper.Map<List<OrderDto>>(activeOrders);
+        }
+
+        public async Task<OrderDto> GetById(Guid orderId)
+        {
+
+            var order = await _orderRepository.GetByIdAsync(orderId);
+
+            return _mapper.Map<OrderDto>(order);
         }
     }
 }

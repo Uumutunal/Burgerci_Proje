@@ -1,5 +1,6 @@
 ﻿using DAL.Entities;
 using System;
+using System.Drawing;
 
 namespace Burgerci_Proje.Entities
 {
@@ -10,6 +11,7 @@ namespace Burgerci_Proje.Entities
         public double Price { get; set; }
         public string? Photo { get; set; }
         public int Quantity { get; set; } = 1;
+        public string? Size { get; set; }
         public Guid HamburgerId { get; set; }
         public Guid? DrinkId { get; set; }
         public Guid? ExtraId { get; set; }

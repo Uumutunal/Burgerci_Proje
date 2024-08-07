@@ -10,12 +10,13 @@ namespace BLL.Abstract
     public interface IOrderService
     {
         Task<List<OrderDto>> GetAllOrders();
-        Task CreateOrder(OrderDto orderDto);
+        Task<Guid> CreateOrder(OrderDto orderDto);
         Task DeleteOrder(Guid orderId);
         Task AddOrderDetail(Guid orderDetailId);
         Task ApproveOrder(Guid orderId);
         Task UpdateOrder(OrderDto orderDto);
         Task<List<OrderDto>> GetActiveOrder(Guid userId);
+        Task<OrderDto> GetById(Guid orderId);
 
     }
 }

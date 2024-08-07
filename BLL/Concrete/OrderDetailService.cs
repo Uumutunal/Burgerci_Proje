@@ -26,14 +26,16 @@ namespace BLL.Concrete
             await _OrderDetailRepository.AddAsync(orderDetail);
         }
 
-        public Task DeleteOrderDetail(Guid orderDetailId)
+        public async Task DeleteOrderDetail(Guid orderDetailId)
         {
-            throw new NotImplementedException();
+            await _OrderDetailRepository.DeleteAsync(orderDetailId);
         }
 
-        public Task<List<OrderDetailDto>> GetAllOrderDetails()
+        public async Task<List<OrderDetailDto>> GetAllOrderDetails(Guid orderId)
         {
-            throw new NotImplementedException();
+            var allOrderDetails = await _OrderDetailRepository.GetAllAsync();
+
+            return _mapper.Map<List<OrderDetailDto>>(allOrderDetails.Where(x => x.OrderId == orderId).ToList());
         }
     }
 }
