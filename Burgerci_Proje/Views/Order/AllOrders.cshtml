@@ -28,7 +28,7 @@ else
                                 <small class="text-muted">@($"{order.Price * order.Quantity:C}")</small>
                             </div>
                             <form asp-action="DeleteOrderDetail" method="post" style="display:inline;">
-                                <input type="hidden" name="Id" value="@order.Id" />
+                                <input type="hidden" name="orderDetailId" value="@order.Id" />
                                 <input type="hidden" name="OrderId" value="@order.OrderId" />
                                 <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
                             </form>

@@ -15,7 +15,7 @@ namespace BLL.Abstract
         Task AddOrderDetail(Guid orderDetailId);
         Task ApproveOrder(Guid orderId);
         Task UpdateOrder(OrderDto orderDto);
-        Task<List<OrderDto>> GetActiveOrder(Guid userId);
+        Task<OrderDto> GetActiveOrder(Guid userId);
         Task<OrderDto> GetById(Guid orderId);
 
     }

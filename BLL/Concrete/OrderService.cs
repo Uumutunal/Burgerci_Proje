@@ -52,17 +52,16 @@ namespace BLL.Concrete
             await _orderRepository.UpdateAsync(_mapper.Map<Order>(orderDto));
         }
 
-        public async Task<List<OrderDto>> GetActiveOrder(Guid userId)
+        public async Task<OrderDto> GetActiveOrder(Guid userId)
         {
             var allOrders = await _orderRepository.GetAllAsync();
-            var activeOrders = allOrders.Where(x => x.IsActive && x.UserId == userId).ToList();
+            var activeOrders = allOrders.FirstOrDefault(x => x.IsActive && x.UserId == userId);
 
-            return _mapper.Map<List<OrderDto>>(activeOrders);
+            return _mapper.Map<OrderDto>(activeOrders);
         }
 
         public async Task<OrderDto> GetById(Guid orderId)
         {
-
             var order = await _orderRepository.GetByIdAsync(orderId);
 
             return _mapper.Map<OrderDto>(order);

@@ -53,7 +53,9 @@ namespace DAL.ConcreteRepository
         public async Task UpdateAsync(T entity)
         {
             entity.ModifiedDate = DateTime.Now;
-            _entities.Update(entity);
+            _context.Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+            //_entities.Update(entity);
             await _context.SaveChangesAsync();
         }
 
