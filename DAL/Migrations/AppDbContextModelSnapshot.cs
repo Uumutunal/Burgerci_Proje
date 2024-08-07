@@ -308,12 +308,13 @@ namespace DAL.Migrations
                     b.HasData(
                         new
                         {
-
-
+                            Id = new Guid("4de248a1-5314-4f29-912f-bcc3ddf40fef"),
+                            Address = "İstanbul",
+                            CreatedDate = new DateTime(2024, 8, 7, 21, 9, 15, 292, DateTimeKind.Local).AddTicks(6874),
                             Email = "admin@admin.com",
                             IsAdmin = true,
                             IsDeleted = false,
-                            Name = "adminbaba",
+                            Name = "adminadı",
                             Password = "123",
                             PhoneNumber = "1234567890",
                             Surname = "adminsoyadı",

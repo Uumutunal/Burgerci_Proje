@@ -6,8 +6,9 @@
 }
 
 <h2>Menu List</h2>
-<button id="btnCreateMenu" class="btn btn-outline-success">CREATE A MENU</button>
+
 <div class="container">
+    <button id="btnCreateMenu" class="btn btn-outline-success">CREATE A MENU</button>
     <div class="row">
         @foreach (var menu in Model)
         {
@@ -48,9 +49,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="garnitures">Garnitures</label>
-                        <div id="garniture-checkboxes">
-                            <!-- Garniture checkboxes will be populated here -->
+                        <label for="extras">Extras</label>
+                        <div id="extra-checkboxes">
+                            <!-- Extra checkboxes will be populated here -->
                         </div>
                     </div>
                     <div class="form-group">
@@ -83,11 +84,11 @@
                     console.log(data)
                     $("#hamburger-checkboxes").empty();
                     $.each(data, function (i, item) {
-                        let hamburgerSatiri = "<label>"+item.name+"</label>"
+                        let hamburgerLine = "<label>"+item.name+"</label>"
                         $("#hamburger-checkboxes").append(
                             $('<div>').append(
                                 $('<input>', { type: 'checkbox', value: item.Id, id: 'hamburger-' + item.Id }),
-                                hamburgerSatiri
+                                hamburgerLine
                             )
                         );
                     });
@@ -97,23 +98,24 @@
                 }
             });
 
-            // Populate checkboxes for Garnitures
+            // Populate checkboxes for Extras
             $.ajax({
-                url: '@Url.Action("GetGarnitures", "Menu")',
+                url: '@Url.Action("GetExtras", "Menu")',
                 method: 'GET',
                 success: function (data) {
-                    $("#garniture-checkboxes").empty();
+                    $("#extra-checkboxes").empty();
                     $.each(data, function (i, item) {
-                        $("#garniture-checkboxes").append(
+                        let extraLine = "<label>" + item.name + "</label>"
+                        $("#extra-checkboxes").append(
                             $('<div>').append(
-                                $('<input>', { type: 'checkbox', value: item.Id, id: 'garniture-' + item.Id }),
-                                $('<label>', { for: 'garniture-' + item.Id }).text(item.Name)
+                                $('<input>', { type: 'checkbox', value: item.Id, id: 'extra-' + item.Id }),
+                                extraLine
                             )
                         );
                     });
                 },
                 error: function () {
-                    $("#garniture-checkboxes").append('<div>Error loading garnitures.</div>');
+                    $("#extra-checkboxes").append('<div>Error loading extras.</div>');
                 }
             });
 
@@ -124,10 +126,11 @@
                 success: function (data) {
                     $("#drink-checkboxes").empty();
                     $.each(data, function (i, item) {
+                        let drinkLine = "<label>" + item.name + "</label>"
                         $("#drink-checkboxes").append(
                             $('<div>').append(
                                 $('<input>', { type: 'checkbox', value: item.Id, id: 'drink-' + item.Id }),
-                                $('<label>', { for: 'drink-' + item.Id }).text(item.Name)
+                                drinkLine
                             )
                         );
                     });
@@ -142,12 +145,12 @@
 
         $("#saveSelection").click(function () {
             var selectedHamburgers = $("#hamburger-checkboxes input:checked").map(function () { return this.value; }).get();
-            var selectedGarnitures = $("#garniture-checkboxes input:checked").map(function () { return this.value; }).get();
+            var selectedExtras = $("#extra-checkboxes input:checked").map(function () { return this.value; }).get();
             var selectedDrinks = $("#drink-checkboxes input:checked").map(function () { return this.value; }).get();
 
             // Handle the selected items
             console.log("Selected Hamburgers: " + selectedHamburgers);
-            console.log("Selected Garnitures: " + selectedGarnitures);
+            console.log("Selected Extras: " + selectedExtras);
             console.log("Selected Drinks: " + selectedDrinks);
 
             $("#addModal").modal('hide');

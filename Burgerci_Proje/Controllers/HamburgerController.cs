@@ -72,18 +72,56 @@ namespace Burgerci_Proje.Controllers
             return View(mappedHamburgers);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> EditHamburger(Guid id)
+        {
+            var hamburger = await _hamburgerService.GetHamburgerByIdAsync(id);
+            if (hamburger == null)
+            {
+                return NotFound();
+            }
 
-        //public async Task<IActionResult> EditHamburger(HamburgerViewModel hamburgerViewModel)
-        //{
-        //    //var hamburgers = await _hamburgerService.GetAllHamburgers();
-        //    //var hamburger = hamburgers.FirstOrDefault(h => h.Id == hamburgerViewModel.Id);
-        //    //var mappedHamburger = _mapper.Map<HamburgerDto>(hamburger);
+            var hamburgerViewModel = _mapper.Map<HamburgerViewModel>(hamburger);
+            var garnitures = await _garnitureService.GetAllGarnitures();
+            ViewBag.Garnitures = _mapper.Map<List<GarnitureViewModel>>(garnitures);
 
-        //    //await _hamburgerService.UpdateHamburger(mappedHamburger);
+            return View(hamburgerViewModel);
+        }
 
-        //    //return View(mappedHamburger);
-        //}
+        [HttpPost]
+        public async Task<IActionResult> EditHamburger(HamburgerViewModel hamburgerViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                if (hamburgerViewModel.PhotoUrl != null)
+                {
+                    var fileName = Path.GetFileName(hamburgerViewModel.PhotoUrl.FileName);
+                    var filePath = Path.Combine("wwwroot", "Images", fileName);
 
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await hamburgerViewModel.PhotoUrl.CopyToAsync(stream);
+                    }
+
+                    hamburgerViewModel.Photo = fileName;
+                }
+
+                var hamburgerDto = _mapper.Map<HamburgerDto>(hamburgerViewModel);
+                //var garnitureDtos = await _garnitureService.GetGarnituresByIds(hamburgerViewModel.SelectedGarnitureIds); ---> kaydetmezse çözüm bul
+                await _hamburgerService.UpdateHamburgerAsync(hamburgerDto);
+                return RedirectToAction("ListHamburgers");
+            }
+
+            var garnitures = await _garnitureService.GetAllGarnitures();
+            ViewBag.Garnitures = _mapper.Map<List<GarnitureViewModel>>(garnitures);
+            return View(hamburgerViewModel);
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteHamburger(Guid id)
+        {
+            await _hamburgerService.DeleteHamburger(id);
+            return RedirectToAction("ListHamburgers");
+        }
 
     }
 

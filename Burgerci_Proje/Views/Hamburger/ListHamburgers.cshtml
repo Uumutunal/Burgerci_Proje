@@ -6,7 +6,9 @@
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
 
 <div class="container">
+    <a href="@Url.Action("CreateHamburger", "Hamburger")" class="btn btn-outline-danger btn-sm">Create Hamburger</a>
     <div class="row">
+        
         @foreach (var hamburger in Model)
         {
             <div class="col-md-3 mb-4">
@@ -37,8 +39,8 @@
                         </p>
                         <p class="card-text"><strong>Price:</strong> @hamburger.Price</p>
                         <div class="d-flex justify-content-between">
-                            <a href="@Url.Action("Edit", "Hamburger", new { id = hamburger.Id })" class="btn btn-primary btn-sm">Edit</a>
-                            <a href="@Url.Action("Delete", "Hamburger", new { id = hamburger.Id })" class="btn btn-danger btn-sm">Delete</a>
+                            <a href="@Url.Action("EditHamburger", "Hamburger", new { id = hamburger.Id })" class="btn btn-primary btn-sm">Edit</a>
+                            <a href="@Url.Action("DeleteHamburger", "Hamburger", new { id = hamburger.Id })" class="btn btn-danger btn-sm">Delete</a>
                         </div>
                     </div>
                 </div>

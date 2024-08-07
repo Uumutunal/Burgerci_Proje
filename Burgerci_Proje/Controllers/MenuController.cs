@@ -58,11 +58,11 @@ namespace Burgerci_Proje.Controllers
             return Json(mappedHamburgers);
         }
 
-        public async Task<IActionResult> GetGarnitures()
+        public async Task<IActionResult> GetExtras()
         {
-            var garnitures = await _garnitureService.GetAllGarnitures();
-            var mappedGarnitures = _mapper.Map<List<GarnitureViewModel>>(garnitures);
-            return Json(mappedGarnitures);
+            var extras = await _extraService.GetAllExtra();
+            var mappedExtras = _mapper.Map<List<ExtraViewModel>>(extras);
+            return Json(mappedExtras);
         }
 
         public async Task<IActionResult> GetDrinks()
