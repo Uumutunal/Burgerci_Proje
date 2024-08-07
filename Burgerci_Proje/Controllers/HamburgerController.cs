@@ -64,11 +64,16 @@ namespace Burgerci_Proje.Controllers
             var hamburgers = await _hamburgerService.GetAllHamburgers();
             var mappedHamburgers = _mapper.Map<List<HamburgerViewModel>>(hamburgers);
 
-            var hamburgerGarnitures = await _hamburgerGarnitureService.GetAllHamburgerGarnitures();
-            TempData["HamburgerGarnitures"] = hamburgerGarnitures;
+            var garnitures = await _garnitureService.GetAllGarnitures();
+            var mappedGarnitures = _mapper.Map<List<GarnitureViewModel>>(garnitures); 
 
+            ViewBag.Garnitures = mappedGarnitures;
             return View(mappedHamburgers);
         }
+
+
+
+
 
     }
 
