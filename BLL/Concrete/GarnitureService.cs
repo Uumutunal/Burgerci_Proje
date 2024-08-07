@@ -3,6 +3,7 @@ using BLL.Abstract;
 using BLL.DTOs;
 using DAL.AbstractRepositories;
 using DAL.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace BLL.Concrete
 {
@@ -37,6 +38,13 @@ namespace BLL.Concrete
         {
             var garniture = _mapper.Map<Garniture>(garnitureDto);
             await _garnitureRepository.UpdateAsync(garniture);
+        }
+
+        public async Task<List<GarnitureDto>> GetGarnituresByIds(List<Guid> ids)
+        {
+            var garnitures = await _garnitureRepository.GetAllAsync();
+            var garnituresIds = garnitures.Where(g => ids.Contains(g.Id)).ToList();
+            return _mapper.Map<List<GarnitureDto>>(garnituresIds);
         }
     }
 }

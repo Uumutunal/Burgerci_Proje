@@ -1,47 +1,47 @@
-﻿using AutoMapper;
+using AutoMapper;
 using BLL.Abstract;
-using Burgerci_Proje.Entities;
+using BLL.DTOs;
 using Burgerci_Proje.Models;
-using DAL.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 
 namespace Burgerci_Proje.Controllers
 {
     public class MenuController : Controller
     {
 
-        private readonly IMenuService _menuService;
-        private readonly IOrderDetailService _orderDetailService;
         private readonly IMapper _mapper;
-        private readonly AppDbContext db;
+        private readonly IMenuService _menuService;
+        private readonly IGarnitureService _garnitureService;
+        private readonly IDrinkService _drinkService;
 
-        public MenuController(IMenuService menuService, IMapper mapper, AppDbContext db)
+        public MenuController(IMapper mapper, IMenuService menuService, IGarnitureService garnitureService, IDrinkService drinkService)
         {
-            _menuService = menuService;
             _mapper = mapper;
-            this.db = db;
+            _menuService = menuService;
+            _garnitureService = garnitureService;
+            _drinkService = drinkService;
         }
 
-        public async Task<IActionResult> Index() 
+        public async Task<IActionResult> MenuList()
         {
-        
-            var allMenus = await _menuService.GetAllMenus();
-            var allMenusMapped = _mapper.Map<List<MenuViewModel>>(allMenus);
-
-            return View(allMenusMapped);
+            var menus = await _menuService.GetAllMenus();
+            var mappedMenus = _mapper.Map<List<MenuViewModel>>(menus);
+            return View(mappedMenus);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddToBasket(MenuViewModel menuViewModel)
+        [HttpGet]
+        public async Task<IActionResult> GetGarnitures()
         {
-            //TODO:Include çalışmıyor
-            var menu = await _menuService.GetMenuWithIncludes(new[] { "Hamburger" });
+            var garnitures = await _garnitureService.GetAllGarnitures();
+            return Json(garnitures);
+        }
 
-            TempData["MenuData"] = JsonConvert.SerializeObject(menu.FirstOrDefault());
+        [HttpGet]
+        public async Task<IActionResult> GetDrinks()
+        {
+            var drinks = await _drinkService.GetAllDrinks();
+            return Json(drinks);
 
-            return RedirectToAction("Index", "Order");
         }
     }
 }

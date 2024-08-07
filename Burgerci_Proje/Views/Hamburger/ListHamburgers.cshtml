@@ -1,0 +1,70 @@
+﻿@model List<Burgerci_Proje.Models.HamburgerViewModel>
+@{
+    var garnitures = ViewBag.Garnitures as List<Burgerci_Proje.Models.GarnitureViewModel> ?? new List<Burgerci_Proje.Models.GarnitureViewModel>();
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+
+<div class="container">
+    <div class="row">
+        @foreach (var hamburger in Model)
+        {
+            <div class="col-md-3 mb-4">
+                <div class="card h-100">
+                    <img src="@Url.Content("~/Images/" + hamburger.ImageUrl)" class="card-img-top" alt="@hamburger.Name" style="width:200px;height:150px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">@hamburger.Name</h5>
+                        <p class="card-text">
+                            <strong>Garnitures:</strong><br />
+                            @if (!hamburger.SelectedGarnitureIds.Any())
+                            {
+                                <span>No garnitures selected.</span>
+                            }
+                            else
+                            {
+                                @foreach (var garniture in garnitures.Where(g => hamburger.SelectedGarnitureIds.Contains(g.Id)))
+                                {
+                                    <span class="garniture-name">@garniture.Name</span>
+                                    <br />
+                                }
+                                @if (!garnitures.Any(g => hamburger.SelectedGarnitureIds.Contains(g.Id)))
+                                {
+                                    <span>No matching garnitures found.</span>
+                                }
+                            }
+                        </p>
+                        <p class="card-text"><strong>Price:</strong> @hamburger.Price</p>
+                        <div class="d-flex justify-content-between">
+                            <a href="@Url.Action("Edit", "Hamburger", new { id = hamburger.Id })" class="btn btn-primary btn-sm">Edit</a>
+                            <a href="@Url.Action("Delete", "Hamburger", new { id = hamburger.Id })" class="btn btn-danger btn-sm">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .card-img-top {
+        object-fit: cover;
+    }
+
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .garniture-name {
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+</style>
