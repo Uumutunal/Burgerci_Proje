@@ -65,6 +65,7 @@ namespace Burgerci_Proje.Controllers
             var mappedHamburgers = _mapper.Map<List<HamburgerViewModel>>(hamburgers);
 
             var garnitures = await _garnitureService.GetAllGarnitures();
+
             var mappedGarnitures = _mapper.Map<List<GarnitureViewModel>>(garnitures); 
 
             ViewBag.Garnitures = mappedGarnitures;
@@ -72,7 +73,16 @@ namespace Burgerci_Proje.Controllers
         }
 
 
+        //public async Task<IActionResult> EditHamburger(HamburgerViewModel hamburgerViewModel)
+        //{
+        //    //var hamburgers = await _hamburgerService.GetAllHamburgers();
+        //    //var hamburger = hamburgers.FirstOrDefault(h => h.Id == hamburgerViewModel.Id);
+        //    //var mappedHamburger = _mapper.Map<HamburgerDto>(hamburger);
 
+        //    //await _hamburgerService.UpdateHamburger(mappedHamburger);
+
+        //    //return View(mappedHamburger);
+        //}
 
 
     }
