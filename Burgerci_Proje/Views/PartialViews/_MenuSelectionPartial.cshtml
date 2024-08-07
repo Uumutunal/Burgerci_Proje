@@ -1,0 +1,47 @@
+﻿@model MenuViewModel
+
+<form id="addForm">
+    <div class="form-group">
+        <label for="menuName">Menu Name</label>
+        <input type="text" class="form-control" id="menuName" name="Name" required>
+    </div>
+    <div class="form-group">
+        <label for="menuDescription">Description</label>
+        <textarea class="form-control" id="menuDescription" name="Description" required></textarea>
+    </div>
+    <div class="form-group">
+        <label for="menuPrice">Price</label>
+        <input type="number" class="form-control" id="menuPrice" name="Price" step="0.01" required>
+    </div>
+    <div class="form-group">
+        <label for="menuImageUrl">Image URL</label>
+        <input type="text" class="form-control" id="menuImageUrl" name="ImageUrl">
+    </div>
+    <div class="form-group">
+        <label for="hamburgers">Hamburgers</label>
+        <select class="form-control" id="hamburgers" name="HamburgerId" required>
+            @foreach (var hamburger in Model.Hamburgers)
+            {
+                <option value="@hamburger.Id">@hamburger.Name</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="garnitures">Garnitures</label>
+        <select class="form-control" id="garnitures" name="SnackId" required>
+            @foreach (var garniture in Model.Garnitures)
+            {
+                <option value="@garniture.Id">@garniture.Name</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="drinks">Drinks</label>
+        <select class="form-control" id="drinks" name="DrinkId" required>
+            @foreach (var drink in Model.Drinks)
+            {
+                <option value="@drink.Id">@drink.Name</option>
+            }
+        </select>
+    </div>
+</form>
