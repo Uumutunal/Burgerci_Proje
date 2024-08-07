@@ -10,7 +10,7 @@ namespace BLL.DTOs
     {
         public string Name { get; set; }
         public double Price { get; set; }
-        public string ImageUrl { get; set; }
+        public string? Photo { get; set; }
         public int Quantity { get; set; } = 1;
         public List<MenuDto> MenuDtos { get; set; }
     }

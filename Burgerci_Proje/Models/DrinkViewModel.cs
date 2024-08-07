@@ -7,7 +7,8 @@ namespace Burgerci_Proje.Models
         public string Name { get; set; }
         public double Price { get; set; }
         public int Quantity { get; set; } = 1;
-        public IFormFile? PhotoUrl { get; set; }
+        public IFormFile PhotoUrl { get; set; }
+        public string? Photo { get; set; }
         public List<MenuViewModel> MenuViewModels { get; set; }
     }
 }
