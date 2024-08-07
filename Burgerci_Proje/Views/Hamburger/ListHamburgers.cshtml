@@ -1,6 +1,6 @@
 ﻿@model List<Burgerci_Proje.Models.HamburgerViewModel>
 @{
-    var hamburgerGarnitures = TempData["HamburgerGarnitures"] as List<HamburgerGarnitureViewModel> ?? new List<HamburgerGarnitureViewModel>();
+    var garnitures = ViewBag.Garnitures as List<Burgerci_Proje.Models.GarnitureViewModel> ?? new List<Burgerci_Proje.Models.GarnitureViewModel>();
     Layout = "~/Views/AdminLayout/Index.cshtml";
 }
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
@@ -11,20 +11,26 @@
         {
             <div class="col-md-3 mb-4">
                 <div class="card h-100">
-                    <img src="@Url.Content("~/Images/" + hamburger.ImageUrl)" class="card-img-top" alt="@hamburger.Name" style="width:200px;height:200px; object-fit: cover;">
+                    <img src="@Url.Content("~/Images/" + hamburger.PhotoUrl)" class="card-img-top" alt="@hamburger.Name" style="width:200px;height:150px; object-fit: cover;">
                     <div class="card-body">
                         <h5 class="card-title">@hamburger.Name</h5>
                         <p class="card-text">
                             <strong>Garnitures:</strong><br />
-                            @foreach (var hg in hamburgerGarnitures.Where(hg => hg.HamburgerId == hamburger.Id && hamburger.SelectedGarnitureIds.Contains(hg.IngredientId)))
+                            @if (!hamburger.SelectedGarnitureIds.Any())
                             {
-                                <span class="garniture-name">@hg.GarnitureViewModel.Name</span>
-                                <br />
+                                <span>No garnitures selected.</span>
                             }
-                            @* Debugging: Check if any garnitures are being filtered *@
-                            @if (!hamburgerGarnitures.Any(hg => hg.HamburgerId == hamburger.Id && hamburger.SelectedGarnitureIds.Contains(hg.IngredientId)))
+                            else
                             {
-                                <span>No garnitures found</span>
+                                @foreach (var garniture in garnitures.Where(g => hamburger.SelectedGarnitureIds.Contains(g.Id)))
+                                {
+                                    <span class="garniture-name">@garniture.Name</span>
+                                    <br />
+                                }
+                                @if (!garnitures.Any(g => hamburger.SelectedGarnitureIds.Contains(g.Id)))
+                                {
+                                    <span>No matching garnitures found.</span>
+                                }
                             }
                         </p>
                         <p class="card-text"><strong>Price:</strong> @hamburger.Price</p>
