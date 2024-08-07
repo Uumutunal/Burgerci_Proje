@@ -46,7 +46,7 @@ namespace Burgerci_Proje.Controllers
                         await hamburgerViewModel.PhotoUrl.CopyToAsync(stream);
                     }
 
-                    hamburgerViewModel.ImageUrl = fileName;
+                    hamburgerViewModel.Photo = fileName;
                 }
                 var hamburgerDto = _mapper.Map<HamburgerDto>(hamburgerViewModel);
                 var selectedGarnitureIds = hamburgerViewModel.SelectedGarnitureIds;
@@ -65,11 +65,13 @@ namespace Burgerci_Proje.Controllers
             var mappedHamburgers = _mapper.Map<List<HamburgerViewModel>>(hamburgers);
 
             var garnitures = await _garnitureService.GetAllGarnitures();
-            var mappedGarnitures = _mapper.Map<List<GarnitureViewModel>>(garnitures);
+
+            var mappedGarnitures = _mapper.Map<List<GarnitureViewModel>>(garnitures); 
 
             ViewBag.Garnitures = mappedGarnitures;
             return View(mappedHamburgers);
         }
+
 
         //public async Task<IActionResult> EditHamburger(HamburgerViewModel hamburgerViewModel)
         //{
@@ -81,6 +83,7 @@ namespace Burgerci_Proje.Controllers
 
         //    //return View(mappedHamburger);
         //}
+
 
     }
 
