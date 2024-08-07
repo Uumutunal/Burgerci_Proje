@@ -15,19 +15,21 @@ namespace BLL.Concrete
 {
     public class HamburgerService : IHamburgerService
     {
-        private readonly AppDbContext _context;
+        private readonly IRepository<Hamburger> _hamburgerRepository;
+        private readonly IRepository<HamburgerGarniture> _hamburgerGarnitureRepository;
         private readonly IMapper _mapper;
 
-        public HamburgerService(AppDbContext context, IMapper mapper)
+        public HamburgerService(IRepository<Hamburger> hamburgerRepository, IRepository<HamburgerGarniture> hamburgerGarnitureRepository, IMapper mapper)
         {
-            _context = context;
+            _hamburgerRepository = hamburgerRepository;
+            _hamburgerGarnitureRepository = hamburgerGarnitureRepository;
             _mapper = mapper;
         }
 
         public async Task CreateHamburger(HamburgerDto hamburgerDto, List<GarnitureDto> garnitureDtos)
         {
             var hamburger = _mapper.Map<Hamburger>(hamburgerDto);
-            _context.Hamburgers.Add(hamburger);
+            await _hamburgerRepository.AddAsync(hamburger);
 
             foreach (var garnitureDto in garnitureDtos)
             {
@@ -37,10 +39,8 @@ namespace BLL.Concrete
                     GarnitureId = garnitureDto.Id
                 };
 
-                _context.HamburgerGarnitures.Add(hamburgerGarniture);
+                await _hamburgerGarnitureRepository.AddAsync(hamburgerGarniture);
             }
-
-            await _context.SaveChangesAsync();
         }
 
         public Task DeleteHamburger(Guid hamburgerId)
@@ -48,9 +48,15 @@ namespace BLL.Concrete
             throw new NotImplementedException();
         }
 
-        public Task<List<HamburgerDto>> GetAllHamburgers()
+        public async Task<List<HamburgerDto>> GetAllHamburgers()
         {
-            throw new NotImplementedException();
+            var hamburgers = await _hamburgerRepository.GetAllAsync();
+            var mappedHamburgers = _mapper.Map<List<HamburgerDto>>(hamburgers);
+            // var garnitures = await _hamburgerGarnitureRepository.GetAllAsync();
+            //// _haöburgergarniture repo dan alıp yap
+            //TempData["Garnitures"] = _mapper.Map<List<HamburgerGarniture>>(garnitures);
+            return mappedHamburgers;
+          
         }
 
         public Task UpdateHamburger(HamburgerDto hamburgerDto, List<GarnitureDto> garnitureDtos)

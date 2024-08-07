@@ -32,6 +32,7 @@ namespace Burgerci_Proje
             builder.Services.AddScoped(typeof(IExtraService), typeof(ExtraService));
             builder.Services.AddScoped(typeof(IMenuService), typeof(MenuService));
             builder.Services.AddScoped(typeof(IHamburgerService), typeof(HamburgerService));
+            builder.Services.AddScoped(typeof(IHamburgerGarnitureService), typeof(HamburgerGarnitureService));
 
             // Automapper
 
@@ -49,7 +50,7 @@ namespace Burgerci_Proje
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+           
             app.UseRouting();
             app.UseSession();
             app.UseAuthorization();

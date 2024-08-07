@@ -4,6 +4,7 @@ using BLL.Concrete;
 using BLL.DTOs;
 using Burgerci_Proje.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Burgerci_Proje.Controllers
 {
@@ -11,12 +12,14 @@ namespace Burgerci_Proje.Controllers
     {
         private readonly IHamburgerService _hamburgerService;
         private readonly IGarnitureService _garnitureService;
+        private readonly IHamburgerGarnitureService _hamburgerGarnitureService;
         private readonly IMapper _mapper;
 
-        public HamburgerController(IHamburgerService hamburgerService, IGarnitureService garnitureService, IMapper mapper)
+        public HamburgerController(IHamburgerService hamburgerService, IGarnitureService garnitureService,IHamburgerGarnitureService hamburgerGarnitureService, IMapper mapper)
         {
             _hamburgerService = hamburgerService;
             _garnitureService = garnitureService;
+            _hamburgerGarnitureService = hamburgerGarnitureService;
             _mapper = mapper;
         }
 
@@ -55,6 +58,18 @@ namespace Burgerci_Proje.Controllers
             ViewBag.Garnitures = _mapper.Map<List<GarnitureViewModel>>(garnitures);
             return View(hamburgerViewModel);
         }
+
+        public async Task<IActionResult> ListHamburgers()
+        {
+            var hamburgers = await _hamburgerService.GetAllHamburgers();
+            var mappedHamburgers = _mapper.Map<List<HamburgerViewModel>>(hamburgers);
+
+            var hamburgerGarnitures = await _hamburgerGarnitureService.GetAllHamburgerGarnitures();
+            TempData["HamburgerGarnitures"] = hamburgerGarnitures;
+
+            return View(mappedHamburgers);
+        }
+
     }
 
 }
