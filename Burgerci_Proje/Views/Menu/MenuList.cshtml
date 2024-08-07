@@ -80,12 +80,14 @@
                 url: '@Url.Action("GetHamburgers", "Menu")',
                 method: 'GET',
                 success: function (data) {
+                    console.log(data)
                     $("#hamburger-checkboxes").empty();
                     $.each(data, function (i, item) {
+                        let hamburgerSatiri = "<label>"+item.name+"</label>"
                         $("#hamburger-checkboxes").append(
                             $('<div>').append(
                                 $('<input>', { type: 'checkbox', value: item.Id, id: 'hamburger-' + item.Id }),
-                                $('<label>', { for: 'hamburger-' + item.Id }).text(item.Name)
+                                hamburgerSatiri
                             )
                         );
                     });

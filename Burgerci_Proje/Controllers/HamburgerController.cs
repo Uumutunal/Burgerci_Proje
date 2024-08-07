@@ -71,16 +71,16 @@ namespace Burgerci_Proje.Controllers
             return View(mappedHamburgers);
         }
 
-        public async Task<IActionResult> EditHamburger(HamburgerViewModel hamburgerViewModel)
-        {
-            var hamburgers = await _hamburgerService.GetAllHamburgers();
-            var hamburger = hamburgers.FirstOrDefault(h => h.Id == hamburgerViewModel.Id);
-            var mappedHamburger = _mapper.Map<HamburgerDto>(hamburger);
+        //public async Task<IActionResult> EditHamburger(HamburgerViewModel hamburgerViewModel)
+        //{
+        //    //var hamburgers = await _hamburgerService.GetAllHamburgers();
+        //    //var hamburger = hamburgers.FirstOrDefault(h => h.Id == hamburgerViewModel.Id);
+        //    //var mappedHamburger = _mapper.Map<HamburgerDto>(hamburger);
 
-            await _hamburgerService.UpdateHamburger(mappedHamburger);
+        //    //await _hamburgerService.UpdateHamburger(mappedHamburger);
 
-            return View(mappedHamburger);
-        }
+        //    //return View(mappedHamburger);
+        //}
 
     }
 

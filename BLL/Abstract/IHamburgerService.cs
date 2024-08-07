@@ -12,6 +12,6 @@ namespace BLL.Abstract
         Task<List<HamburgerDto>> GetAllHamburgers();
         Task CreateHamburger(HamburgerDto hamburgerDto, List<GarnitureDto> garnitureDtos);
         Task DeleteHamburger(Guid hamburgerId);
-        Task UpdateHamburger(HamburgerDto hamburgerDto, List<GarnitureDto> garnitureDtos);
+       // Task UpdateHamburger(HamburgerDto hamburgerDto, List<GarnitureDto> garnitureDtos);
     }
 }
