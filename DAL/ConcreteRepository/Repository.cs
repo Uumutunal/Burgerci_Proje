@@ -20,10 +20,11 @@ namespace DAL.ConcreteRepository
             _context = context;
             _entities = _context.Set<T>();
         }
-        public async Task AddAsync(T entity)
+        public async Task<Guid> AddAsync(T entity)
         {
             await _entities.AddAsync(entity);
             await _context.SaveChangesAsync();
+            return entity.Id;
         }
 
         public async Task DeleteAsync(Guid id)
@@ -49,12 +50,27 @@ namespace DAL.ConcreteRepository
         }
 
 
-
         public async Task UpdateAsync(T entity)
         {
             entity.ModifiedDate = DateTime.Now;
-            _entities.Update(entity);
+            _context.Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+            //_entities.Update(entity);
             await _context.SaveChangesAsync();
         }
+
+
+        public async Task<IEnumerable<T>> GetAllWithIncludes(params string[] includes)
+        {
+            IQueryable<T> query = _entities;
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return await query.Where(x => !x.IsDeleted).ToListAsync();
+        }
+
     }
 }

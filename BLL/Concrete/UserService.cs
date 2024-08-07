@@ -59,7 +59,7 @@ namespace BLL.Concrete
         {
             var user = await _userRepository.GetByIdAsync(userDto.Id);
 
-            user.PhotoUrl = userDto.Photo;
+            user.Photo = userDto.Photo;
             user.Email = userDto.Email;
             user.PhoneNumber = userDto.PhoneNumber;
             user.Address = userDto.Address;

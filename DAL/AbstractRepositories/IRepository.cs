@@ -12,9 +12,10 @@ namespace DAL.AbstractRepositories
         Task<IEnumerable<T>> GetAllAsync(); // asenkron kodlama yapmak için 
 
         Task<T> GetByIdAsync(Guid id);
-        Task AddAsync(T entity);
+        Task<Guid> AddAsync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(Guid id);
+        Task<IEnumerable<T>> GetAllWithIncludes(params string[] includes);
 
     }
 }

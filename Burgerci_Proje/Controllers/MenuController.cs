@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using BLL.Abstract;
 using BLL.DTOs;
 using Burgerci_Proje.Models;
@@ -8,6 +8,7 @@ namespace Burgerci_Proje.Controllers
 {
     public class MenuController : Controller
     {
+
         private readonly IMapper _mapper;
         private readonly IMenuService _menuService;
         private readonly IGarnitureService _garnitureService;
@@ -40,6 +41,7 @@ namespace Burgerci_Proje.Controllers
         {
             var drinks = await _drinkService.GetAllDrinks();
             return Json(drinks);
+
         }
     }
 }
