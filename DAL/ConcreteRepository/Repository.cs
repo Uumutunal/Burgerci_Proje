@@ -68,5 +68,6 @@ namespace DAL.ConcreteRepository
 
             return await query.Where(x => !x.IsDeleted).ToListAsync();
         }
+
     }
 }

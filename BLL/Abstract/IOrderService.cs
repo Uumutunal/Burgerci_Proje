@@ -13,5 +13,9 @@ namespace BLL.Abstract
         Task CreateOrder(OrderDto orderDto);
         Task DeleteOrder(Guid orderId);
         Task AddOrderDetail(Guid orderDetailId);
+        Task ApproveOrder(Guid orderId);
+        Task UpdateOrder(OrderDto orderDto);
+        Task<List<OrderDto>> GetActiveOrder(Guid userId);
+
     }
 }

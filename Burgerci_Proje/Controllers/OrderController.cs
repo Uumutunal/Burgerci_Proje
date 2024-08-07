@@ -30,6 +30,7 @@ namespace Burgerci_Proje.Controllers
 
         //Sepet
         //tüm orderları listele
+        [HttpGet]
         public async Task<IActionResult> AllOrders()
         {
             var allOrders = await _orderService.GetAllOrders();
@@ -53,11 +54,11 @@ namespace Burgerci_Proje.Controllers
 
             Guid userGuiddeneme = new Guid("97A7EFFD-490D-4673-9C91-8F0C2401EFF4");
 
-            var orders = await _orderService.GetAllOrders();
             //var userOrder = orders.Where(x => x.UserId == userGuid).ToList();
-            var userOrder = orders.Where(x => x.UserId == userGuiddeneme).ToList();
 
-            if(userOrder.Count == 0)
+            var activeOrders = await _orderService.GetActiveOrder(userGuiddeneme);
+
+            if(activeOrders.Count == 0)
             {
                 var order = new OrderViewModel();
                 
@@ -67,7 +68,7 @@ namespace Burgerci_Proje.Controllers
                 order.CreatedDate = DateTime.Now;
                 order.Status = "active";
                 order.IsActive = true;
-                order.TotalPrice = 0;
+                order.TotalPrice = menuViewModel.Price;
 
                 await _orderService.CreateOrder(_mapper.Map<OrderDto>(order));
 
@@ -78,7 +79,7 @@ namespace Burgerci_Proje.Controllers
                 var orderDetail = new OrderDetailViewModel();
                 orderDetail.MenuId = menuViewModel.Id;
                 orderDetail.OrderId = orderGuid;
-                orderDetail.Price = menuViewModel.Price;
+                orderDetail.Price = menuViewModel.Price * menuViewModel.Quantity;
                 orderDetail.DrinkId = drinkDuid;
 
                 var orderDetailDto = _mapper.Map<OrderDetailDto>(orderDetail);
@@ -89,9 +90,15 @@ namespace Burgerci_Proje.Controllers
             }
             else
             {
+
+                var order = activeOrders.FirstOrDefault();
+
                 var orderDetail = new OrderDetailViewModel();
                 orderDetail.MenuId = menuViewModel.Id;
-                orderDetail.OrderId = userOrder.FirstOrDefault().Id;
+                orderDetail.OrderId = order.Id;
+
+                order.TotalPrice += menuViewModel.Price * menuViewModel.Quantity;
+                await _orderService.UpdateOrder(order);
 
                 var orderDetailDto = _mapper.Map<OrderDetailDto>(orderDetail);
                 await _orderDetailService.CreateOrderDetail(orderDetailDto);
@@ -107,10 +114,10 @@ namespace Burgerci_Proje.Controllers
         {
             Guid.TryParse(HttpContext.Session.GetString("UserId"), out Guid userGuid);
 
-            var orders = await _orderService.GetAllOrders();
-            var userOrder = orders.Where(x => x.UserId == userGuid).ToList();
+            var activeOrders = await _orderService.GetActiveOrder(userGuid);
 
-            if (userOrder.Count == 0)
+
+            if (activeOrders.Count == 0)
             {
                 var order = new OrderViewModel();
 
@@ -121,7 +128,7 @@ namespace Burgerci_Proje.Controllers
                 var orderDetail = new OrderDetailViewModel();
                 orderDetail.HamburgerId = hamburgerViewModel.Id;
                 orderDetail.OrderId = order.Id;
-                orderDetail.Price = hamburgerViewModel.Price;
+                orderDetail.Price = hamburgerViewModel.Price * hamburgerViewModel.Quantity;
 
                 order.OrderDetailViewModels.Add(orderDetail);
 
@@ -131,9 +138,14 @@ namespace Burgerci_Proje.Controllers
             }
             else
             {
+                var order = activeOrders.FirstOrDefault();
+
                 var orderDetail = new OrderDetailViewModel();
                 orderDetail.HamburgerId = hamburgerViewModel.Id;
-                orderDetail.OrderId = userOrder.FirstOrDefault().Id;
+                orderDetail.OrderId = order.Id;
+
+                order.TotalPrice += hamburgerViewModel.Price * hamburgerViewModel.Quantity;
+                await _orderService.UpdateOrder(order);
 
                 var orderDetailDto = _mapper.Map<OrderDetailDto>(orderDetail);
                 await _orderDetailService.CreateOrderDetail(orderDetailDto);
@@ -147,10 +159,10 @@ namespace Burgerci_Proje.Controllers
         {
             Guid.TryParse(HttpContext.Session.GetString("UserId"), out Guid userGuid);
 
-            var orders = await _orderService.GetAllOrders();
-            var userOrder = orders.Where(x => x.UserId == userGuid).ToList();
+            var activeOrders = await _orderService.GetActiveOrder(userGuid);
 
-            if (userOrder.Count == 0)
+
+            if (activeOrders.Count == 0)
             {
                 var order = new OrderViewModel();
 
@@ -161,7 +173,7 @@ namespace Burgerci_Proje.Controllers
                 var orderDetail = new OrderDetailViewModel();
                 orderDetail.DrinkId = drinkViewModel.Id;
                 orderDetail.OrderId = order.Id;
-                orderDetail.Price = drinkViewModel.Price;
+                orderDetail.Price = drinkViewModel.Price * drinkViewModel.Quantity;
 
                 order.OrderDetailViewModels.Add(orderDetail);
 
@@ -171,9 +183,14 @@ namespace Burgerci_Proje.Controllers
             }
             else
             {
+                var order = activeOrders.FirstOrDefault();
+
                 var orderDetail = new OrderDetailViewModel();
                 orderDetail.DrinkId = drinkViewModel.Id;
-                orderDetail.OrderId = userOrder.FirstOrDefault().Id;
+                orderDetail.OrderId = order.Id;
+
+                order.TotalPrice += drinkViewModel.Price * drinkViewModel.Quantity;
+                await _orderService.UpdateOrder(order);
 
                 var orderDetailDto = _mapper.Map<OrderDetailDto>(orderDetail);
                 await _orderDetailService.CreateOrderDetail(orderDetailDto);
@@ -187,10 +204,10 @@ namespace Burgerci_Proje.Controllers
         {
             Guid.TryParse(HttpContext.Session.GetString("UserId"), out Guid userGuid);
 
-            var orders = await _orderService.GetAllOrders();
-            var userOrder = orders.Where(x => x.UserId == userGuid).ToList();
+            var activeOrders = await _orderService.GetActiveOrder(userGuid);
 
-            if (userOrder.Count == 0)
+
+            if (activeOrders.Count == 0)
             {
                 var order = new OrderViewModel();
 
@@ -201,7 +218,7 @@ namespace Burgerci_Proje.Controllers
                 var orderDetail = new OrderDetailViewModel();
                 orderDetail.ExtraId = extraViewModel.Id;
                 orderDetail.OrderId = order.Id;
-                orderDetail.Price = extraViewModel.Price;
+                orderDetail.Price = extraViewModel.Price * extraViewModel.Quantity;
 
                 order.OrderDetailViewModels.Add(orderDetail);
 
@@ -211,15 +228,39 @@ namespace Burgerci_Proje.Controllers
             }
             else
             {
+                var order = activeOrders.FirstOrDefault();
+
                 var orderDetail = new OrderDetailViewModel();
                 orderDetail.ExtraId = extraViewModel.Id;
-                orderDetail.OrderId = userOrder.FirstOrDefault().Id;
+                orderDetail.OrderId = order.Id;
+
+                order.TotalPrice += extraViewModel.Price * extraViewModel.Quantity;
+                await _orderService.UpdateOrder(order);
 
                 var orderDetailDto = _mapper.Map<OrderDetailDto>(orderDetail);
                 await _orderDetailService.CreateOrderDetail(orderDetailDto);
             }
 
             return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> ApproveOrder(OrderViewModel orderViewModel)
+        {
+            await _orderService.ApproveOrder(orderViewModel.Id);
+
+            return RedirectToAction("AllOrders");
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteOrder(OrderViewModel orderViewModel)
+        {
+            await _orderService.DeleteOrder(orderViewModel.Id);
+
+            return RedirectToAction("AllOrders");
+
         }
 
     }

@@ -39,5 +39,24 @@ namespace BLL.Concrete
             var orderDtos = _mapper.Map<List<OrderDto>>(orders.Where(w => w.IsActive));
             return orderDtos;
         }
+        public async Task ApproveOrder(Guid orderId)
+        {
+            var orderTobeApproved = await _orderRepository.GetByIdAsync(orderId);
+            orderTobeApproved.IsActive = false;
+            await _orderRepository.UpdateAsync(orderTobeApproved);
+        }
+
+        public async Task UpdateOrder(OrderDto orderDto)
+        {
+            await _orderRepository.UpdateAsync(_mapper.Map<Order>(orderDto));
+        }
+
+        public async Task<List<OrderDto>> GetActiveOrder(Guid userId)
+        {
+            var allOrders = await _orderRepository.GetAllAsync();
+            var activeOrders = allOrders.Where(x => x.IsActive && x.UserId == userId).ToList();
+
+            return _mapper.Map<List<OrderDto>>(activeOrders);
+        }
     }
 }
