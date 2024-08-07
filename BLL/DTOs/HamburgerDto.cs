@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,8 @@ namespace BLL.DTOs
         public string Description { get; set; }
         public double Price { get; set; }
         public string ImageUrl { get; set; }
+        public IFormFile? PhotoUrl { get; set; }
+        public List<Guid> SelectedGarnitureIds { get; set; }
         public List<MenuDto> MenuDtos { get; set; }
     }
 }
