@@ -59,8 +59,7 @@ namespace Burgerci_Proje.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateMenu(MenuViewModel menuViewModel)
         {
-            if (ModelState.IsValid)
-            {
+           
                 try
                 {
                     // Fotoðraf yükleme iþlemi
@@ -94,7 +93,7 @@ namespace Burgerci_Proje.Controllers
                 {
                     ModelState.AddModelError("", "An error occurred while creating the menu.");
                 }
-            }
+            
 
             // Formu yeniden göster
             ViewBag.AllHamburgers = await GetHamburgers();
