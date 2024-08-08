@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class mig1 : Migration
+    public partial class Inito : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -77,7 +77,7 @@ namespace DAL.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
-                    SelectedGarnitureIds = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SelectedGarnitureIds = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Photo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Size = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -261,7 +261,7 @@ namespace DAL.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Address", "CreatedDate", "DeletedDate", "Email", "IsAdmin", "IsDeleted", "ModifiedDate", "Name", "Password", "PhoneNumber", "Photo", "Surname", "Username" },
-                values: new object[] { new Guid("fc3d6b00-0971-4a49-b240-4d74f4409e66"), "İstanbul", new DateTime(2024, 8, 7, 14, 34, 21, 818, DateTimeKind.Local).AddTicks(5752), null, "admin@admin.com", true, false, null, "adminadı", "123", "1234567890", null, "adminsoyadı", "admin" });
+                values: new object[] { new Guid("fc1dd1ec-ee0a-4b95-ab80-142f01587052"), "İstanbul", new DateTime(2024, 8, 7, 20, 2, 8, 298, DateTimeKind.Local).AddTicks(3002), null, "admin@admin.com", true, false, null, "adminadı", "123", "1234567890", null, "adminsoyadı", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_HamburgerGarnitures_GarnitureId",

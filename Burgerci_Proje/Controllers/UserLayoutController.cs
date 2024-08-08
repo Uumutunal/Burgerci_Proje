@@ -2,7 +2,7 @@
 
 namespace Burgerci_Proje.Controllers
 {
-    public class HomeController : Controller
+    public class UserLayoutController : Controller
     {
         public IActionResult Index()
         {
