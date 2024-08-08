@@ -54,10 +54,7 @@ namespace Burgerci_Proje.Controllers
             var menus = await _menuService.GetAllMenus();
             var mappedMenus = _mapper.Map<List<MenuViewModel>>(menus);
 
-            Guid.TryParse(HttpContext.Session.GetString("UserId"), out Guid userGuid);
-            var user = await _userService.GetUserById(userGuid);
-            var userMapped = _mapper.Map<UserViewModel>(user);
-            ViewBag.IsAdmin = userMapped.IsAdmin;
+            ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
 
 
             return View(mappedMenus);

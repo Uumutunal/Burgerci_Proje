@@ -10,7 +10,7 @@
         @*<a href="@Url.Action("CreateHamburger", "Hamburger")" class="btn btn-outline-danger btn-sm">Create Hamburger</a>*@
     <br />
 
-    @if (ViewBag.IsAdmin)
+    @if (ViewBag.IsAdmin == "True")
     {
         <a href="/Hamburger/CreateHamburger" class="btn btn-primary mt-4">Add New Hamburger</a>
     }
@@ -48,7 +48,7 @@
                         </p>
                         <p class="card-text"><strong>Price:</strong> @hamburger.Price.ToString("C")</p>
                         <div class="d-flex justify-content-between">
-                            @if (ViewBag.IsAdmin)
+                            @if (ViewBag.IsAdmin == "True")
                             {
                                 <a href="@Url.Action("EditHamburger", "Hamburger", new { id = hamburger.Id })" class="btn btn-primary btn-sm">Edit</a>
                                 <a href="@Url.Action("DeleteHamburger", "Hamburger", new { id = hamburger.Id })" class="btn btn-danger btn-sm">Delete</a>
@@ -66,7 +66,7 @@
 
                                     <button type="submit" class="btn btn-outline-primary btn-sm me-2">
 
-                                        <i class="bi bi-hand-thumbs-up"></i> Sepete Ekle
+                                        <i class="bi bi-hand-thumbs-up"></i> Add To Cart
 
                                     </button>
 

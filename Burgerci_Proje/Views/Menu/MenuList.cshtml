@@ -8,7 +8,7 @@
 <h2>Menu List</h2>
 
 <div class="container">
-    @if (ViewBag.IsAdmin)
+    @if (ViewBag.IsAdmin == "True")
     {
     <button id="btnCreateMenu" class="btn btn-outline-success">CREATE A MENU</button>
     }
@@ -22,7 +22,7 @@
                         <p class="card-text">@menu.Description</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-                                @if (ViewBag.IsAdmin)
+                                @if (ViewBag.IsAdmin == "True")
                                 {
                                     <button type="button" class="btn btn-sm btn-outline-secondary btnAdd" data-id="@menu.Id">Add</button>
                                 }

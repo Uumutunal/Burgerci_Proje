@@ -70,10 +70,7 @@ namespace Burgerci_Proje.Controllers
 
             var mappedGarnitures = _mapper.Map<List<GarnitureViewModel>>(garnitures);
 
-            Guid.TryParse(HttpContext.Session.GetString("UserId"), out Guid userGuid);
-            var user = await _userService.GetUserById(userGuid);
-            var userMapped = _mapper.Map<UserViewModel>(user);
-            ViewBag.IsAdmin = userMapped.IsAdmin;
+            ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
 
             ViewBag.Garnitures = mappedGarnitures;
             return View(mappedHamburgers);

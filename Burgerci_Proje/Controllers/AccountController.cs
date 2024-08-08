@@ -66,9 +66,17 @@ namespace Burgerci_Proje.Controllers
                 return RedirectToAction("MenuList", "Menu");
 
 
-                return RedirectToAction("Index", "Home", userViewModel);
             }
             return View();
         }
+        public IActionResult Logout()   
+        {
+            ViewData["Title"] = "Logout";
+            HttpContext.Session.Clear();
+
+            return RedirectToAction("Login");
+        }
     }
+
+
 }
