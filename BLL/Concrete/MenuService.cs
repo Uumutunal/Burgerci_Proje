@@ -51,7 +51,7 @@ namespace BLL.Concrete
 
             var menus = await _menuRepository.GetAllWithIncludes(includes);
 
-            var menuDtos = _mapper.Map<List<MenuDto>>(menus);
+            var menuDtos = _mapper.Map<List<MenuDto>>(menus.ToList());
 
             return menuDtos;
         }

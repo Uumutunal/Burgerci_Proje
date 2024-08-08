@@ -22,7 +22,7 @@ else
                 <div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title">@order.MenuId</h5>
+                            <h5 class="card-title">@order.MenuViewModel.Name</h5>
                             <p class="card-text">@order.Quantity</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <small class="text-muted">@($"{order.Price * order.Quantity:C}")</small>
