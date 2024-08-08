@@ -17,5 +17,9 @@ namespace Burgerci_Proje.Models
         public HamburgerViewModel HamburgerViewModel { get; set; }
         public DrinkViewModel DrinkViewModel { get; set; }
         public ExtraViewModel ExtraViewModel { get; set; }
+
+        public List<HamburgerViewModel> Hamburgers { get; set; }
+        public List<ExtraViewModel> Garnitures { get; set; }
+        public List<DrinkViewModel> Drinks { get; set; }
     }
 }

@@ -2,13 +2,13 @@
 
 @{
     ViewBag.Title = "Menu List";
-
     Layout = "~/Views/AdminLayout/Index.cshtml";
 }
 
 <h2>Menu List</h2>
 
 <div class="container">
+    <button id="btnCreateMenu" class="btn btn-outline-success">CREATE A MENU</button>
     <div class="row">
         @foreach (var menu in Model)
         {
@@ -53,72 +53,111 @@
 
 <!-- Modal -->
 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addModalLabel">Add Garnitures and Drink</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title" id="addModalLabel">Add Garnitures, Drinks, and Hamburgers</h5>
+                <button type="button" class="btn-close" id="modalCloseButton" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <form id="addForm">
                     <div class="form-group">
-                        <label for="garnitures">Garnitures</label>
-                        <select multiple class="form-control" id="garnitures">
-                            <!-- Garniture options will be populated here -->
-                        </select>
+                        <label for="hamburgers">Hamburgers</label>
+                        <div id="hamburger-checkboxes">
+                            <!-- Hamburger checkboxes will be populated here -->
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="drink">Drink</label>
-                        <select class="form-control" id="drink">
-                            <!-- Drink options will be populated here -->
-                        </select>
+                        <label for="extras">Extras</label>
+                        <div id="extra-checkboxes">
+                            <!-- Extra checkboxes will be populated here -->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="drink">Drinks</label>
+                        <div id="drink-checkboxes">
+                            <!-- Drink checkboxes will be populated here -->
+                        </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="saveSelection">Save</button>
             </div>
         </div>
     </div>
 </div>
 
+
+<!-- JavaScript kodu -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 <script>
     $(document).ready(function () {
-        $(".btnAdd").click(function () {
-            var menuId = $(this).data("id");
-
-            // Populate garniture options
-            $("#garnitures").empty();
+        $("#btnCreateMenu").click(function () {
+            // Populate checkboxes for Hamburgers
             $.ajax({
-                url: '@Url.Action("GetGarnitures", "Menu")',
+                url: '@Url.Action("GetHamburgers", "Menu")',
                 method: 'GET',
                 success: function (data) {
+                    console.log(data)
+                    $("#hamburger-checkboxes").empty();
                     $.each(data, function (i, item) {
-                        $("#garnitures").append($('<option>', {
-                            value: item.Id,
-                            text: item.Name
-                        }));
+                        let hamburgerLine = "<label>"+item.name+"</label>"
+                        $("#hamburger-checkboxes").append(
+                            $('<div>').append(
+                                $('<input>', { type: 'checkbox', value: item.Id, id: 'hamburger-' + item.Id }),
+                                hamburgerLine
+                            )
+                        );
                     });
+                },
+                error: function () {
+                    $("#hamburger-checkboxes").append('<div>Error loading hamburgers.</div>');
                 }
             });
 
-            // Populate drink options
-            $("#drink").empty();
+            // Populate checkboxes for Extras
+            $.ajax({
+                url: '@Url.Action("GetExtras", "Menu")',
+                method: 'GET',
+                success: function (data) {
+                    $("#extra-checkboxes").empty();
+                    $.each(data, function (i, item) {
+                        let extraLine = "<label>" + item.name + "</label>"
+                        $("#extra-checkboxes").append(
+                            $('<div>').append(
+                                $('<input>', { type: 'checkbox', value: item.Id, id: 'extra-' + item.Id }),
+                                extraLine
+                            )
+                        );
+                    });
+                },
+                error: function () {
+                    $("#extra-checkboxes").append('<div>Error loading extras.</div>');
+                }
+            });
+
+            // Populate checkboxes for Drinks
             $.ajax({
                 url: '@Url.Action("GetDrinks", "Menu")',
                 method: 'GET',
                 success: function (data) {
+                    $("#drink-checkboxes").empty();
                     $.each(data, function (i, item) {
-                        $("#drink").append($('<option>', {
-                            value: item.Id,
-                            text: item.Name
-                        }));
+                        let drinkLine = "<label>" + item.name + "</label>"
+                        $("#drink-checkboxes").append(
+                            $('<div>').append(
+                                $('<input>', { type: 'checkbox', value: item.Id, id: 'drink-' + item.Id }),
+                                drinkLine
+                            )
+                        );
                     });
+                },
+                error: function () {
+                    $("#drink-checkboxes").append('<div>Error loading drinks.</div>');
                 }
             });
 
@@ -126,14 +165,22 @@
         });
 
         $("#saveSelection").click(function () {
-            var selectedGarnitures = $("#garnitures").val();
-            var selectedDrink = $("#drink").val();
+            var selectedHamburgers = $("#hamburger-checkboxes input:checked").map(function () { return this.value; }).get();
+            var selectedExtras = $("#extra-checkboxes input:checked").map(function () { return this.value; }).get();
+            var selectedDrinks = $("#drink-checkboxes input:checked").map(function () { return this.value; }).get();
 
-            // Here you can handle the selected garnitures and drink
-            console.log("Selected Garnitures: " + selectedGarnitures);
-            console.log("Selected Drink: " + selectedDrink);
+            // Handle the selected items
+            console.log("Selected Hamburgers: " + selectedHamburgers);
+            console.log("Selected Extras: " + selectedExtras);
+            console.log("Selected Drinks: " + selectedDrinks);
 
             $("#addModal").modal('hide');
         });
+
+        // Handle the modal close button manually
+        $("#modalCloseButton").click(function () {
+            $("#addModal").modal('hide');
+        });
     });
+
 </script>

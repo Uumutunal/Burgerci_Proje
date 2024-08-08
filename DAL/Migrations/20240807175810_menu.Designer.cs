@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240807113422_mig1")]
-    partial class mig1
+    [Migration("20240807175810_menu")]
+    partial class menu
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -143,7 +143,6 @@ namespace DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("SelectedGarnitureIds")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Size")
@@ -312,9 +311,9 @@ namespace DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("fc3d6b00-0971-4a49-b240-4d74f4409e66"),
+                            Id = new Guid("060d2c58-cf53-4d42-b043-ddb46873e775"),
                             Address = "İstanbul",
-                            CreatedDate = new DateTime(2024, 8, 7, 14, 34, 21, 818, DateTimeKind.Local).AddTicks(5752),
+                            CreatedDate = new DateTime(2024, 8, 7, 20, 58, 9, 522, DateTimeKind.Local).AddTicks(9635),
                             Email = "admin@admin.com",
                             IsAdmin = true,
                             IsDeleted = false,
