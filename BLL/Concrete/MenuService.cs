@@ -22,14 +22,34 @@ namespace BLL.Concrete
             this._mapper = mapper;
             _menuRepository = menuRepository;
         }
-        public async Task CreateMenu(MenuDto menuDto, Guid hamburgerId, Guid drinkId, Guid extraId)
+        public async Task CreateMenu(MenuDto menuDto, HamburgerDto hamburgerDto, DrinkDto drinkDto, ExtraDto extraDto)
         {
+            // MenuDto, HamburgerDto, DrinkDto ve ExtraDto nesnelerini kullanarak iþlemleri gerçekleþtir
             var menu = _mapper.Map<Menu>(menuDto);
-            menu.HamburgerId = hamburgerId;
-            menu.DrinkId = drinkId;
-            menu.ExtraId = extraId;
+
+            if (hamburgerDto != null)
+            {
+                var hamburger = _mapper.Map<Hamburger>(hamburgerDto);
+                // Hamburger'ý iþleyin (örneðin, iliþkilendirerek)
+            }
+
+            if (drinkDto != null)
+            {
+                var drink = _mapper.Map<Drink>(drinkDto);
+                // Drink'i iþleyin (örneðin, iliþkilendirerek)
+            }
+
+            if (extraDto != null)
+            {
+                var extra = _mapper.Map<Extra>(extraDto);
+                // Extra'yý iþleyin (örneðin, iliþkilendirerek)
+            }
+
+            // Menü ve diðer nesneleri veritabanýna kaydedin
             await _menuRepository.AddAsync(menu);
         }
+
+
 
         public async Task DeleteMenu(Guid menuId)
         {

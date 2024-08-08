@@ -61,7 +61,7 @@
                                         foreach (var hamburger in ViewBag.AllHamburgers as List<HamburgerViewModel>)
                                         {
                                             <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" id="hamburger_@hamburger.Id" name="HamburgerIds" value="@hamburger.Id" />
+                                                <input type="checkbox" class="form-check-input" id="hamburger_@hamburger.Id" name="HamburgerId" value="@hamburger.Id" />
                                                 <label class="form-check-label" for="hamburger_@hamburger.Id">@hamburger.Name</label>
                                             </div>
                                         }
@@ -81,7 +81,7 @@
                                         foreach (var drink in ViewBag.AllDrinks as List<DrinkViewModel>)
                                         {
                                             <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" id="drink_@drink.Id" name="DrinkIds" value="@drink.Id" />
+                                                <input type="checkbox" class="form-check-input" id="drink_@drink.Id" name="DrinkId" value="@drink.Id" />
                                                 <label class="form-check-label" for="drink_@drink.Id">@drink.Name</label>
                                             </div>
                                         }
@@ -101,7 +101,7 @@
                                         foreach (var extra in ViewBag.AllExtras as List<ExtraViewModel>)
                                         {
                                             <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" id="extra_@extra.Id" name="ExtraIds" value="@extra.Id" />
+                                                <input type="checkbox" class="form-check-input" id="extra_@extra.Id" name="ExtraId" value="@extra.Id" />
                                                 <label class="form-check-label" for="extra_@extra.Id">@extra.Name</label>
                                             </div>
                                         }

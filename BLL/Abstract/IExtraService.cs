@@ -13,5 +13,7 @@ namespace BLL.Abstract
         Task CreateExtra(ExtraDto extraDto);
         Task DeleteExtra(Guid extraId);
         Task UpdateExtra(ExtraDto extraDto);
+        Task<ExtraDto> GetExtraById(Guid id);
+
     }
 }

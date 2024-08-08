@@ -48,27 +48,23 @@ namespace Burgerci_Proje.Controllers
         }
         public async Task<IActionResult> CreateMenu()
         {
-            var hamburgers = await _hamburgerService.GetAllHamburgers();
-            var hamburgersMapped = _mapper.Map<List<HamburgerViewModel>>(hamburgers);
-            ViewBag.AllHamburgers = hamburgers;
-            var drinks = await _drinkService.GetAllDrinks();
-            var drinksMapped = _mapper.Map<List<DrinkViewModel>>(drinks);
-            ViewBag.AllDrinks = drinksMapped;
-            var extras = await _extraService.GetAllExtra();
-            var extrasMapped = _mapper.Map<List<ExtraViewModel>>(extras);
-            ViewBag.AllExtras = extrasMapped;
+            ViewBag.AllHamburgers = await GetHamburgers();
+            ViewBag.AllDrinks = await GetDrinks();
+            ViewBag.AllExtras = await GetExtras();
             return View();
         }
 
 
+
         [HttpPost]
-        public async Task<IActionResult> CreateMenu(MenuViewModel menuViewModel, Guid HamburgerIds, Guid DrinkIds, Guid ExtraIds)
+        public async Task<IActionResult> CreateMenu(MenuViewModel menuViewModel)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if (menuViewModel.Photo != null)
+                    // Fotoðraf yükleme iþlemi
+                    if (menuViewModel.PhotoUrl != null)
                     {
                         var fileName = Path.GetFileName(menuViewModel.PhotoUrl.FileName);
                         var filePath = Path.Combine("wwwroot", "Images", fileName);
@@ -81,11 +77,16 @@ namespace Burgerci_Proje.Controllers
                         menuViewModel.Photo = fileName;
                     }
 
-                    // Map to DTO
+                    // DTO'larý almak
+                    var hamburgerDto = await _hamburgerService.GetHamburgerByIdAsync(menuViewModel.HamburgerId);
+                    var drinkDto = await _drinkService.GetDrinkById(menuViewModel.DrinkId);
+                    var extraDto = await _extraService.GetExtraById(menuViewModel.ExtraId);
+
+                    // Menü DTO'suna verileri atama
                     var menuDto = _mapper.Map<MenuDto>(menuViewModel);
 
-                    // Save the menu and its associated items
-                    await _menuService.CreateMenu(menuDto, HamburgerIds, DrinkIds, ExtraIds);
+                    // Menü ve iliþkili öðeleri kaydetme
+                    await _menuService.CreateMenu(menuDto, hamburgerDto, drinkDto, extraDto);
 
                     return RedirectToAction("MenuList");
                 }
@@ -95,12 +96,15 @@ namespace Burgerci_Proje.Controllers
                 }
             }
 
-            // If we got this far, something failed; redisplay form.
+            // Formu yeniden göster
             ViewBag.AllHamburgers = await GetHamburgers();
             ViewBag.AllDrinks = await GetDrinks();
             ViewBag.AllExtras = await GetExtras();
             return View(menuViewModel);
         }
+
+
+
 
         public async Task<IActionResult> MenuList()
         {
@@ -108,27 +112,24 @@ namespace Burgerci_Proje.Controllers
             var mappedMenus = _mapper.Map<List<MenuViewModel>>(menus);
             return View(mappedMenus);
         }
-        public async Task<IActionResult> GetHamburgers()
+        public async Task<List<HamburgerViewModel>> GetHamburgers()
         {
             var hamburgers = await _hamburgerService.GetAllHamburgers();
-            var mappedHamburgers = _mapper.Map<List<HamburgerViewModel>>(hamburgers);
-            return Json(mappedHamburgers);
+            return _mapper.Map<List<HamburgerViewModel>>(hamburgers);
         }
 
-        public async Task<IActionResult> GetExtras()
-        {
-            var extras = await _extraService.GetAllExtra();
-            var mappedExtras = _mapper.Map<List<ExtraViewModel>>(extras);
-            return Json(mappedExtras);
-        }
-
-        public async Task<IActionResult> GetDrinks()
+        public async Task<List<DrinkViewModel>> GetDrinks()
         {
             var drinks = await _drinkService.GetAllDrinks();
-            var mappedDrinks = _mapper.Map<List<DrinkViewModel>>(drinks);
-            return Json(mappedDrinks);
-
+            return _mapper.Map<List<DrinkViewModel>>(drinks);
         }
+
+        public async Task<List<ExtraViewModel>> GetExtras()
+        {
+            var extras = await _extraService.GetAllExtra();
+            return _mapper.Map<List<ExtraViewModel>>(extras);
+        }
+
 
 
     }
