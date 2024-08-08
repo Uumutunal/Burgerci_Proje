@@ -48,11 +48,18 @@ namespace Burgerci_Proje.Controllers
         }
         public async Task<IActionResult> CreateMenu()
         {
-            ViewBag.AllHamburgers = await _hamburgerService.GetAllHamburgers();
-            ViewBag.AllDrinks = await _drinkService.GetAllDrinks();
-            ViewBag.AllExtras = await _extraService.GetAllExtra();
+            var hamburgers = await _hamburgerService.GetAllHamburgers();
+            var hamburgersMapped = _mapper.Map<List<HamburgerViewModel>>(hamburgers);
+            ViewBag.AllHamburgers = hamburgers;
+            var drinks = await _drinkService.GetAllDrinks();
+            var drinksMapped = _mapper.Map<List<DrinkViewModel>>(drinks);
+            ViewBag.AllDrinks = drinksMapped;
+            var extras = await _extraService.GetAllExtra();
+            var extrasMapped = _mapper.Map<List<ExtraViewModel>>(extras);
+            ViewBag.AllExtras = extrasMapped;
             return View();
         }
+
 
         [HttpPost]
         public async Task<IActionResult> CreateMenu(MenuViewModel menuViewModel, Guid HamburgerIds, Guid DrinkIds, Guid ExtraIds)

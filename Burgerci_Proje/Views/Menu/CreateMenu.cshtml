@@ -1,8 +1,5 @@
 ﻿@model MenuViewModel
 @{
-    var hamburgers = ViewBag.AllHamburgers as List<Burgerci_Proje.Models.HamburgerViewModel> ?? new List<Burgerci_Proje.Models.HamburgerViewModel>();
-    var drinks = ViewBag.AllDrinks as List<Burgerci_Proje.Models.DrinkViewModel> ?? new List<Burgerci_Proje.Models.DrinkViewModel>();
-    var extras = ViewBag.AllExtras as List<Burgerci_Proje.Models.ExtraViewModel> ?? new List<Burgerci_Proje.Models.ExtraViewModel>();
     ViewData["Title"] = "CreateMenu";
     Layout = "~/Views/AdminLayout/Index.cshtml";
 }
@@ -59,45 +56,63 @@
                             <div class="form-group">
                                 <label>Hamburgers</label>
                                 <div>
-                                    @foreach (var hamburger in hamburgers)
+                                    @if (ViewBag.AllHamburgers != null)
                                     {
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="hamburger_@hamburger.Id" name="HamburgerIds" value="@hamburger.Id" />
-                                            <label class="form-check-label" for="hamburger_@hamburger.Id">
-                                                @hamburger.Name
-                                            </label>
-                                        </div>
+                                        foreach (var hamburger in ViewBag.AllHamburgers as List<HamburgerViewModel>)
+                                        {
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="hamburger_@hamburger.Id" name="HamburgerIds" value="@hamburger.Id" />
+                                                <label class="form-check-label" for="hamburger_@hamburger.Id">@hamburger.Name</label>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p>No hamburgers available.</p>
                                     }
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <label>Drinks</label>
                                 <div>
-                                    @foreach (var drink in drinks)
+                                    @if (ViewBag.AllDrinks != null)
                                     {
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="drink_@drink.Id" name="DrinkIds" value="@drink.Id" />
-                                            <label class="form-check-label" for="drink_@drink.Id">
-                                                @drink.Name
-                                            </label>
-                                        </div>
+                                        foreach (var drink in ViewBag.AllDrinks as List<DrinkViewModel>)
+                                        {
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="drink_@drink.Id" name="DrinkIds" value="@drink.Id" />
+                                                <label class="form-check-label" for="drink_@drink.Id">@drink.Name</label>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p>No drinks available.</p>
                                     }
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <label>Extras</label>
                                 <div>
-                                    @foreach (var extra in extras)
+                                    @if (ViewBag.AllExtras != null)
                                     {
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="extra_@extra.Id" name="ExtraIds" value="@extra.Id" />
-                                            <label class="form-check-label" for="extra_@extra.Id">
-                                                @extra.Name
-                                            </label>
-                                        </div>
+                                        foreach (var extra in ViewBag.AllExtras as List<ExtraViewModel>)
+                                        {
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="extra_@extra.Id" name="ExtraIds" value="@extra.Id" />
+                                                <label class="form-check-label" for="extra_@extra.Id">@extra.Name</label>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p>No extras available.</p>
                                     }
                                 </div>
                             </div>
+
                             <button type="submit" class="btn btn-primary">Save</button>
                             <div class="modal fade" id="garnitureModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             </div>
