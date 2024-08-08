@@ -10,7 +10,7 @@ namespace BLL.Abstract
     public interface IMenuService
     {
         Task<List<MenuDto>> GetAllMenus();
-        Task CreateMenu(MenuDto menuDto);
+        Task CreateMenu(MenuDto menuDto, Guid hamburgerId, Guid drinkId, Guid extraId);
         Task DeleteMenu(Guid menuId);
         Task<List<MenuDto>> GetMenuWithIncludes(string[] includes);
     }

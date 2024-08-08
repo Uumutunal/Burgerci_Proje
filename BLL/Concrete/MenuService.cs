@@ -22,9 +22,12 @@ namespace BLL.Concrete
             this._mapper = mapper;
             _menuRepository = menuRepository;
         }
-        public async Task CreateMenu(MenuDto menuDto)
+        public async Task CreateMenu(MenuDto menuDto, Guid hamburgerId, Guid drinkId, Guid extraId)
         {
             var menu = _mapper.Map<Menu>(menuDto);
+            menu.HamburgerId = hamburgerId;
+            menu.DrinkId = drinkId;
+            menu.ExtraId = extraId;
             await _menuRepository.AddAsync(menu);
         }
 

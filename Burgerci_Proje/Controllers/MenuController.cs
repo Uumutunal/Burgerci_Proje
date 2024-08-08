@@ -46,6 +46,55 @@ namespace Burgerci_Proje.Controllers
 
             return RedirectToAction("Index", "Order");
         }
+        public async Task<IActionResult> CreateMenu()
+        {
+            ViewBag.AllHamburgers = await _hamburgerService.GetAllHamburgers();
+            ViewBag.AllDrinks = await _drinkService.GetAllDrinks();
+            ViewBag.AllExtras = await _extraService.GetAllExtra();
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateMenu(MenuViewModel menuViewModel, Guid HamburgerIds, Guid DrinkIds, Guid ExtraIds)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (menuViewModel.Photo != null)
+                    {
+                        var fileName = Path.GetFileName(menuViewModel.PhotoUrl.FileName);
+                        var filePath = Path.Combine("wwwroot", "Images", fileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await menuViewModel.PhotoUrl.CopyToAsync(stream);
+                        }
+
+                        menuViewModel.Photo = fileName;
+                    }
+
+                    // Map to DTO
+                    var menuDto = _mapper.Map<MenuDto>(menuViewModel);
+
+                    // Save the menu and its associated items
+                    await _menuService.CreateMenu(menuDto, HamburgerIds, DrinkIds, ExtraIds);
+
+                    return RedirectToAction("MenuList");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "An error occurred while creating the menu.");
+                }
+            }
+
+            // If we got this far, something failed; redisplay form.
+            ViewBag.AllHamburgers = await GetHamburgers();
+            ViewBag.AllDrinks = await GetDrinks();
+            ViewBag.AllExtras = await GetExtras();
+            return View(menuViewModel);
+        }
+
         public async Task<IActionResult> MenuList()
         {
             var menus = await _menuService.GetAllMenus();
