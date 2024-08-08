@@ -38,8 +38,9 @@ namespace Burgerci_Proje.Controllers
         [HttpPost]
         public async Task<IActionResult> AddToBasket(MenuViewModel menuViewModel)
         {
-            //TODO:Include çalýþmýyor
-            var menu = await _menuService.GetMenuWithIncludes(new[] { "Hamburger" });
+
+            var menu = await _menuService.GetMenuWithIncludes(new[] { "Hamburger", "Drink", "Extra" });
+
 
             TempData["MenuData"] = JsonConvert.SerializeObject(menu.FirstOrDefault());
 

@@ -12,5 +12,6 @@ namespace BLL.Abstract
         Task<List<OrderDetailDto>> GetAllOrderDetails(Guid orderId);
         Task CreateOrderDetail(OrderDetailDto orderDetailDto);
         Task DeleteOrderDetail(Guid orderDetailId);
+        Task<List<OrderDetailDto>> GetOrderDetailWithIncludes(string[] includes);
     }
 }
