@@ -5,8 +5,14 @@
 }
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
 
+
 <div class="container">
-    <a href="@Url.Action("CreateHamburger", "Hamburger")" class="btn btn-outline-danger btn-sm">Create Hamburger</a>
+        @*<a href="@Url.Action("CreateHamburger", "Hamburger")" class="btn btn-outline-danger btn-sm">Create Hamburger</a>*@
+    <br />
+
+    <a href="/Hamburger/CreateHamburger" class="btn btn-primary mt-4">Add New Hamburger</a>
+
+
     <div class="row">
         
         @foreach (var hamburger in Model)
@@ -37,7 +43,7 @@
                                 }
                             }
                         </p>
-                        <p class="card-text"><strong>Price:</strong> @hamburger.Price</p>
+                        <p class="card-text"><strong>Price:</strong> @hamburger.Price.ToString("C")</p>
                         <div class="d-flex justify-content-between">
                             <a href="@Url.Action("EditHamburger", "Hamburger", new { id = hamburger.Id })" class="btn btn-primary btn-sm">Edit</a>
                             <a href="@Url.Action("DeleteHamburger", "Hamburger", new { id = hamburger.Id })" class="btn btn-danger btn-sm">Delete</a>
@@ -46,7 +52,9 @@
                 </div>
             </div>
         }
+
     </div>
+
 </div>
 
 <style>

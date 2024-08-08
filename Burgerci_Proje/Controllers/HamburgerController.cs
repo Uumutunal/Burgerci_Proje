@@ -52,7 +52,7 @@ namespace Burgerci_Proje.Controllers
                 var selectedGarnitureIds = hamburgerViewModel.SelectedGarnitureIds;
                 var garnitureDtos = await _garnitureService.GetGarnituresByIds(selectedGarnitureIds);
                 await _hamburgerService.CreateHamburger(hamburgerDto, garnitureDtos);
-                return RedirectToAction("GarnitureList" , "Garniture");
+                return RedirectToAction("ListHamburgers");
             }
             var garnitures = await _garnitureService.GetAllGarnitures();
             ViewBag.Garnitures = _mapper.Map<List<GarnitureViewModel>>(garnitures);
@@ -116,12 +116,15 @@ namespace Burgerci_Proje.Controllers
             ViewBag.Garnitures = _mapper.Map<List<GarnitureViewModel>>(garnitures);
             return View(hamburgerViewModel);
         }
-        [HttpPost]
+
+        [HttpGet]
         public async Task<IActionResult> DeleteHamburger(Guid id)
         {
             await _hamburgerService.DeleteHamburger(id);
             return RedirectToAction("ListHamburgers");
         }
+
+
 
     }
 

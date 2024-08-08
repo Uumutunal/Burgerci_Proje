@@ -63,6 +63,11 @@ namespace Burgerci_Proje.Controllers
                 HttpContext.Session.SetString("Username", userViewModel.Username);
                 HttpContext.Session.SetString("IsAdmin", userViewModel.IsAdmin.ToString());
 
+                if(userDto.IsAdmin)
+                {
+                    return RedirectToAction("MenuList", "Menu");
+                }
+
                 return RedirectToAction("Index", "Home", userViewModel);
             }
             return View();

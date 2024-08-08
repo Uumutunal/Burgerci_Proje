@@ -1,4 +1,4 @@
-﻿@model List<MenuViewModel>
+﻿﻿@model List<MenuViewModel>
 
 @{
     ViewBag.Title = "Menu List";
@@ -22,27 +22,6 @@
                                 <button type="button" class="btn btn-sm btn-outline-secondary btnAdd" data-id="@menu.Id">Add</button>
                             </div>
                             <small class="text-muted">@menu.Price $</small>
-
-
-                            <form asp-action="AddToBasket" method="POST" style="display:inline">
-
-                                <input type="hidden" name="Id" value="@menu.Id" />
-                                <input type="hidden" name="Name" value="@menu.Name" />
-                                <input type="hidden" name="HamburgerId" value="@menu.HamburgerId" />
-                                <input type="hidden" name="DrinkId" value="@menu.DrinkId" />
-                                <input type="hidden" name="Quantity" value="@menu.Quantity" />
-                                <input type="hidden" name="Price" value="@menu.Price" />
-                                <input type="hidden" name="HamburgerViewModel" value="@menu.HamburgerViewModel" />
-
-                                <button type="submit" class="btn btn-outline-primary btn-sm me-2">
-
-                                    <i class="bi bi-hand-thumbs-up"></i> Sepete Ekle
-
-                                </button>
-
-                            </form>
-
-
                         </div>
                     </div>
                 </div>
