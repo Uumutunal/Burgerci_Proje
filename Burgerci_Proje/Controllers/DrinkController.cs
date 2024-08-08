@@ -11,16 +11,25 @@ namespace Burgerci_Proje.Controllers
     {
         private readonly IDrinkService _drinkService;
         private readonly IMapper _mapper;
-        public DrinkController(IDrinkService drinkService, IMapper mapper)
+        private readonly IUserService _userService;
+
+        public DrinkController(IDrinkService drinkService, IMapper mapper, IUserService userService)
         {
             _drinkService = drinkService;
             _mapper = mapper;
+            _userService = userService;
         }
 
         public async Task<IActionResult> DrinkList()
         {
             var drinks = await _drinkService.GetAllDrinks();
             var mappedDrinks = _mapper.Map<List<DrinkViewModel>>(drinks);
+
+            Guid.TryParse(HttpContext.Session.GetString("UserId"), out Guid userGuid);
+            var user = await _userService.GetUserById(userGuid);
+            var userMapped = _mapper.Map<UserViewModel>(user);
+            ViewBag.IsAdmin = userMapped.IsAdmin;
+
             return View(mappedDrinks);
 
         }

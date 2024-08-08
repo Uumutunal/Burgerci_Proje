@@ -11,22 +11,34 @@ namespace Burgerci_Proje.Controllers
     {
         private readonly IOrderService _orderService;
         private readonly IOrderDetailService _orderDetailService;
+        private readonly IHamburgerService _hamburgerService;
         private readonly IMapper _mapper;
-        public OrderController(IOrderService orderService, IMapper mapper, IOrderDetailService orderDetailService)
+        public OrderController(IOrderService orderService, IMapper mapper, IOrderDetailService orderDetailService, IHamburgerService hamburgerService)
         {
             _orderService = orderService;
             _mapper = mapper;
             _orderDetailService = orderDetailService;
+            _hamburgerService = hamburgerService;
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult OrderMenu()
         {
             var menuDataJson = TempData["MenuData"] as string;
             var menuDto = JsonConvert.DeserializeObject<MenuDto>(menuDataJson);
             var menuViewModel = _mapper.Map<MenuViewModel>(menuDto);
 
             return View(menuViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult OrderHamburger()
+        {
+            var hamburgerDataJson = TempData["HamburgerData"] as string;
+            var hamburgerDto = JsonConvert.DeserializeObject<HamburgerDto>(hamburgerDataJson);
+            var hamburgerViewModel = _mapper.Map<HamburgerViewModel>(hamburgerDto);
+
+            return View(hamburgerViewModel);
         }
 
         //Sepet
@@ -36,10 +48,10 @@ namespace Burgerci_Proje.Controllers
         {
             Guid.TryParse(HttpContext.Session.GetString("UserId"), out Guid userGuid);
 
-            Guid userGuiddeneme = new Guid("3A307356-78EC-464E-9966-18DA2940930A");
+            //Guid userGuiddeneme = new Guid("3A307356-78EC-464E-9966-18DA2940930A");
 
             var allOrders = await _orderService.GetAllOrders();
-            var userOrder = allOrders.FirstOrDefault(x => x.UserId == userGuiddeneme);
+            var userOrder = allOrders.FirstOrDefault(x => x.UserId == userGuid);
 
             if(userOrder != null)
             {
@@ -132,9 +144,15 @@ namespace Burgerci_Proje.Controllers
             return RedirectToAction("AllOrders");
         }
 
+
         [HttpPost]
         public async Task<IActionResult> AddHamburgerToOrder(HamburgerViewModel hamburgerViewModel)
         {
+
+            //var hamburger = await _hamburgerService.GetHamburgerByIdAsync(id);
+
+            //var hamburgerViewModel = _mapper.Map<HamburgerViewModel>(hamburger);
+
             Guid.TryParse(HttpContext.Session.GetString("UserId"), out Guid userGuid);
 
             var activeOrder = await _orderService.GetActiveOrder(userGuid);
@@ -181,7 +199,7 @@ namespace Burgerci_Proje.Controllers
                 await _orderDetailService.CreateOrderDetail(orderDetailDto);
             }
 
-            return View();
+            return RedirectToAction("AllOrders");
         }
 
         [HttpPost]

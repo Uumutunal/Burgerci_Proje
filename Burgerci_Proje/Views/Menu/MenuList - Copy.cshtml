@@ -8,10 +8,7 @@
 <h2>Menu List</h2>
 
 <div class="container">
-    @if (ViewBag.IsAdmin)
-    {
     <button id="btnCreateMenu" class="btn btn-outline-success">CREATE A MENU</button>
-    }
     <div class="row">
         @foreach (var menu in Model)
         {
@@ -22,30 +19,7 @@
                         <p class="card-text">@menu.Description</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-                                @if (ViewBag.IsAdmin)
-                                {
-                                    <button type="button" class="btn btn-sm btn-outline-secondary btnAdd" data-id="@menu.Id">Add</button>
-                                }
-                                else
-                                {
-                                    <form asp-action="AddToBasket" method="POST" style="display:inline">
-
-                                        <input type="hidden" name="Id" value="@menu.Id" />
-                                        <input type="hidden" name="Name" value="@menu.Name" />
-                                        <input type="hidden" name="HamburgerId" value="@menu.HamburgerId" />
-                                        <input type="hidden" name="DrinkId" value="@menu.DrinkId" />
-                                        <input type="hidden" name="Quantity" value="@menu.Quantity" />
-                                        <input type="hidden" name="Price" value="@menu.Price" />
-                                        <input type="hidden" name="HamburgerViewModel" value="@menu.HamburgerViewModel" />
-
-                                        <button type="submit" class="btn btn-outline-primary btn-sm me-2">
-
-                                            <i class="bi bi-hand-thumbs-up"></i> Add To Cart
-
-                                        </button>
-
-                                    </form>
-                                }
+                                <button type="button" class="btn btn-sm btn-outline-secondary btnAdd" data-id="@menu.Id">Add</button>
                             </div>
                             <small class="text-muted">@menu.Price $</small>
                         </div>
