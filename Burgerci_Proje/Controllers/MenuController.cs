@@ -49,6 +49,65 @@ namespace Burgerci_Proje.Controllers
 
             return RedirectToAction("OrderMenu", "Order");
         }
+        public async Task<IActionResult> CreateMenu()
+        {
+            ViewBag.AllHamburgers = await GetHamburgers();
+            ViewBag.AllDrinks = await GetDrinks();
+            ViewBag.AllExtras = await GetExtras();
+            return View();
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> CreateMenu(MenuViewModel menuViewModel)
+        {
+           
+                try
+                {
+                    // Fotoðraf yükleme iþlemi
+                    if (menuViewModel.PhotoUrl != null)
+                    {
+                        var fileName = Path.GetFileName(menuViewModel.PhotoUrl.FileName);
+                        var filePath = Path.Combine("wwwroot", "Images", fileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await menuViewModel.PhotoUrl.CopyToAsync(stream);
+                        }
+
+                        menuViewModel.Photo = fileName;
+                    }
+
+                    // DTO'larý almak
+                    var hamburgerDto = await _hamburgerService.GetHamburgerByIdAsync(menuViewModel.HamburgerId);
+                    var drinkDto = await _drinkService.GetDrinkById(menuViewModel.DrinkId);
+                    var extraDto = await _extraService.GetExtraById(menuViewModel.ExtraId);
+
+                    // Menü DTO'suna verileri atama
+                    var menuDto = _mapper.Map<MenuDto>(menuViewModel);
+
+                    // Menü ve iliþkili öðeleri kaydetme
+                    await _menuService.CreateMenu(menuDto, hamburgerDto, drinkDto, extraDto);
+
+                    return RedirectToAction("MenuList");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "An error occurred while creating the menu.");
+                }
+            
+
+            // Formu yeniden göster
+            ViewBag.AllHamburgers = await GetHamburgers();
+            ViewBag.AllDrinks = await GetDrinks();
+            ViewBag.AllExtras = await GetExtras();
+            return View(menuViewModel);
+        }
+
+
+
+
         public async Task<IActionResult> MenuList()
         {
             var menus = await _menuService.GetAllMenus();
@@ -59,27 +118,24 @@ namespace Burgerci_Proje.Controllers
 
             return View(mappedMenus);
         }
-        public async Task<IActionResult> GetHamburgers()
+        public async Task<List<HamburgerViewModel>> GetHamburgers()
         {
             var hamburgers = await _hamburgerService.GetAllHamburgers();
-            var mappedHamburgers = _mapper.Map<List<HamburgerViewModel>>(hamburgers);
-            return Json(mappedHamburgers);
+            return _mapper.Map<List<HamburgerViewModel>>(hamburgers);
         }
 
-        public async Task<IActionResult> GetExtras()
-        {
-            var extras = await _extraService.GetAllExtra();
-            var mappedExtras = _mapper.Map<List<ExtraViewModel>>(extras);
-            return Json(mappedExtras);
-        }
-
-        public async Task<IActionResult> GetDrinks()
+        public async Task<List<DrinkViewModel>> GetDrinks()
         {
             var drinks = await _drinkService.GetAllDrinks();
-            var mappedDrinks = _mapper.Map<List<DrinkViewModel>>(drinks);
-            return Json(mappedDrinks);
-
+            return _mapper.Map<List<DrinkViewModel>>(drinks);
         }
+
+        public async Task<List<ExtraViewModel>> GetExtras()
+        {
+            var extras = await _extraService.GetAllExtra();
+            return _mapper.Map<List<ExtraViewModel>>(extras);
+        }
+
 
 
     }

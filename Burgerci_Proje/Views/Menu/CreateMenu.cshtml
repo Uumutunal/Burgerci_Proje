@@ -1,0 +1,125 @@
+﻿@model MenuViewModel
+@{
+    ViewData["Title"] = "CreateMenu";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="container">
+    <div class="page-inner">
+        <div class="page-header">
+            <h3 class="fw-bold mb-3">Menus</h3>
+            <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                    <a href="#">
+                        <i class="icon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="@Url.Action("MenuList")">Menus</a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Create Menu Panel</a>
+                </li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Add Menu Operation</div>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="CreateMenu" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label asp-for="Name"></label>
+                                <input asp-for="Name" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Description"></label>
+                                <textarea asp-for="Description" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Price"></label>
+                                <input asp-for="Price" class="form-control" />
+                            </div>
+                            <div data-mdb-input-init class="form-group form-outline mb-4">
+                                <label asp-for="Photo" class="form-label">ADD PHOTO</label>
+                                <input asp-for="Photo" class="form-control form-control-lg" type="file" />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Hamburgers</label>
+                                <div>
+                                    @if (ViewBag.AllHamburgers != null)
+                                    {
+                                        foreach (var hamburger in ViewBag.AllHamburgers as List<HamburgerViewModel>)
+                                        {
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="hamburger_@hamburger.Id" name="HamburgerId" value="@hamburger.Id" />
+                                                <label class="form-check-label" for="hamburger_@hamburger.Id">@hamburger.Name</label>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p>No hamburgers available.</p>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Drinks</label>
+                                <div>
+                                    @if (ViewBag.AllDrinks != null)
+                                    {
+                                        foreach (var drink in ViewBag.AllDrinks as List<DrinkViewModel>)
+                                        {
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="drink_@drink.Id" name="DrinkId" value="@drink.Id" />
+                                                <label class="form-check-label" for="drink_@drink.Id">@drink.Name</label>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p>No drinks available.</p>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Extras</label>
+                                <div>
+                                    @if (ViewBag.AllExtras != null)
+                                    {
+                                        foreach (var extra in ViewBag.AllExtras as List<ExtraViewModel>)
+                                        {
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="extra_@extra.Id" name="ExtraId" value="@extra.Id" />
+                                                <label class="form-check-label" for="extra_@extra.Id">@extra.Name</label>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p>No extras available.</p>
+                                    }
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <div class="modal fade" id="garnitureModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

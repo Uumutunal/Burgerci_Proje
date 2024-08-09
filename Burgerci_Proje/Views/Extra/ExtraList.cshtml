@@ -1,8 +1,51 @@
-﻿@model List<ExtraViewModel>
+﻿
+@model List<ExtraViewModel>
 @{
     ViewData["Title"] = "ExtraList";
     Layout = "~/Views/AdminLayout/Index.cshtml";
 }
 
+<div class="container">
+    <div class="page-inner">
+        <div class="page-header">
+            <h3 class="fw-bold mb-3">Extra Admin Panel</h3>
+            <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                    <a href="#">
+                        <i class="icon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="@Url.Action("ExtraList")">Extras</a>
+                </li>
+            </ul>
+        </div>
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="@item.PhotoUrl" class="card-img-top" alt="@item.Name" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Name</h5>
+                            <p class="card-text">@item.Price.ToString("C")</p>
+                            <div class="d-flex justify-content-between">
+                                <form asp-action="DeleteExtra" method="post" style="display:inline">
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                                <a href="@Url.Action("UpdateExtra", new { id = item.Id })" class="btn btn-success">Update</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <a href="/Extra/CreateExtra" class="btn btn-primary mt-4">Add New Extra</a>
+    </div>
+</div>
 
 
