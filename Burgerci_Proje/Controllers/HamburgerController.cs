@@ -14,13 +14,15 @@ namespace Burgerci_Proje.Controllers
         private readonly IGarnitureService _garnitureService;
         private readonly IHamburgerGarnitureService _hamburgerGarnitureService;
         private readonly IMapper _mapper;
+        private readonly IUserService _userService;
 
-        public HamburgerController(IHamburgerService hamburgerService, IGarnitureService garnitureService,IHamburgerGarnitureService hamburgerGarnitureService, IMapper mapper)
+        public HamburgerController(IHamburgerService hamburgerService, IGarnitureService garnitureService,IHamburgerGarnitureService hamburgerGarnitureService, IMapper mapper, IUserService userService)
         {
             _hamburgerService = hamburgerService;
             _garnitureService = garnitureService;
             _hamburgerGarnitureService = hamburgerGarnitureService;
             _mapper = mapper;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -66,7 +68,9 @@ namespace Burgerci_Proje.Controllers
 
             var garnitures = await _garnitureService.GetAllGarnitures();
 
-            var mappedGarnitures = _mapper.Map<List<GarnitureViewModel>>(garnitures); 
+            var mappedGarnitures = _mapper.Map<List<GarnitureViewModel>>(garnitures);
+
+            ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
 
             ViewBag.Garnitures = mappedGarnitures;
             return View(mappedHamburgers);
@@ -125,6 +129,16 @@ namespace Burgerci_Proje.Controllers
         }
 
 
+        [HttpPost]
+        public async Task<IActionResult> AddToBasketHamburger(HamburgerViewModel hamburgerViewModel)
+        {
+
+            //var menu = await _menuService.GetMenuWithIncludes(new[] { "Hamburger", "Drink", "Extra" });
+
+            TempData["HamburgerData"] = JsonConvert.SerializeObject(hamburgerViewModel);
+
+            return RedirectToAction("OrderHamburger", "Order");
+        }
 
     }
 

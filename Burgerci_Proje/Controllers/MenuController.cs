@@ -2,6 +2,7 @@ using AutoMapper;
 using BLL.Abstract;
 using BLL.Concrete;
 using BLL.DTOs;
+using Burgerci_Proje.Entities;
 using Burgerci_Proje.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -17,8 +18,9 @@ namespace Burgerci_Proje.Controllers
         private readonly IDrinkService _drinkService;
         private readonly IHamburgerService _hamburgerService;
         private readonly IExtraService _extraService;
+        private readonly IUserService _userService;
 
-        public MenuController(IMapper mapper, IMenuService menuService, IGarnitureService garnitureService, IDrinkService drinkService,IHamburgerService hamburgerService, IExtraService extraService)
+        public MenuController(IMapper mapper, IMenuService menuService, IGarnitureService garnitureService, IDrinkService drinkService,IHamburgerService hamburgerService, IExtraService extraService, IUserService userService)
         {
             _mapper = mapper;
             _menuService = menuService;
@@ -26,6 +28,7 @@ namespace Burgerci_Proje.Controllers
             _drinkService = drinkService;
             _hamburgerService = hamburgerService;
             _extraService = extraService;
+            _userService = userService;
         }
         public async Task<IActionResult> Index()
         {
@@ -44,7 +47,7 @@ namespace Burgerci_Proje.Controllers
 
             TempData["MenuData"] = JsonConvert.SerializeObject(menu.FirstOrDefault());
 
-            return RedirectToAction("Index", "Order");
+            return RedirectToAction("OrderMenu", "Order");
         }
         public async Task<IActionResult> CreateMenu()
         {
@@ -109,6 +112,10 @@ namespace Burgerci_Proje.Controllers
         {
             var menus = await _menuService.GetAllMenus();
             var mappedMenus = _mapper.Map<List<MenuViewModel>>(menus);
+
+            ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
+
+
             return View(mappedMenus);
         }
         public async Task<List<HamburgerViewModel>> GetHamburgers()

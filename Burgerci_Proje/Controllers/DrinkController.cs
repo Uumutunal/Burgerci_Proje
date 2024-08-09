@@ -4,6 +4,7 @@ using BLL.Concrete;
 using BLL.DTOs;
 using Burgerci_Proje.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Burgerci_Proje.Controllers
 {
@@ -11,16 +12,22 @@ namespace Burgerci_Proje.Controllers
     {
         private readonly IDrinkService _drinkService;
         private readonly IMapper _mapper;
-        public DrinkController(IDrinkService drinkService, IMapper mapper)
+        private readonly IUserService _userService;
+
+        public DrinkController(IDrinkService drinkService, IMapper mapper, IUserService userService)
         {
             _drinkService = drinkService;
             _mapper = mapper;
+            _userService = userService;
         }
 
         public async Task<IActionResult> DrinkList()
         {
             var drinks = await _drinkService.GetAllDrinks();
             var mappedDrinks = _mapper.Map<List<DrinkViewModel>>(drinks);
+
+            ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
+
             return View(mappedDrinks);
 
         }
@@ -61,6 +68,17 @@ namespace Burgerci_Proje.Controllers
             var drinkDto = _mapper.Map<DrinkDto>(drinkViewModel);
             await _drinkService.UpdateDrink(drinkDto);
             return RedirectToAction("DrinkList");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddToBasketDrink(DrinkViewModel drinkViewModel)
+        {
+
+            //var menu = await _menuService.GetMenuWithIncludes(new[] { "Hamburger", "Drink", "Extra" });
+
+            TempData["DrinkData"] = JsonConvert.SerializeObject(drinkViewModel);
+
+            return RedirectToAction("OrderDrink", "Order");
         }
     }
 }

@@ -120,6 +120,14 @@
 							</li>
 						</ul>
 					</li>
+
+					@*Sepet*@
+					<li class="nav-item topbar-icon hidden-caret">
+						<a class="nav-link" id="messageDropdown2" role="button" aria-haspopup="true" href="@Url.Action("AllOrders", "Order")">
+							<i class="fa fa-cart-plus" aria-hidden="true" ></i>
+						</a>
+					</li>
+
 					<li class="nav-item topbar-icon dropdown hidden-caret">
 						<a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="fa fa-bell"></i>
@@ -243,7 +251,6 @@
 							</div>
 						</div>
 					</li>
-
 					<li class="nav-item topbar-user dropdown hidden-caret">
 						<a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
 							<div class="avatar-sm">
@@ -274,7 +281,8 @@
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="#">Logout</a>
 							</li>
-			</div>
+			
+</div>
 			</ul>
 			</li>
 			</ul>
