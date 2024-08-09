@@ -36,6 +36,9 @@ namespace BLL.Mapping
                 .ForMember(dest => dest.ExtraDto, opt => opt.MapFrom(src => src.Extra))
                 .ForMember(dest => dest.MenuDto, opt => opt.MapFrom(src => src.Menu));
 
+            CreateMap<Order, OrderDto>()
+                .ForMember(dest => dest.OrderDetailDtos, opt => opt.MapFrom(src => src.OrderDetails));
+
         }
     }
 }

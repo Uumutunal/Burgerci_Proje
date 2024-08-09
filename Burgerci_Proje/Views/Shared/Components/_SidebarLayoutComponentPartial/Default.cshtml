@@ -28,7 +28,10 @@
 				<li class="nav-item"><a href="@Url.Action("ListHamburgers", "Hamburger")"><i class="fas fa-desktop"></i><p>Hamburger</p></a></li>
 				<li class="nav-item"><a href="@Url.Action("DrinkList", "Drink")"><i class="fas fa-desktop"></i><p>Drink</p></a></li>
 				<li class="nav-item"><a href="@Url.Action("ExtraList", "Extra")"><i class="fas fa-desktop"></i><p>Extra</p></a></li>
-				<li class="nav-item"><a href="@Url.Action("GarnitureList", "Garniture")"><i class="fas fa-desktop"></i><p>Garniture</p></a></li>
+				@if (ViewBag.IsAdmin == "True")
+				{
+					<li class="nav-item"><a href="@Url.Action("GarnitureList", "Garniture")"><i class="fas fa-desktop"></i><p>Garniture</p></a></li>
+				}
 				<li class="nav-item"><a href="@Url.Action("Logout", "Account")"><i class="fas fa-desktop"></i><p>Logout</p></a></li>
 				@*<li class="nav-item"><a href="../widgets.html"><i class="fas fa-desktop"></i><p>Logout</p></a></li>*@
 

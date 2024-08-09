@@ -9,6 +9,14 @@
 
 <h2>Order List</h2>
 
+
+    <div class="page-inner">
+        <div class="page-header">
+            <h3 class="fw-bold mb-3">Cart</h3> 
+        </div>
+    </div>
+
+
 @if (Model == null || !Model.Any())
 {
     <p>No orders found.</p>
@@ -37,9 +45,16 @@ else
                                 <h5 class="card-title">Drink Name : @order.DrinkViewModel.Name</h5>
 
                             }
+                            @if (order.ExtraViewModel != null)
+                            {
+                                <h5 class="card-title">Extra Name : @order.ExtraViewModel.Name</h5>
+
+                            }
+                            <h5 class="card-title">Size : @order.Size</h5>
+
                             <p class="card-text">@order.Quantity</p>
                             <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">@($"{order.Price * order.Quantity:C}")</small>
+                                <small class="text-muted">@($"{order.Price:C}")</small>
                             </div>
                             <form asp-action="DeleteOrderDetail" method="post" style="display:inline;">
                                 <input type="hidden" name="orderDetailId" value="@order.Id" />
@@ -51,5 +66,9 @@ else
                 </div>
             }
         </div>
+        <form asp-action="ConfirmOrder" method="post" style="display:inline;">
+            <input type="hidden" name="id" value="@Model[0].OrderId" />
+            <button type="submit" class="btn btn-primary mt-4">Confirm Order</button>
+        </form>
     </div>
 }

@@ -11,6 +11,7 @@ namespace Burgerci_Proje.Models
         public Guid? ExtraId { get; set; }
         public int? Quantity { get; set; }
         public double Price { get; set; }
+        public string? Size { get; set; }
         public OrderViewModel OrderViewModel { get; set; }
         public MenuViewModel MenuViewModel { get; set; }
         public HamburgerViewModel HamburgerViewModel { get; set; }

@@ -4,6 +4,7 @@ using BLL.Concrete;
 using BLL.DTOs;
 using Burgerci_Proje.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Burgerci_Proje.Controllers
 {
@@ -60,6 +61,17 @@ namespace Burgerci_Proje.Controllers
             var extraDto = _mapper.Map<ExtraDto>(extraViewModel);
             await _extraService.UpdateExtra(extraDto);
             return RedirectToAction("ExtraList");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddToBasketExtra(ExtraViewModel extraViewModel)
+        {
+
+            //var menu = await _menuService.GetMenuWithIncludes(new[] { "Hamburger", "Drink", "Extra" });
+
+            TempData["ExtraData"] = JsonConvert.SerializeObject(extraViewModel);
+
+            return RedirectToAction("OrderExtra", "Order");
         }
     }
 }

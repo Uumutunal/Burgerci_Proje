@@ -30,6 +30,10 @@ namespace Burgerci_Proje.Mapping
                 .ForMember(dest => dest.DrinkViewModel, opt => opt.MapFrom(src => src.DrinkDto))
                 .ForMember(dest => dest.ExtraViewModel, opt => opt.MapFrom(src => src.ExtraDto))
                 .ForMember(dest => dest.MenuViewModel, opt => opt.MapFrom(src => src.MenuDto));
+
+            CreateMap<OrderDto, OrderViewModel>()
+                .ForMember(dest => dest.OrderDetailViewModels, opt => opt.MapFrom(src => src.OrderDetailDtos));
+
         }
     }
 }
