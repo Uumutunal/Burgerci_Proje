@@ -52,37 +52,52 @@
             background-color: #000;
         }
 
-            .right-side input, .right-side button {
-                width: 80%;
-                margin-bottom: 10px;
-                padding: 10px;
-                border-radius: 5px;
-                border: 1px solid #444;
-                background-color: #333;
-                color: #fff;
-            }
+        .slogan {
+            font-size: 32px;
+            font-weight: bold;
+            color: #f4c542;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            letter-spacing: 2px;
+        }
 
-            .right-side button {
-                background-color: #007bff;
-                border: none;
-            }
+        .right-side h2 {
+            margin-bottom: 20px;
+        }
 
-            .right-side .signup-link a {
-                color: #007bff;
-            }
+        .right-side input, .right-side button {
+            width: 90%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background-color: #333;
+            color: #fff;
+        }
+
+        .right-side button {
+            background-color: #912c2c;
+            border: none;
+        }
+
+        .right-side .signup-link a {
+            color: #912c2c;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div id="left-side" class="left-side"></div>
         <div class="right-side">
+            <div class="slogan">Delicious Bites, Every Time!</div>
             <h2>Login</h2>
             <form asp-action="Login" asp-controller="Account" method="post">
-                <input type="text" class="form-control" placeholder="Username" name="username"/>
-                <input type="password" class="form-control" placeholder="Password" name="password"/>
-                <button type="submit" class="btn btn-primary">Login</button>
+                <input type="text" class="form-control" placeholder="Username" name="username" />
+                <input type="password" class="form-control" placeholder="Password" name="password" />
+                <button type="submit">Login</button>
                 <div class="signup-link">
-                    <p>Don't have an account? <a href="/signup">Sign up here</a></p>
+                    <p>Don't have an account? <a href="@Url.Action("Register", "Account")">Sign Up Here</a></p>
                 </div>
             </form>
         </div>
