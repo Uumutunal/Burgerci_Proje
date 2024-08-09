@@ -28,7 +28,7 @@ namespace Burgerci_Proje.Controllers
             var menuDto = JsonConvert.DeserializeObject<MenuDto>(menuDataJson);
             var menuViewModel = _mapper.Map<MenuViewModel>(menuDto);
 
-            return View(menuViewModel);
+            return RedirectToAction("AddMenuToOrder");
         }
 
         [HttpGet]
@@ -102,9 +102,16 @@ namespace Burgerci_Proje.Controllers
         }
 
 
-        [HttpPost]
-        public async Task<IActionResult> AddMenuToOrder(MenuViewModel menuViewModel)
+        [HttpGet]
+        public async Task<IActionResult> AddMenuToOrder()
         {
+
+
+            var menuDataJson = TempData["MenuData"] as string;
+            var menuDto = JsonConvert.DeserializeObject<MenuDto>(menuDataJson);
+            var menuViewModel = _mapper.Map<MenuViewModel>(menuDto);
+
+
             Guid.TryParse(HttpContext.Session.GetString("UserId"), out Guid userGuid);
 
 

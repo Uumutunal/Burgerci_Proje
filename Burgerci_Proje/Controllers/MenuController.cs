@@ -39,13 +39,14 @@ namespace Burgerci_Proje.Controllers
             return View(allMenusMapped);
         }
         [HttpPost]
-        public async Task<IActionResult> AddToBasket(MenuViewModel menuViewModel)
+        public async Task<IActionResult> AddToBasketMenu(MenuViewModel menuViewModel)
         {
 
             var menu = await _menuService.GetMenuWithIncludes(new[] { "Hamburger", "Drink", "Extra" });
 
 
-            TempData["MenuData"] = JsonConvert.SerializeObject(menu.FirstOrDefault());
+            //TempData["MenuData"] = JsonConvert.SerializeObject(menu.FirstOrDefault(x => x.Id == menuViewModel.Id));
+            TempData["MenuData"] = JsonConvert.SerializeObject(menuViewModel);
 
             return RedirectToAction("OrderMenu", "Order");
         }
@@ -111,7 +112,10 @@ namespace Burgerci_Proje.Controllers
         public async Task<IActionResult> MenuList()
         {
             var menus = await _menuService.GetAllMenus();
-            var mappedMenus = _mapper.Map<List<MenuViewModel>>(menus);
+
+            var allMenus = await _menuService.GetMenuWithIncludes(new[] { "Hamburger", "Drink", "Extra" });
+
+            var mappedMenus = _mapper.Map<List<MenuViewModel>>(allMenus);
 
             ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
 
