@@ -4,6 +4,7 @@ using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240807170209_Inito")]
+    partial class Inito
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -308,11 +311,9 @@ namespace DAL.Migrations
                     b.HasData(
                         new
                         {
-
-                            Id = new Guid("bd19af18-0f43-486a-96cd-71fee7447aae"),
+                            Id = new Guid("fc1dd1ec-ee0a-4b95-ab80-142f01587052"),
                             Address = "İstanbul",
-                            CreatedDate = new DateTime(2024, 8, 8, 11, 19, 33, 433, DateTimeKind.Local).AddTicks(993),
-
+                            CreatedDate = new DateTime(2024, 8, 7, 20, 2, 8, 298, DateTimeKind.Local).AddTicks(3002),
                             Email = "admin@admin.com",
                             IsAdmin = true,
                             IsDeleted = false,

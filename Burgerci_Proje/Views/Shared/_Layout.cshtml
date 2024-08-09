@@ -1,49 +1,138 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Basic -->
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Burgerci_Proje</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Burgerci_Proje.styles.css" asp-append-version="true" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="shortcut icon" href="images/favicon.png" type="">
+
+    <title> Feane </title>
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="~/css/bootstrap.css" />
+
+    <!--owl slider stylesheet -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <!-- nice select  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
+    <!-- font awesome style -->
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
+    <link href="~/css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="~/css/responsive.css" rel="stylesheet" />
+
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Burgerci_Proje</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+        @RenderBody()
+
+<footer class="footer_section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 footer-col">
+                <div class="footer_contact">
+                    <h4>
+                        Contact Us
+                    </h4>
+                    <div class="contact_link_box">
+                        <a href="">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <span>
+                                Location
+                            </span>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-phone" aria-hidden="true"></i>
+                            <span>
+                                Call +01 1234567890
+                            </span>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                            <span>
+                                demo@gmail.com
+                            </span>
+                        </a>
+                    </div>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - Burgerci_Proje - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="col-md-4 footer-col">
+                <div class="footer_detail">
+                    <a href="" class="footer-logo">
+                        Feane
+                    </a>
+                    <p>
+                        Necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with
+                    </p>
+                    <div class="footer_social">
+                        <a href="">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-linkedin" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-instagram" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-pinterest" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 footer-col">
+                <h4>
+                    Opening Hours
+                </h4>
+                <p>
+                    Everyday
+                </p>
+                <p>
+                    10.00 Am -10.00 Pm
+                </p>
+            </div>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+        <div class="footer-info">
+            <p>
+                &copy; <span id="displayYear"></span> All Rights Reserved By
+                <a href="https://html.design/">Free Html Templates</a>
+            </p>
+        </div>
+    </div>
+</footer>
+<!-- jQery -->
+    <script src="~/js/jquery-3.4.1.min.js"></script>
+<!-- popper js -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+</script>
+<!-- bootstrap js -->
+    <script src="~/js/bootstrap.js"></script>
+<!-- owl slider -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+</script>
+<!-- isotope js -->
+<script src="https://unpkg.com/isotope-layout@3.0.4/dist/isotope.pkgd.min.js"></script>
+<!-- nice select -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
+<!-- custom js -->
+    <script src="~/js/custom.js"></script>
+<!-- Google Map -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
+</script>
+<!-- End Google Map -->
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
