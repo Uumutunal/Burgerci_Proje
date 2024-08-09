@@ -78,5 +78,12 @@ namespace BLL.Concrete
 
             return menuDtos;
         }
+
+        public async Task<MenuDto> GetMenuById(Guid menuId)
+        {
+            var menu = await _menuRepository.GetByIdAsync(menuId); // Await the task correctly
+            return _mapper.Map<MenuDto>(menu);
+        }
+
     }
 }
