@@ -43,12 +43,17 @@
                                 <input asp-for="Name" type="text" class="form-control" id="Name" placeholder="Enter extra name" />
                             </div>
                             <div class="form-group">
+                                <label for="Name">Extra Description</label>
+                                <br />
+                                <input asp-for="Description" type="text" class="form-control" id="Description" placeholder="Enter extra description" />
+                            </div>
+                            <div class="form-group">
                                 <label for="Price">Price</label>
                                 <br />
                                 <input asp-for="Price" type="number" class="form-control" id="Price" placeholder="Enter extra price" step="0.01" />
                             </div>
                             <div class="form-group">
-                                <input type="submit" value="Create Drink" class="btn btn-success btn-block" />
+                                <input type="submit" value="Create Extra" class="btn btn-success btn-block" />
                             </div>
                         </form>
                     </div>
