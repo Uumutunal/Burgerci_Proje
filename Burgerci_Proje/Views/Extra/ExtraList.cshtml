@@ -1,4 +1,5 @@
-﻿@model List<ExtraViewModel>
+﻿
+@model List<ExtraViewModel>
 @{
     ViewData["Title"] = "ExtraList";
     Layout = "~/Views/AdminLayout/Index.cshtml";
@@ -18,7 +19,9 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="#">Extras</a>
+
+                    <a href="@Url.Action("ExtraList")">Extras</a>
+
                 </li>
             </ul>
         </div>

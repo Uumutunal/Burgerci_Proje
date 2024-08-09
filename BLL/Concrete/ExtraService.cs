@@ -43,5 +43,10 @@ namespace BLL.Concrete
             var extra = _mapper.Map<Extra>(extraDto);
             await _extraRepository.UpdateAsync(extra);
         }
+        public async Task<ExtraDto> GetExtraById(Guid id)
+        {
+            var extra = await _extraRepository.GetByIdAsync(id);
+            return _mapper.Map<ExtraDto>(extra);
+        }
     }
 }

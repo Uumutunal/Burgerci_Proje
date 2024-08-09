@@ -11,6 +11,7 @@ namespace Burgerci_Proje.Models
         public int Quantity { get; set; } = 1;
         public string? Size { get; set; }
         public IFormFile? PhotoUrl { get; set; }
+        public string? Photo { get; set; }
         public Guid HamburgerId { get; set; }
         public Guid DrinkId { get; set; }
         public Guid ExtraId { get; set; }
@@ -18,8 +19,5 @@ namespace Burgerci_Proje.Models
         public DrinkViewModel DrinkViewModel { get; set; }
         public ExtraViewModel ExtraViewModel { get; set; }
 
-        public List<HamburgerViewModel> Hamburgers { get; set; }
-        public List<ExtraViewModel> Garnitures { get; set; }
-        public List<DrinkViewModel> Drinks { get; set; }
     }
 }

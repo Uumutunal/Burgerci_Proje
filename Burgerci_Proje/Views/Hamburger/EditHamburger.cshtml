@@ -4,11 +4,78 @@
     Layout = "~/Views/AdminLayout/Index.cshtml";
 }
 
-<h1>EditHamburger</h1>
-
-<form asp-action="">
-
-</form>
-
-
-
+<div class="container">
+    <div class="page-inner">
+        <div class="page-header">
+            <h3 class="fw-bold mb-3">Hamburgers</h3>
+            <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                    <a href="#">
+                        <i class="icon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="@Url.Action("ListHamburgers")">Hamburgers</a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Update Hamburger Panel</a>
+                </li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Update Hamburger Operation</div>
+                    </div>
+                    <div class="card-body">
+                        <form class="form" asp-controller="Hamburger" asp-action="EditHamburger" method="post" enctype="multipart/form-data">
+                            <input type="hidden" asp-for="Id" class="form-control" />
+                            <div class="form-group">
+                                <label for="Name">Hamburger Name</label>
+                                <br />
+                                <input asp-for="Name" type="text" class="form-control" id="Name" placeholder="Enter new hamburger name" required />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Description"></label>
+                                <br />
+                                <textarea asp-for="Description" type="text" class="form-control" id="Description" placeholder="Enter new hamburger description"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="Price">Price</label>
+                                <br />
+                                <input asp-for="Price" type="number" class="form-control" id="Price" placeholder="Enter new hamburger price" step="0.01" required />
+                            </div>
+                            <div class="form-group">
+                                <label>Garnitures</label>
+                                <div>
+                                    @foreach (var garniture in ViewBag.Garnitures as List<GarnitureViewModel>)
+                                    {
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="garniture_@garniture.Id" name="SelectedGarnitureIds" value="@garniture.Id"
+                                            @(Model.SelectedGarnitureIds.Contains(garniture.Id) ? "checked" : "") />
+                                            <label class="form-check-label" for="garniture_@garniture.Id">@garniture.Name</label>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div data-mdb-input-init class="form-group form-outline mb-4">
+                                <label asp-for="PhotoUrl" class="form-label">ADD PHOTO</label>
+                                <input asp-for="PhotoUrl" class="form-control form-control-lg" type="file" id="ImageUrl" />
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Update Hamburger" class="btn btn-success btn-block" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -13,5 +13,7 @@ namespace BLL.Abstract
         Task CreateDrink(DrinkDto drinkDto);
         Task DeleteDrink(Guid drinkId);
         Task UpdateDrink(DrinkDto drinkDto);
+
+        Task<DrinkDto> GetDrinkById(Guid id);
     }
 }

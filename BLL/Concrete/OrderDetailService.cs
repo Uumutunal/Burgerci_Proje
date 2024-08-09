@@ -37,5 +37,14 @@ namespace BLL.Concrete
 
             return _mapper.Map<List<OrderDetailDto>>(allOrderDetails.Where(x => x.OrderId == orderId).ToList());
         }
+        public async Task<List<OrderDetailDto>> GetOrderDetailWithIncludes(string[] includes)
+        {
+
+            var orderDetails = await _OrderDetailRepository.GetAllWithIncludes(includes);
+
+            var orderDetailDtos = _mapper.Map<List<OrderDetailDto>>(orderDetails.ToList());
+
+            return orderDetailDtos;
+        }
     }
 }

@@ -5,8 +5,19 @@
 }
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
 
+
 <div class="container">
+        @*<a href="@Url.Action("CreateHamburger", "Hamburger")" class="btn btn-outline-danger btn-sm">Create Hamburger</a>*@
+    <br />
+
+    @if (ViewBag.IsAdmin == "True")
+    {
+        <a href="/Hamburger/CreateHamburger" class="btn btn-primary mt-4">Add New Hamburger</a>
+    }
+
+    <br />
     <div class="row">
+        
         @foreach (var hamburger in Model)
         {
             <div class="col-md-3 mb-4">
@@ -35,16 +46,40 @@
                                 }
                             }
                         </p>
-                        <p class="card-text"><strong>Price:</strong> @hamburger.Price</p>
+                        <p class="card-text"><strong>Price:</strong> @hamburger.Price.ToString("C")</p>
                         <div class="d-flex justify-content-between">
-                            <a href="@Url.Action("Edit", "Hamburger", new { id = hamburger.Id })" class="btn btn-primary btn-sm">Edit</a>
-                            <a href="@Url.Action("Delete", "Hamburger", new { id = hamburger.Id })" class="btn btn-danger btn-sm">Delete</a>
+                            @if (ViewBag.IsAdmin == "True")
+                            {
+                                <a href="@Url.Action("EditHamburger", "Hamburger", new { id = hamburger.Id })" class="btn btn-primary btn-sm">Edit</a>
+                                <a href="@Url.Action("DeleteHamburger", "Hamburger", new { id = hamburger.Id })" class="btn btn-danger btn-sm">Delete</a>
+                            }
+                            else
+                            {
+                                // <a href="@Url.Action("AddHamburgerToOrder", "Order", new {id = hamburger.Id})" class="btn btn-primary btn-sm">Add To Cart</a>
+
+                                <form asp-action="AddToBasketHamburger" method="POST" style="display:inline">
+
+                                    <input type="hidden" name="Id" value="@hamburger.Id" />
+                                    <input type="hidden" name="Name" value="@hamburger.Name" />
+                                    <input type="hidden" name="Quantity" value="@hamburger.Quantity" />
+                                    <input type="hidden" name="Price" value="@hamburger.Price" />
+
+                                    <button type="submit" class="btn btn-outline-primary btn-sm me-2">
+
+                                        <i class="bi bi-hand-thumbs-up"></i> Add To Cart
+
+                                    </button>
+
+                                </form>
+                            }
                         </div>
                     </div>
                 </div>
             </div>
         }
+
     </div>
+
 </div>
 
 <style>

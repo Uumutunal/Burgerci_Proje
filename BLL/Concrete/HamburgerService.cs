@@ -47,9 +47,9 @@ namespace BLL.Concrete
             }
         }
 
-        public Task DeleteHamburger(Guid hamburgerId)
+        public async Task DeleteHamburger(Guid hamburgerId)
         {
-            throw new NotImplementedException();
+           await _hamburgerRepository.DeleteAsync(hamburgerId);
         }
 
         public async Task<List<HamburgerDto>> GetAllHamburgers()
@@ -63,44 +63,22 @@ namespace BLL.Concrete
           
         }
 
-        //public async Task UpdateHamburger(HamburgerDto hamburgerDto, List<GarnitureDto> garnitureDtos)
-        //{
-        //    // Fetch existing hamburger from repository
-        //    var existingHamburger = await _hamburgerRepository.GetByIdAsync(hamburgerDto.Id);
-        //    if (existingHamburger == null)
-        //    {
-        //        throw new Exception("Hamburger not found");
-        //    }
+        public async Task<HamburgerDto> GetHamburgerByIdAsync(Guid id)
+        {
+            var hamburger = await _hamburgerRepository.GetByIdAsync(id);
+            
+            return _mapper.Map<HamburgerDto>(hamburger);
+        }
 
-        //    // Update hamburger properties
-        //    existingHamburger.Name = hamburgerDto.Name;
-        //    existingHamburger.Description = hamburgerDto.Description;
-        //    existingHamburger.Price = hamburgerDto.Price;
-        //    existingHamburger.ImageUrl = hamburgerDto.ImageUrl;
+        public async Task UpdateHamburgerAsync(HamburgerDto hamburgerDto)
+        {
+            var hamburger = _mapper.Map<Hamburger>(hamburgerDto);
 
-        //    // Update garnitures
-        //    var existingGarnitures = await _garnitureRepository.GetByHamburgerIdAsync(hamburgerDto.Id);
-        //    var garnitureIds = garnitureDtos.Select(g => g.Id).ToList();
+            await _hamburgerRepository.UpdateAsync(hamburger);
+        }
+     
 
-        //    // Remove garnitures that are no longer associated
-        //    foreach (var garniture in existingGarnitures.Where(g => !garnitureIds.Contains(g.Id)).ToList())
-        //    {
-        //        existingHamburger.Garnitures.Remove(garniture);
-        //    }
 
-        //    // Add new garnitures
-        //    foreach (var garnitureId in garnitureIds.Except(existingGarnitures.Select(g => g.Id)))
-        //    {
-        //        var garniture = await _garnitureRepository.GetByIdAsync(garnitureId);
-        //        if (garniture != null)
-        //        {
-        //            existingHamburger.Garnitures.Add(garniture);
-        //        }
-        //    }
-
-        //    // Save changes to repository
-        //    await _hamburgerRepository.UpdateAsync(existingHamburger);
-        //}
     }
 
 }

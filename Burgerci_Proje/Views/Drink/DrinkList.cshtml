@@ -7,7 +7,7 @@
 <div class="container">
     <div class="page-inner">
         <div class="page-header">
-            <h3 class="fw-bold mb-3">Drink Admin Panel</h3>
+@*             <h3 class="fw-bold mb-3">Drink Admin Panel</h3>
             <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
                     <a href="#">
@@ -18,9 +18,9 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="#">Drinks</a>
+                    <a href="@Url.Action("DrinkList")">Drinks</a>
                 </li>
-            </ul>
+            </ul> *@
         </div>
         <div class="row">
             @foreach (var item in Model)
@@ -32,11 +32,32 @@
                             <h5 class="card-title">@item.Name</h5>
                             <p class="card-text">@item.Price.ToString("C")</p>
                             <div class="d-flex justify-content-between">
-                                <form asp-action="DeleteDrink" method="post" style="display:inline">
-                                    <input type="hidden" name="id" value="@item.Id" />
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
-                                <a href="@Url.Action("UpdateDrink", new { id = item.Id })" class="btn btn-success">Update</a>
+                                @if(ViewBag.IsAdmin == "True")
+                                {
+                                    <form asp-action="DeleteDrink" method="post" style="display:inline">
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                    <a href="@Url.Action("UpdateDrink", new { id = item.Id })" class="btn btn-success">Update</a>
+                                }
+                                else
+                                {
+                                    <form asp-action="AddToBasketDrink" method="POST" style="display:inline">
+
+                                        <input type="hidden" name="Id" value="@item.Id" />
+                                        <input type="hidden" name="Name" value="@item.Name" />
+                                        <input type="hidden" name="Quantity" value="@item.Quantity" />
+                                        <input type="hidden" name="Price" value="@item.Price" />
+
+                                        <button type="submit" class="btn btn-outline-primary btn-sm me-2">
+
+                                            <i class="bi bi-hand-thumbs-up"></i> Add To Cart
+
+                                        </button>
+
+                                    </form>
+                                }
+
                             </div>
                         </div>
                     </div>

@@ -2,6 +2,7 @@ using AutoMapper;
 using BLL.Abstract;
 using BLL.Concrete;
 using BLL.DTOs;
+using Burgerci_Proje.Entities;
 using Burgerci_Proje.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -17,8 +18,9 @@ namespace Burgerci_Proje.Controllers
         private readonly IDrinkService _drinkService;
         private readonly IHamburgerService _hamburgerService;
         private readonly IExtraService _extraService;
+        private readonly IUserService _userService;
 
-        public MenuController(IMapper mapper, IMenuService menuService, IGarnitureService garnitureService, IDrinkService drinkService,IHamburgerService hamburgerService, IExtraService extraService)
+        public MenuController(IMapper mapper, IMenuService menuService, IGarnitureService garnitureService, IDrinkService drinkService,IHamburgerService hamburgerService, IExtraService extraService, IUserService userService)
         {
             _mapper = mapper;
             _menuService = menuService;
@@ -26,6 +28,7 @@ namespace Burgerci_Proje.Controllers
             _drinkService = drinkService;
             _hamburgerService = hamburgerService;
             _extraService = extraService;
+            _userService = userService;
         }
         public async Task<IActionResult> Index()
         {
@@ -38,40 +41,101 @@ namespace Burgerci_Proje.Controllers
         [HttpPost]
         public async Task<IActionResult> AddToBasket(MenuViewModel menuViewModel)
         {
-            //TODO:Include Ã§alÃ½Ã¾mÃ½yor
-            var menu = await _menuService.GetMenuWithIncludes(new[] { "Hamburger" });
+
+            var menu = await _menuService.GetMenuWithIncludes(new[] { "Hamburger", "Drink", "Extra" });
+
 
             TempData["MenuData"] = JsonConvert.SerializeObject(menu.FirstOrDefault());
 
-            return RedirectToAction("Index", "Order");
+            return RedirectToAction("OrderMenu", "Order");
         }
+        public async Task<IActionResult> CreateMenu()
+        {
+            ViewBag.AllHamburgers = await GetHamburgers();
+            ViewBag.AllDrinks = await GetDrinks();
+            ViewBag.AllExtras = await GetExtras();
+            return View();
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> CreateMenu(MenuViewModel menuViewModel)
+        {
+           
+                try
+                {
+                    // Fotoðraf yükleme iþlemi
+                    if (menuViewModel.PhotoUrl != null)
+                    {
+                        var fileName = Path.GetFileName(menuViewModel.PhotoUrl.FileName);
+                        var filePath = Path.Combine("wwwroot", "Images", fileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await menuViewModel.PhotoUrl.CopyToAsync(stream);
+                        }
+
+                        menuViewModel.Photo = fileName;
+                    }
+
+                    // DTO'larý almak
+                    var hamburgerDto = await _hamburgerService.GetHamburgerByIdAsync(menuViewModel.HamburgerId);
+                    var drinkDto = await _drinkService.GetDrinkById(menuViewModel.DrinkId);
+                    var extraDto = await _extraService.GetExtraById(menuViewModel.ExtraId);
+
+                    // Menü DTO'suna verileri atama
+                    var menuDto = _mapper.Map<MenuDto>(menuViewModel);
+
+                    // Menü ve iliþkili öðeleri kaydetme
+                    await _menuService.CreateMenu(menuDto, hamburgerDto, drinkDto, extraDto);
+
+                    return RedirectToAction("MenuList");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "An error occurred while creating the menu.");
+                }
+            
+
+            // Formu yeniden göster
+            ViewBag.AllHamburgers = await GetHamburgers();
+            ViewBag.AllDrinks = await GetDrinks();
+            ViewBag.AllExtras = await GetExtras();
+            return View(menuViewModel);
+        }
+
+
+
+
         public async Task<IActionResult> MenuList()
         {
             var menus = await _menuService.GetAllMenus();
             var mappedMenus = _mapper.Map<List<MenuViewModel>>(menus);
+
+            ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
+
+
             return View(mappedMenus);
         }
-        public async Task<IActionResult> GetHamburgers()
+        public async Task<List<HamburgerViewModel>> GetHamburgers()
         {
             var hamburgers = await _hamburgerService.GetAllHamburgers();
-            var mappedHamburgers = _mapper.Map<List<HamburgerViewModel>>(hamburgers);
-            return Json(mappedHamburgers);
+            return _mapper.Map<List<HamburgerViewModel>>(hamburgers);
         }
 
-        public async Task<IActionResult> GetGarnitures()
-        {
-            var garnitures = await _garnitureService.GetAllGarnitures();
-            var mappedGarnitures = _mapper.Map<List<GarnitureViewModel>>(garnitures);
-            return Json(mappedGarnitures);
-        }
-
-        public async Task<IActionResult> GetDrinks()
+        public async Task<List<DrinkViewModel>> GetDrinks()
         {
             var drinks = await _drinkService.GetAllDrinks();
-            var mappedDrinks = _mapper.Map<List<DrinkViewModel>>(drinks);
-            return Json(mappedDrinks);
-
+            return _mapper.Map<List<DrinkViewModel>>(drinks);
         }
+
+        public async Task<List<ExtraViewModel>> GetExtras()
+        {
+            var extras = await _extraService.GetAllExtra();
+            return _mapper.Map<List<ExtraViewModel>>(extras);
+        }
+
 
 
     }
