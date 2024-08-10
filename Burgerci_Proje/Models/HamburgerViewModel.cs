@@ -12,7 +12,7 @@ namespace Burgerci_Proje.Models
         public string? Size { get; set; }
         public IFormFile? PhotoUrl { get; set; }
         public string? Photo {get; set;}
-        public List<MenuViewModel> MenuViewModels { get; set; }
+        public List<MenuViewModel>? MenuViewModels { get; set; }
 
     }
 }

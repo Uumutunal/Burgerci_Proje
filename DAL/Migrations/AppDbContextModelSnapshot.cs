@@ -308,12 +308,13 @@ namespace DAL.Migrations
                     b.HasData(
                         new
                         {
-
-
+                            Id = new Guid("a63103fb-0aa2-48cb-b102-7aeb01aa253b"),
+                            Address = "İstanbul",
+                            CreatedDate = new DateTime(2024, 8, 9, 17, 1, 49, 440, DateTimeKind.Local).AddTicks(9311),
                             Email = "admin@admin.com",
                             IsAdmin = true,
                             IsDeleted = false,
-                            Name = "adminbaba",
+                            Name = "adminadı",
                             Password = "123",
                             PhoneNumber = "1234567890",
                             Surname = "adminsoyadı",
@@ -422,6 +423,9 @@ namespace DAL.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
+
+                    b.Property<string>("Size")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

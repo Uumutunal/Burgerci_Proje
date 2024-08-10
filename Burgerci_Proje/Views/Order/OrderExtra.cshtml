@@ -1,0 +1,43 @@
+﻿@using DAL.Data
+@model ExtraViewModel
+@{
+    ViewData["Title"] = "ExtraList";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+
+
+<div>
+    <p>@Model.Name</p>
+
+</div>
+
+<div>
+    @*     <h3>Drink</h3>
+    <p>Name: @Model.Name</p>
+    <p>Name: @Model.DrinkViewModel?.Name</p>
+    <p>Description: @Model.DrinkViewModel?.Price</p> *@
+</div>
+
+<div>
+
+    @* <p>Total Price: @Model.HamburgerViewModel.Price + @Model.DrinkViewModel?.Price</p> *@
+
+</div>
+
+
+<form asp-action="AddExtraToOrder" method="POST" style="display:inline">
+
+    <input type="hidden" name="Name" value="@Model.Name" />
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <input type="hidden" name="Price" value="@Model.Price" />
+    <input type="hidden" name="PhotoUrl" value="@Model.PhotoUrl" />
+    <input type="hidden" name="Quantity" value="@Model.Quantity" />
+
+    <button type="submit" class="btn btn-outline-primary btn-sm me-2">
+        Onayla
+
+
+    </button>
+
+</form>

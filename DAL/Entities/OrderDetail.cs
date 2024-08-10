@@ -15,6 +15,7 @@ namespace DAL.Entities
         public Guid? DrinkId { get; set; }
         public Guid? ExtraId { get; set; }
         public int Quantity { get; set; }
+        public string? Size { get; set; }
         public double Price { get; set; }
         public Order Order { get; set; }
         public Menu Menu {get; set;}

@@ -63,9 +63,20 @@ namespace Burgerci_Proje.Controllers
                 HttpContext.Session.SetString("Username", userViewModel.Username);
                 HttpContext.Session.SetString("IsAdmin", userViewModel.IsAdmin.ToString());
 
-                return RedirectToAction("Index", "Home", userViewModel);
+                return RedirectToAction("MenuList", "Menu");
+
+
             }
             return View();
         }
+        public IActionResult Logout()   
+        {
+            ViewData["Title"] = "Logout";
+            HttpContext.Session.Clear();
+
+            return RedirectToAction("Login");
+        }
     }
+
+
 }

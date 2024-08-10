@@ -1,4 +1,5 @@
-﻿@model List<MenuViewModel>
+@model List<MenuViewModel>
+
 
 @{
     ViewBag.Title = "Menu List";
@@ -6,8 +7,39 @@
 }
 
 <h2>Menu List</h2>
-<button id="btnCreateMenu" class="btn btn-outline-success">CREATE A MENU</button>
+
 <div class="container">
+
+    <div class="page-header">
+        @if (ViewBag.IsAdmin != "True")
+        {
+            <h3 class="fw-bold mb-3">Menus</h3>
+        }
+        else
+        {
+            <h3 class="fw-bold mb-3">Menu Admin Panel</h3>
+        }
+        <ul class="breadcrumbs mb-3">
+            <li class="nav-home">
+                <a href="#">
+                    <i class="icon-home"></i>
+                </a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="@Url.Action("MenuList")">Menus</a>
+            </li>
+        </ul>
+    </div>
+
+    @if (ViewBag.IsAdmin == "True")
+    {
+        <a href="/Menu/CreateMenu" class="btn btn-primary mt-4">Add New Menu</a>
+
+        <br />
+    }
     <div class="row">
         @foreach (var menu in Model)
         {
@@ -16,11 +48,77 @@
                     <div class="card-body">
                         <h5 class="card-title">@menu.Name</h5>
                         <p class="card-text">@menu.Description</p>
+                        <p class="card-text">Contents:</p>
+                        <p class="card-text">Hamburger : @menu.HamburgerViewModel.Name</p>
+                        <p class="card-text">Drink : @menu.DrinkViewModel.Name</p>
+                        @if(menu.ExtraViewModel != null)
+                        {
+                            <p class="card-text">Extra : @menu.ExtraViewModel.Name</p>
+
+                        }
+                        else
+                        {
+                            <p class="card-text">Extra : </p>
+
+                        }
+
+                        <img src="@menu.PhotoUrl" class="card-img-top" alt="@menu.Name" style="height: 200px; object-fit: cover;">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary btnAdd" data-id="@menu.Id">Add</button>
+                                @if (ViewBag.IsAdmin == "True")
+                                {
+                                    <button type="button" class="btn btn-sm btn-outline-secondary btnAdd" data-id="@menu.Id">Add</button>
+                                }
+                                else
+                                {
+                                    @*                                     <form asp-action="AddToBasket" method="POST" style="display:inline">
+
+                            <input type="hidden" name="Id" value="@menu.Id" />
+                            <input type="hidden" name="Name" value="@menu.Name" />
+                            <input type="hidden" name="HamburgerId" value="@menu.HamburgerId" />
+                            <input type="hidden" name="DrinkId" value="@menu.DrinkId" />
+                            <input type="hidden" name="Quantity" value="@menu.Quantity" />
+                            <input type="hidden" name="Price" value="@menu.Price" />
+                            <input type="hidden" name="HamburgerViewModel" value="@menu.HamburgerViewModel" />
+
+                            <button type="submit" class="btn btn-outline-primary btn-sm me-2">
+
+                            <i class="bi bi-hand-thumbs-up"></i> Add To Cart
+
+                            </button>
+
+                            </form> *@
+
+                                    
+                                    <button type="button" class="btn btn-outline-primary btn-sm me-2"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#addToCartModal"
+                                            data-id="@menu.Id"
+                                            data-hamburgerId="@menu.HamburgerId"
+                                            data-drinkId="@menu.DrinkId"
+                                            data-name="@menu.Name"
+                                            data-price="@menu.Price">
+                                        <i class="bi bi-hand-thumbs-up"></i> Add To Cart
+                                    </button>
+
+                                    <select class="form-select me-2 quantity-selector">
+                                        @for (int i = 1; i <= 10; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+
+                                    <select class="form-select me-2 size-selector">
+                                        <option value="Small">Small</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="Large">Large</option>
+
+                                    </select>
+                                }
                             </div>
-                            <small class="text-muted">@menu.Price $</small>
+                            <div>
+                                <p class="card-text">@menu.Price.ToString("C")</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -29,134 +127,63 @@
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addModalLabel">Add Garnitures, Drinks, and Hamburgers</h5>
-                <button type="button" class="btn-close" id="modalCloseButton" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title" id="addToCartModalLabel">Confirm Add to Cart</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="addForm">
-                    <div class="form-group">
-                        <label for="hamburgers">Hamburgers</label>
-                        <div id="hamburger-checkboxes">
-                            <!-- Hamburger checkboxes will be populated here -->
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="garnitures">Garnitures</label>
-                        <div id="garniture-checkboxes">
-                            <!-- Garniture checkboxes will be populated here -->
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="drink">Drinks</label>
-                        <div id="drink-checkboxes">
-                            <!-- Drink checkboxes will be populated here -->
-                        </div>
-                    </div>
-                </form>
+                Are you sure you want to add this item to your cart?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="saveSelection">Save</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                <form asp-action="AddToBasketMenu" method="POST" style="display:inline">
+                    <input type="hidden" name="Id" id="modalItemId" />
+                    <input type="hidden" name="HamburgerId" id="modalItemHamburgerId" />
+                    <input type="hidden" name="DrinkId" id="modalItemDrinkId" />
+                    <input type="hidden" name="Name" id="modalItemName" />
+                    <input type="hidden" name="Price" id="modalItemPrice" />
+                    <input type="hidden" name="Quantity" id="modalItemQuantity" />
+                    <input type="hidden" name="Size" id="modalItemSize" />
+
+                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
 
-
-<!-- JavaScript kodu -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $("#btnCreateMenu").click(function () {
-            // Populate checkboxes for Hamburgers
-            $.ajax({
-                url: '@Url.Action("GetHamburgers", "Menu")',
-                method: 'GET',
-                success: function (data) {
-                    console.log(data)
-                    $("#hamburger-checkboxes").empty();
-                    $.each(data, function (i, item) {
-                        let hamburgerSatiri = "<label>"+item.name+"</label>"
-                        $("#hamburger-checkboxes").append(
-                            $('<div>').append(
-                                $('<input>', { type: 'checkbox', value: item.Id, id: 'hamburger-' + item.Id }),
-                                hamburgerSatiri
-                            )
-                        );
-                    });
-                },
-                error: function () {
-                    $("#hamburger-checkboxes").append('<div>Error loading hamburgers.</div>');
-                }
+    document.addEventListener('DOMContentLoaded', function () {
+        var addToCartButtons = document.querySelectorAll('[data-bs-toggle="modal"]');
+
+        addToCartButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                var itemId = this.getAttribute('data-id');
+                var itemHamburgerId = this.getAttribute('data-hamburgerId');
+                var itemDrinkId = this.getAttribute('data-drinkId');
+                var itemName = this.getAttribute('data-name');
+                var itemPrice = this.getAttribute('data-price');
+                var quantitySelector = this.closest('.card-body').querySelector('.quantity-selector');
+                var quantity = quantitySelector ? quantitySelector.value : 1; // Default to 1 if not found
+                var sizeSelector = this.closest('.card-body').querySelector('.size-selector');
+                var size = sizeSelector ? sizeSelector.value : "Small";
+
+                document.getElementById('modalItemId').value = itemId;
+                document.getElementById('modalItemHamburgerId').value = itemHamburgerId;
+                document.getElementById('modalItemDrinkId').value = itemDrinkId;
+                document.getElementById('modalItemName').value = itemName;
+                document.getElementById('modalItemPrice').value = itemPrice;
+                document.getElementById('modalItemQuantity').value = quantity;
+                document.getElementById('modalItemSize').value = size;
             });
-
-            // Populate checkboxes for Garnitures
-            $.ajax({
-                url: '@Url.Action("GetGarnitures", "Menu")',
-                method: 'GET',
-                success: function (data) {
-                    $("#garniture-checkboxes").empty();
-                    $.each(data, function (i, item) {
-                        $("#garniture-checkboxes").append(
-                            $('<div>').append(
-                                $('<input>', { type: 'checkbox', value: item.Id, id: 'garniture-' + item.Id }),
-                                $('<label>', { for: 'garniture-' + item.Id }).text(item.Name)
-                            )
-                        );
-                    });
-                },
-                error: function () {
-                    $("#garniture-checkboxes").append('<div>Error loading garnitures.</div>');
-                }
-            });
-
-            // Populate checkboxes for Drinks
-            $.ajax({
-                url: '@Url.Action("GetDrinks", "Menu")',
-                method: 'GET',
-                success: function (data) {
-                    $("#drink-checkboxes").empty();
-                    $.each(data, function (i, item) {
-                        $("#drink-checkboxes").append(
-                            $('<div>').append(
-                                $('<input>', { type: 'checkbox', value: item.Id, id: 'drink-' + item.Id }),
-                                $('<label>', { for: 'drink-' + item.Id }).text(item.Name)
-                            )
-                        );
-                    });
-                },
-                error: function () {
-                    $("#drink-checkboxes").append('<div>Error loading drinks.</div>');
-                }
-            });
-
-            $("#addModal").modal('show');
-        });
-
-        $("#saveSelection").click(function () {
-            var selectedHamburgers = $("#hamburger-checkboxes input:checked").map(function () { return this.value; }).get();
-            var selectedGarnitures = $("#garniture-checkboxes input:checked").map(function () { return this.value; }).get();
-            var selectedDrinks = $("#drink-checkboxes input:checked").map(function () { return this.value; }).get();
-
-            // Handle the selected items
-            console.log("Selected Hamburgers: " + selectedHamburgers);
-            console.log("Selected Garnitures: " + selectedGarnitures);
-            console.log("Selected Drinks: " + selectedDrinks);
-
-            $("#addModal").modal('hide');
-        });
-
-        // Handle the modal close button manually
-        $("#modalCloseButton").click(function () {
-            $("#addModal").modal('hide');
         });
     });
-
 </script>
+

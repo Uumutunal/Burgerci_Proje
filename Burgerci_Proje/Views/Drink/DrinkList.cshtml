@@ -7,7 +7,14 @@
 <div class="container">
     <div class="page-inner">
         <div class="page-header">
-            <h3 class="fw-bold mb-3">Drink Admin Panel</h3>
+            @if (ViewBag.IsAdmin != "True")
+            {
+                <h3 class="fw-bold mb-3">Drinks</h3>
+            }
+            else
+            {
+                <h3 class="fw-bold mb-3">Drink Admin Panel</h3>
+            }
             <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
                     <a href="#">
@@ -18,7 +25,7 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="#">Drinks</a>
+                    <a href="@Url.Action("DrinkList")">Drinks</a>
                 </li>
             </ul>
         </div>
@@ -32,17 +39,100 @@
                             <h5 class="card-title">@item.Name</h5>
                             <p class="card-text">@item.Price.ToString("C")</p>
                             <div class="d-flex justify-content-between">
-                                <form asp-action="DeleteDrink" method="post" style="display:inline">
-                                    <input type="hidden" name="id" value="@item.Id" />
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
-                                <a href="@Url.Action("UpdateDrink", new { id = item.Id })" class="btn btn-success">Update</a>
+                                @if (ViewBag.IsAdmin == "True")
+                                {
+                                    <form asp-action="DeleteDrink" method="post" style="display:inline">
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                    <a href="@Url.Action("UpdateDrink", new { id = item.Id })" class="btn btn-success">Update</a>
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-outline-primary btn-sm me-2"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#addToCartModal"
+                                            data-id="@item.Id"
+                                            data-name="@item.Name"
+                                            data-price="@item.Price">
+                                        <i class="bi bi-hand-thumbs-up"></i> Add To Cart
+                                    </button>
+
+                                    <select class="form-select me-2 quantity-selector">
+                                        @for (int i = 1; i <= 10; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+
+                                    <select class="form-select me-2 size-selector">
+                                        <option value="Small">Small</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="Large">Large</option>
+
+                                    </select>
+                                }
                             </div>
                         </div>
                     </div>
                 </div>
             }
         </div>
-        <a href="/Drink/CreateDrink" class="btn btn-primary mt-4">Add New Drink</a>
+        @if (ViewBag.IsAdmin == "True")
+        {
+            <a href="/Drink/CreateDrink" class="btn btn-primary mt-4">Add New Drink</a>
+        }
     </div>
 </div>
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addToCartModalLabel">Confirm Add to Cart</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to add this item to your cart?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                <form asp-action="AddToBasketDrink" method="POST" style="display:inline">
+                    <input type="hidden" name="Id" id="modalItemId" />
+                    <input type="hidden" name="Name" id="modalItemName" />
+                    <input type="hidden" name="Price" id="modalItemPrice" />
+                    <input type="hidden" name="Quantity" id="modalItemQuantity" />
+                    <input type="hidden" name="Size" id="modalItemSize" />
+
+                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var addToCartButtons = document.querySelectorAll('[data-bs-toggle="modal"]');
+
+        addToCartButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                var itemId = this.getAttribute('data-id');
+                var itemName = this.getAttribute('data-name');
+                var itemPrice = this.getAttribute('data-price');
+                var quantitySelector = this.closest('.card-body').querySelector('.quantity-selector');
+                var quantity = quantitySelector ? quantitySelector.value : 1; // Default to 1 if not found
+                var sizeSelector = this.closest('.card-body').querySelector('.size-selector');
+                var size = sizeSelector ? sizeSelector.value : "Small"; // Default to 1 if not found
+
+                document.getElementById('modalItemId').value = itemId;
+                document.getElementById('modalItemName').value = itemName;
+                document.getElementById('modalItemPrice').value = itemPrice;
+                document.getElementById('modalItemQuantity').value = quantity;
+                document.getElementById('modalItemSize').value = size;
+            });
+        });
+    });
+</script>

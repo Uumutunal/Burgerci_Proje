@@ -25,11 +25,20 @@ namespace BLL.Mapping
             CreateMap<User, UserDto>().ReverseMap();
 
             CreateMap<Menu, MenuDto>()
-           .ForMember(dest => dest.HamburgerDto, opt => opt.MapFrom(src => src.Hamburger));
-            CreateMap<Menu, MenuDto>()
-           .ForMember(dest => dest.DrinkDto, opt => opt.MapFrom(src => src.Drink));
-            CreateMap<Menu, MenuDto>()
-           .ForMember(dest => dest.ExtraDto, opt => opt.MapFrom(src => src.Extra));
+                .ForMember(dest => dest.HamburgerDto, opt => opt.MapFrom(src => src.Hamburger))
+                .ForMember(dest => dest.DrinkDto, opt => opt.MapFrom(src => src.Drink))
+                .ForMember(dest => dest.ExtraDto, opt => opt.MapFrom(src => src.Extra));
+
+
+            CreateMap<OrderDetail, OrderDetailDto>()
+                .ForMember(dest => dest.HamburgerDto, opt => opt.MapFrom(src => src.Hamburger))
+                .ForMember(dest => dest.DrinkDto, opt => opt.MapFrom(src => src.Drink))
+                .ForMember(dest => dest.ExtraDto, opt => opt.MapFrom(src => src.Extra))
+                .ForMember(dest => dest.MenuDto, opt => opt.MapFrom(src => src.Menu));
+
+            CreateMap<Order, OrderDto>()
+                .ForMember(dest => dest.OrderDetailDtos, opt => opt.MapFrom(src => src.OrderDetails));
+
         }
     }
 }

@@ -44,5 +44,10 @@ namespace BLL.Concrete
             var drink = _mapper.Map<Drink>(drinkDto);
             await _drinkRepository.UpdateAsync(drink);
         }
+        public async Task<DrinkDto> GetDrinkById(Guid id)
+        {
+            var drink = await _drinkRepository.GetByIdAsync(id);
+            return _mapper.Map<DrinkDto>(drink);
+        }
     }
 }
