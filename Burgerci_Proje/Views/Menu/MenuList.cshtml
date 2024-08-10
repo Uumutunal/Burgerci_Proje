@@ -45,6 +45,7 @@
         {
             <div class="col-md-4">
                 <div class="card mb-4 shadow-sm">
+                    <img src="@menu.Photo" alt="Menu Photo" class="card-img-top" style="height: 200px; object-fit: cover;" />
                     <div class="card-body">
                         <h5 class="card-title">@menu.Name</h5>
                         <p class="card-text">@menu.Description</p>
@@ -67,7 +68,9 @@
                             <div class="btn-group">
                                 @if (ViewBag.IsAdmin == "True")
                                 {
-                                    <button type="button" class="btn btn-sm btn-outline-secondary btnAdd" data-id="@menu.Id">Add</button>
+                                    <a href="@Url.Action("EditMenu", "Menu", new { id = menu.Id })" class="btn btn-primary btn-sm">Edit</a>
+                                    <a href="@Url.Action("DeleteMenu", "Menu", new { id = menu.Id })" class="btn btn-danger btn-sm">Delete</a>
+                                    <a href="@Url.Action("Details", "Menu", new { id = menu.Id })" class="btn btn-info btn-sm">Details</a>
                                 }
                                 else
                                 {

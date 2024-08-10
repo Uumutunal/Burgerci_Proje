@@ -140,7 +140,85 @@ namespace Burgerci_Proje.Controllers
             return _mapper.Map<List<ExtraViewModel>>(extras);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> EditMenu(Guid id)
+        {
+            var menu = await _menuService.GetMenuById(id);
+            if (menu == null)
+            {
+                return NotFound();
+            }
 
+            var menuViewModel = _mapper.Map<MenuViewModel>(menu);
+
+            // Assuming you want to pass lists of hamburgers, drinks, and extras for dropdowns
+            ViewBag.AllHamburgers = await GetHamburgers();
+            ViewBag.AllDrinks = await GetDrinks();
+            ViewBag.AllExtras = await GetExtras();
+
+            return View(menuViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditMenu(MenuViewModel menuViewModel)
+        {
+
+            // Handle the file upload if a new photo is provided
+            if (menuViewModel.PhotoUrl != null)
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                var uniqueFileName = $"{Guid.NewGuid()}_{menuViewModel.PhotoUrl.FileName}";
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await menuViewModel.PhotoUrl.CopyToAsync(fileStream);
+                }
+
+                menuViewModel.Photo = $"/images/{uniqueFileName}";
+            }
+
+            var menu = _mapper.Map<MenuDto>(menuViewModel);
+
+            await _menuService.UpdateMenu(menu);
+
+            return RedirectToAction("MenuList");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var menuDto = await _menuService.GetMenuById(id);
+            if (menuDto == null)
+            {
+                return NotFound();
+            }
+
+            // Menüye ait hamburgeri al
+            var hamburger = await _hamburgerService.GetHamburgerByIdAsync(menuDto.HamburgerId);
+
+            // Menüye ait içecek ve ekstra verilerini al
+            var drink = await _drinkService.GetDrinkById(menuDto.DrinkId);
+            var extra = await _extraService.GetExtraById(menuDto.ExtraId);
+
+            // ViewBag'lere ata
+            ViewBag.HamburgerName = hamburger?.Name;
+            ViewBag.DrinkName = drink?.Name;
+            ViewBag.ExtraName = extra?.Name;
+
+            // Menü ViewModel'ini oluþtur ve View'a geç
+            var menuViewModel = _mapper.Map<MenuViewModel>(menuDto);
+
+            return View(menuViewModel);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteMenu(Guid id)
+        {
+            await _menuService.DeleteMenu(id);
+            return RedirectToAction("MenuList");
+        }
 
     }
 }
