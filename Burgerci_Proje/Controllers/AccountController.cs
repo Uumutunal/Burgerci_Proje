@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BLL.Abstract;
 using BLL.DTOs;
+using BLL.Hasher;
 using Burgerci_Proje.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -40,6 +41,9 @@ namespace Burgerci_Proje.Controllers
                 userViewModel.Photo = fileName;
             }
 
+            var hashedPassword = SHA_Hasher.ComputeSha256Hash(userViewModel.Password);
+            userViewModel.Password = hashedPassword;
+
             var userDto = _mapper.Map<UserDto>(userViewModel);
             await _userService.Register(userDto);
             return RedirectToAction("Login");
@@ -54,7 +58,9 @@ namespace Burgerci_Proje.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
-            var userDto = await _userService.Login(username, password);
+            var hashedPassword = SHA_Hasher.ComputeSha256Hash(password);
+
+            var userDto = await _userService.Login(username, hashedPassword);
             if (userDto != null)
             {
                 var userViewModel = _mapper.Map<UserViewModel>(userDto);
