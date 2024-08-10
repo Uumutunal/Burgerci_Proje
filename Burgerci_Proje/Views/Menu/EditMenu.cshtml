@@ -7,6 +7,26 @@
 
 <h2>Edit Menu</h2>
 
+<ul class="breadcrumbs mb-3">
+    <li class="nav-home">
+        <a href="#">
+            <i class="icon-home"></i>
+        </a>
+    </li>
+    <li class="separator">
+        <i class="icon-arrow-right"></i>
+    </li>
+    <li class="nav-item">
+        <a href="@Url.Action("MenuList")">Menus</a>
+    </li>
+    <li class="separator">
+        <i class="icon-arrow-right"></i>
+    </li>
+    <li class="nav-item">
+        <a href="@Url.Action("EditMenu")">Menus</a>
+    </li>
+</ul>
+
 <form asp-action="EditMenu" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label asp-for="Name"></label>
@@ -60,7 +80,7 @@
                 foreach (var hamburger in ViewBag.AllHamburgers as List<HamburgerViewModel>)
                 {
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="hamburger_@hamburger.Id" name="HamburgerId" value="@hamburger.Id" />
+                        <input type="checkbox" class="form-check-input" id="hamburger_@hamburger.Id" name="HamburgerId" value="@hamburger.Id" @(Model.HamburgerId == hamburger.Id ? "checked" : "") />
                         <label class="form-check-label" for="hamburger_@hamburger.Id">@hamburger.Name</label>
                     </div>
                 }
@@ -80,7 +100,7 @@
                 foreach (var drink in ViewBag.AllDrinks as List<DrinkViewModel>)
                 {
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="drink_@drink.Id" name="DrinkId" value="@drink.Id" />
+                        <input type="checkbox" class="form-check-input" id="drink_@drink.Id" name="DrinkId" value="@drink.Id" @(Model.DrinkId == drink.Id ? "checked" : "") />
                         <label class="form-check-label" for="drink_@drink.Id">@drink.Name</label>
                     </div>
                 }
@@ -100,7 +120,7 @@
                 foreach (var extra in ViewBag.AllExtras as List<ExtraViewModel>)
                 {
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="extra_@extra.Id" name="ExtraId" value="@extra.Id" />
+                        <input type="checkbox" class="form-check-input" id="extra_@extra.Id" name="ExtraId" value="@extra.Id" @(Model.ExtraId == extra.Id ? "checked" : "") />
                         <label class="form-check-label" for="extra_@extra.Id">@extra.Name</label>
                     </div>
                 }
