@@ -33,7 +33,7 @@ namespace Burgerci_Proje.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> CreateDrink() 
+        public async Task<IActionResult> CreateDrink()
         {
             return View();
         }
@@ -41,9 +41,32 @@ namespace Burgerci_Proje.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateDrink(DrinkViewModel drinkViewModel)
         {
-            var drinkDto = _mapper.Map<DrinkDto>(drinkViewModel);
-            await _drinkService.CreateDrink(drinkDto);
-            return RedirectToAction("DrinkList");
+            if (ModelState.IsValid)
+            {
+                if (drinkViewModel.PhotoUrl != null)
+                {
+                    var fileName = Path.GetFileName(drinkViewModel.PhotoUrl.FileName);
+                    var filePath = Path.Combine("wwwroot", "Images", fileName);
+
+                    // Klasörün var olup olmadığını kontrol et, yoksa oluştur
+                    var directory = Path.GetDirectoryName(filePath);
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await drinkViewModel.PhotoUrl.CopyToAsync(stream);
+                    }
+
+                    drinkViewModel.Photo = fileName;
+                }
+                var drinkMappedDto = _mapper.Map<DrinkDto>(drinkViewModel);
+                await _drinkService.CreateDrink(drinkMappedDto);
+                return RedirectToAction("DrinkList");
+            }
+            return View(drinkViewModel);
         }
 
         [HttpPost]
@@ -56,6 +79,8 @@ namespace Burgerci_Proje.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateDrink(Guid id)
         {
+
+
             var drinks = await _drinkService.GetAllDrinks();
             var mappedDrinks = _mapper.Map<List<DrinkViewModel>>(drinks);
             var drinkToUpdate = mappedDrinks.FirstOrDefault(x => x.Id == id);
@@ -65,6 +90,29 @@ namespace Burgerci_Proje.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateDrink(DrinkViewModel drinkViewModel)
         {
+            if (ModelState.IsValid)
+            {
+                if (drinkViewModel.PhotoUrl != null)
+                {
+                    var fileName = Path.GetFileName(drinkViewModel.PhotoUrl.FileName);
+                    var filePath = Path.Combine("wwwroot", "Images", fileName);
+
+                    // Klasörün var olup olmadığını kontrol et, yoksa oluştur
+                    var directory = Path.GetDirectoryName(filePath);
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await drinkViewModel.PhotoUrl.CopyToAsync(stream);
+                    }
+
+                    drinkViewModel.Photo = fileName;
+                }
+            }
+
             var drinkDto = _mapper.Map<DrinkDto>(drinkViewModel);
             await _drinkService.UpdateDrink(drinkDto);
             return RedirectToAction("DrinkList");

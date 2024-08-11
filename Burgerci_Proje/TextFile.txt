@@ -1,131 +1,62 @@
-﻿<div class="container">
-			<div class="page-inner">
-				<div class="page-header">
-					<h3 class="fw-bold mb-3">Avatars</h3>
-					<ul class="breadcrumbs mb-3">
-						<li class="nav-home">
-							<a href="#">
-								<i class="icon-home"></i>
-							</a>
-						</li>
-						<li class="separator">
-							<i class="icon-arrow-right"></i>
-						</li>
-						<li class="nav-item">
-							<a href="#">Base</a>
-						</li>
-						<li class="separator">
-							<i class="icon-arrow-right"></i>
-						</li>
-						<li class="nav-item">
-							<a href="#">Avatars</a>
-						</li>
-					</ul>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<div class="card">
-							<div class="card-header">
-								<h4 class="card-title">Sizing</h4>
+﻿@using DAL.Data
+@inject AppDbContext _context
+@{
+    Guid.TryParse(Context.Session.GetString("UserId"), out Guid loggedInUserId);
+    var role = Context.Session.GetString("IsAdmin");
+}﻿
+<div class="main-panel">
+    <div class="main-header">
+        <div class="main-header-logo">
+            <!-- Logo Header -->
+            <div class="logo-header" data-background-color="dark">
 
-							</div>
-							<div class="card-body">
-								<p class="demo">
-									<div class="avatar avatar-xxl">
-										<img src="../assets/img/jm_denis.jpg" alt="..." class="avatar-img rounded-circle">
-									</div>
+                <a href="../index.html" class="logo">
+                    <img src="/kaiadmin-lite-1.2.0/assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20">
+                </a>
+                <div class="nav-toggle">
+                    <button class="btn btn-toggle toggle-sidebar">
+                        <i class="gg-menu-right"></i>
+                    </button>
+                    <button class="btn btn-toggle sidenav-toggler">
+                        <i class="gg-menu-left"></i>
+                    </button>
+                </div>
+                <button class="topbar-toggler more">
+                    <i class="gg-more-vertical-alt"></i>
+                </button>
 
-									<div class="avatar avatar-xl">
-										<img src="../assets/img/jm_denis.jpg" alt="..." class="avatar-img rounded-circle">
-									</div>
+            </div>
+            <!-- End Logo Header -->
+        </div>
+        <!-- Navbar Header -->
+        <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
 
-									<div class="avatar avatar-lg">
-										<img src="../assets/img/jm_denis.jpg" alt="..." class="avatar-img rounded-circle">
-									</div>
+            <div class="container-fluid">
 
-									<div class="avatar">
-										<img src="../assets/img/jm_denis.jpg" alt="..." class="avatar-img rounded-circle">
-									</div>
 
-									<div class="avatar avatar-sm">
-										<img src="../assets/img/jm_denis.jpg" alt="..." class="avatar-img rounded-circle">
-									</div>
+                <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                    @*Sepet*@
+                    <li class="nav-item topbar-icon hidden-caret">
+                        <a class="nav-link" id="messageDropdown2" role="button" aria-haspopup="true" href="@Url.Action("AllOrders", "Order")">
+                            <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                        </a>
+                    </li>
 
-									<div class="avatar avatar-xs">
-										<img src="../assets/img/jm_denis.jpg" alt="..." class="avatar-img rounded-circle">
-									</div>
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-12">
-						<div class="card">
-							<div class="card-header">
-								<h4 class="card-title">Status Indicator</h4>
-
-							</div>
-							<div class="card-body">
-								<p class="demo">
-									<div class="avatar avatar-online">
-										<img src="../assets/img/jm_denis.jpg" alt="..." class="avatar-img rounded-circle">
-									</div>
-
-									<div class="avatar avatar-offline">
-										<img src="../assets/img/jm_denis.jpg" alt="..." class="avatar-img rounded-circle">
-									</div>
-
-									<div class="avatar avatar-away">
-										<img src="../assets/img/jm_denis.jpg" alt="..." class="avatar-img rounded-circle">
-									</div>
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-12">
-						<div class="card">
-							<div class="card-header">
-								<h4 class="card-title">Shape</h4>
-
-							</div>
-							<div class="card-body">
-								<p class="demo">
-									<div class="avatar">
-										<img src="../assets/img/jm_denis.jpg" alt="..." class="avatar-img rounded">
-									</div>
-
-									<div class="avatar">
-										<img src="../assets/img/jm_denis.jpg" alt="..." class="avatar-img rounded-circle">
-									</div>
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-12">
-						<div class="card">
-							<div class="card-header">
-								<h4 class="card-title">Group</h4>
-
-							</div>
-							<div class="card-body">
-								<p class="demo">
-									<div class="avatar-group">
-										<div class="avatar">
-											<img src="../assets/img/jm_denis.jpg" alt="..." class="avatar-img rounded-circle border border-white">
-										</div>
-										<div class="avatar">
-											<img src="../assets/img/chadengle.jpg" alt="..." class="avatar-img rounded-circle border border-white">
-										</div>
-										<div class="avatar">
-											<img src="../assets/img/mlane.jpg" alt="..." class="avatar-img rounded-circle border border-white">
-										</div>
-										<div class="avatar">
-											<span class="avatar-title rounded-circle border border-white">CF</span>
-										</div>
-									</div>
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+                    <li class="nav-item topbar-user dropdown hidden-caret">
+                        <span class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
+                            <div class="avatar-sm">
+                                <img src="~/Images/@_context.Users.FirstOrDefault(x => x.Id == loggedInUserId).Photo"
+                                     alt="..."
+                                     class="avatar-img rounded-circle" />
+                            </div>
+                            <span class="profile-username">
+                                <span class="op-7">Hi,</span>
+                                <span class="fw-bold">@_context.Users.FirstOrDefault(x => x.Id == loggedInUserId).Name</span>
+                            </span>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>

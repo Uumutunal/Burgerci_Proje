@@ -7,28 +7,6 @@
 
 <div class="container">
     <div class="page-inner">
-        <div class="page-header">
-            <h3 class="fw-bold mb-3">Extras</h3>
-            <ul class="breadcrumbs mb-3">
-                <li class="nav-home">
-                    <a href="#">
-                        <i class="icon-home"></i>
-                    </a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="@Url.Action("ExtraList")">Extras</a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Update Extra Panel</a>
-                </li>
-            </ul>
-        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -36,7 +14,7 @@
                         <div class="card-title">Update Extra Operation</div>
                     </div>
                     <div class="card-body">
-                        <form class="form" asp-controller="Extra" asp-action="UpdateExtra" method="post">
+                        <form class="form" asp-controller="Extra" asp-action="UpdateExtra" method="post" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="Name">Extra Name</label>
                                 <br />
@@ -53,10 +31,10 @@
                             </div>
                             <div data-mdb-input-init class="form-group form-outline mb-4">
                                 <label asp-for="PhotoUrl" class="form-label">ADD PHOTO</label>
-                                <input asp-for="PhotoUrl" class="form-control form-control-lg" type="file" id="ImageUrl" />
+                                <input asp-for="PhotoUrl" class="form-control form-control-lg" type="file" id="PhotoUrl" />
                             </div>
                             <div class="form-group">
-                                <input type="submit" value="Update Drink" class="btn btn-success btn-block" />
+                                <input type="submit" value="Update Extra" class="btn btn-success btn-block" />
                             </div>
                         </form>
                     </div>

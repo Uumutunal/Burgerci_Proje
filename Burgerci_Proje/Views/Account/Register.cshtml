@@ -2,7 +2,7 @@
 @model UserViewModel
 
 
-<form action="Register" method="post">
+<form action="Register" method="post" enctype="multipart/form-data">
     <div data-mdb-input-init class="form-group form-outline">
         <label asp-for="Name" class="form-label">FIRST NAME</label>
         <input asp-for="Name" class="form-control form-control-lg" />

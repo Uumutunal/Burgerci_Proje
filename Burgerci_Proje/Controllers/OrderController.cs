@@ -50,6 +50,16 @@ namespace Burgerci_Proje.Controllers
             return View(drinkViewModel);
         }
 
+        [HttpGet]
+        public IActionResult OrderExtra()
+        {
+            var extraDataJson = TempData["ExtraData"] as string;
+            var extraDto = JsonConvert.DeserializeObject<ExtraDto>(extraDataJson);
+            var extraViewModel = _mapper.Map<ExtraViewModel>(extraDto);
+
+            return View(extraViewModel);
+        }
+
         //Sepet
         //tüm orderları listele
         [HttpGet]

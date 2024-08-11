@@ -1,5 +1,5 @@
-﻿
-@model List<ExtraViewModel>
+﻿@model List<ExtraViewModel>
+
 @{
     ViewData["Title"] = "ExtraList";
     Layout = "~/Views/AdminLayout/Index.cshtml";
@@ -7,44 +7,62 @@
 
 <div class="container">
     <div class="page-inner">
-        <div class="page-header">
-            <h3 class="fw-bold mb-3">Extra Admin Panel</h3>
-            <ul class="breadcrumbs mb-3">
-                <li class="nav-home">
-                    <a href="#">
-                        <i class="icon-home"></i>
-                    </a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="@Url.Action("ExtraList")">Extras</a>
-                </li>
-            </ul>
-        </div>
-        <div class="row">
-            @foreach (var item in Model)
-            {
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="@item.PhotoUrl" class="card-img-top" alt="@item.Name" style="height: 200px; object-fit: cover;">
-                        <div class="card-body">
-                            <h5 class="card-title">@item.Name</h5>
-                            <p class="card-text">@item.Price.ToString("C")</p>
-                            <div class="d-flex justify-content-between">
-                                <form asp-action="DeleteExtra" method="post" style="display:inline">
-                                    <input type="hidden" name="id" value="@item.Id" />
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
-                                <a href="@Url.Action("UpdateExtra", new { id = item.Id })" class="btn btn-success">Update</a>
+        <div class="card">
+            <div class="card-header" style="padding: 15px;">
+                <div class="d-flex justify-content-between align-items-center" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="card-title" style="font-size: 1.5rem; font-weight: bold;">Extra List</div>
+                    @if (ViewBag.IsAdmin == "True")
+                    {
+                        <a href="/Extra/CreateExtra" class="btn btn-primary">Add New Extra</a>
+                    }
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row" style="display: flex; flex-wrap: wrap; gap: 15px;">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-md-4 mb-4" style="flex: 1 1 300px;">
+                            <div class="card" style="width: 300px; height: 400px; margin: auto; display: flex; flex-direction: column;">
+                                <img src="@Url.Content("~/images/" + item.Photo)" class="card-img-top" alt="@item.Name" style="width: 100%; height: 200px; object-fit: cover;">
+                                <div class="card-body">
+                                    <h5 class="card-title">@item.Name</h5>
+                                    <p class="card-text">@item.Description</p>
+                                    <p class="card-text">@item.Price.ToString("C")</p>
+                                    <div class="d-flex justify-content-between">
+                                        @if (ViewBag.IsAdmin == "True")
+                                        {
+                                            <form asp-action="DeleteExtra" method="post" style="display:inline">
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+                                            <a href="@Url.Action("UpdateExtra", new { id = item.Id })" class="btn btn-success">Update</a>
+                                        }
+                                        else
+                                        {
+                                            <form asp-action="AddToBasketExtra" method="POST" style="display:inline">
+
+                                                <input type="hidden" name="Id" value="@item.Id" />
+                                                <input type="hidden" name="Name" value="@item.Name" />
+                                                <input type="hidden" name="Description" value="@item.Description" />
+                                                <input type="hidden" name="Price" value="@item.Price" />
+                                                <input type="hidden" name="Quantity" value="@item.Quantity" />
+
+                                                <button type="submit" class="btn btn-outline-primary btn-sm me-2">
+
+                                                    <i class="bi bi-hand-thumbs-up"></i> Add To Cart
+
+                                                </button>
+
+                                            </form>
+                                        }
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    }
                 </div>
-            }
+            </div>
         </div>
-        <a href="/Extra/CreateExtra" class="btn btn-primary mt-4">Add New Extra</a>
     </div>
 </div>
 

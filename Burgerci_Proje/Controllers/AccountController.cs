@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BLL.Abstract;
+using BLL.Concrete;
 using BLL.DTOs;
 using Burgerci_Proje.Models;
 using Microsoft.AspNetCore.Http;
@@ -27,24 +28,32 @@ namespace Burgerci_Proje.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(UserViewModel userViewModel)
         {
-            if (userViewModel.PhotoUrl != null)
+            if (ModelState.IsValid)
             {
-                var fileName = Path.GetFileName(userViewModel.PhotoUrl.FileName);
-                var filePath = Path.Combine("wwwroot", "Images", fileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                if (userViewModel.PhotoUrl != null)
                 {
-                    await userViewModel.PhotoUrl.CopyToAsync(stream);
+                    var fileName = Path.GetFileName(userViewModel.PhotoUrl.FileName);
+                    var filePath = Path.Combine("wwwroot", "Images", fileName);
+
+                    // Klasörün var olup olmadığını kontrol et, yoksa oluştur
+                    var directory = Path.GetDirectoryName(filePath);
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await userViewModel.PhotoUrl.CopyToAsync(stream);
+                    }
+
+                    userViewModel.Photo = fileName;
                 }
-
-                userViewModel.Photo = fileName;
+                var userMappedDto = _mapper.Map<UserDto>(userViewModel);
+                await _userService.Register(userMappedDto);
+                return RedirectToAction("Login");
             }
-
-            var userDto = _mapper.Map<UserDto>(userViewModel);
-            await _userService.Register(userDto);
-            return RedirectToAction("Login");
-            
-            //return View(userViewModel);
+            return View(userViewModel);
         }
         public IActionResult Login()
         {
