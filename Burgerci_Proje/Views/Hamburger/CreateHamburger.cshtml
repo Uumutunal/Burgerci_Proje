@@ -35,7 +35,7 @@
                         <div class="card-title">Add Hamburger Operation</div>
                     </div>
                     <div class="card-body">
-                        <form asp-action="CreateHamburger" method="post">
+                        <form asp-action="CreateHamburger" method="post" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label asp-for="Name"></label>
                                 <input asp-for="Name" class="form-control" />
@@ -50,7 +50,7 @@
                             </div>
                             <div data-mdb-input-init class="form-group form-outline mb-4">
                                 <label asp-for="PhotoUrl" class="form-label">ADD PHOTO</label>
-                                <input asp-for="PhotoUrl" class="form-control form-control-lg" type="file" id="PhotoUrl" enctype="multipart/form-data" />
+                                <input asp-for="PhotoUrl" class="form-control form-control-lg" type="file" id="PhotoUrl"  />
                             </div>
                             <div class="form-group">
                                 <label>Garnitures</label>
