@@ -95,7 +95,7 @@ namespace Burgerci_Proje.Controllers
 
         //GUIDler deneme için eklendi
         [HttpPost]
-        public async Task<IActionResult> AddMenuToOrder(MenuViewModel menuViewModel)
+        public async Task<IActionResult> AddMenuTOrder(MenuViewModel menuViewModel)
         {
             Guid.TryParse(HttpContext.Session.GetString("UserId"), out Guid userGuid);
 
