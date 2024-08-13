@@ -12,6 +12,18 @@
     <title>Login Page</title>
 
     <style>
+        .image-container {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .banner-image {
+            width: 400px;
+            height: 200px;
+            border-radius: 10px;
+        }
+
         body, html {
             height: 100%;
             margin: 0;
@@ -52,16 +64,6 @@
             background-color: #000;
         }
 
-        .slogan {
-            font-size: 32px;
-            font-weight: bold;
-            color: #f4c542;
-            text-align: center;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            letter-spacing: 2px;
-        }
-
         .right-side h2 {
             margin-bottom: 20px;
         }
@@ -90,7 +92,10 @@
     <div class="container">
         <div id="left-side" class="left-side"></div>
         <div class="right-side">
-            <div class="slogan">Delicious Bites, Every Time!</div>
+            <div class="image-container">
+                <img src="~/images/THE MATRIX BITES (5).png" alt="Banner Image" class="banner-image">
+            </div>
+            
             <h2>Login</h2>
             <form asp-action="Login" asp-controller="Account" method="post">
                 <input type="text" class="form-control" placeholder="Username" name="username" />
