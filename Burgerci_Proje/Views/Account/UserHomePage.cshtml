@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewData["Title"] = "UserHomePage";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<style>
+
+    .bgimg {
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-image: url('@Url.Content("~/Images/homepage.jpg")');
+        min-height: 90%;
+    }
+</style>
+<header class="bgimg w3-display-container w3-grayscale-min" id="home" style="background-image: url('@Url.Content("~/Images/homepage.jpg")');">
+    <div class="w3-display-bottomleft w3-padding">
+        <span class="w3-tag w3-xlarge">Open from 10am to 12pm</span>
+    </div>
+    <div class="w3-display-middle w3-center">
+        <span class="w3-text-white w3-hide-small" style="font-size:100px">THE MATRIX<br>BITES</span>
+        <span class="w3-text-white w3-hide-large w3-hide-medium" style="font-size:60px"><b>thin<br>CRUST PIZZA</b></span>
+        <p><a asp-action ="MenuList" asp-controller="Menu" class="w3-button w3-xxlarge w3-black">Let me see the menu</a></p>
+    </div>
+</header>
+

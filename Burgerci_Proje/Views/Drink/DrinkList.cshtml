@@ -1,7 +1,14 @@
 ﻿@model List<DrinkViewModel>
 @{
     ViewData["Title"] = "DrinkList";
-    Layout = "~/Views/AdminLayout/Index.cshtml";
+    if (ViewBag.IsAdmin == "True")
+    {
+        Layout = "~/Views/AdminLayout/Index.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_UserLayout.cshtml";
+    }
 }
 
 <div class="container">
@@ -22,11 +29,30 @@
                 </li>
             </ul> *@
         </div>
+        @if (ViewBag.IsAdmin == "True")
+        {
+            <a href="/Drink/CreateDrink" class="btn btn-primary mt-4">Add New Drink</a>
+        }
+        else
+        {
+            <br />
+            <br />
+            <div class="bgimg-container">
+                <div class="bgimg">
+                    <img src="@Url.Content("~/Images/drinklist.jpg")" alt="Drinks" class="bgimg-image" />
+                    <div class="text-overlay">
+                        <span class="text">DRINKS</span>
+                    </div>
+                </div>
+            </div>
+
+        }
+       
         <div class="row">
             @foreach (var item in Model)
             {
-                <div class="col-md-4 mb-4">
-                    <div class="card">
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100">
                         <img src="@item.PhotoUrl" class="card-img-top" alt="@item.Name" style="height: 200px; object-fit: cover;">
                         <div class="card-body">
                             <h5 class="card-title">@item.Name</h5>
@@ -64,6 +90,91 @@
                 </div>
             }
         </div>
-        <a href="/Drink/CreateDrink" class="btn btn-primary mt-4">Add New Drink</a>
+      
     </div>
 </div>
+<style>
+    .card-img-top {
+        object-fit: cover;
+    }
+
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .garniture-name {
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    body, html {
+        height: 100%;
+    }
+
+    body, h1, h2, h3, h4, h5, h6 {
+        font-family: "Amatic SC", sans-serif;
+    }
+
+    .menu {
+        display: none;
+    }
+
+    .bgimg {
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-image: url('@Url.Content("~/Images/homepage.jpg")');
+        min-height: 90%;
+    }
+
+    /* Added margin-top to row */
+    .row.mt-2 {
+        margin-top: 10px; /* Adjust this value as needed to control the spacing */
+    }
+
+    .bgimg {
+        margin-bottom: 0px; /* Remove extra space below the image */
+    }
+
+    .bgimg-container {
+        width: 100%;
+        height: 100px; /* Adjust height as needed */
+        position: relative;
+        margin-bottom: 0; /* Remove extra space below */
+    }
+
+    .bgimg {
+        position: relative;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .bgimg-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Ensure the image covers the container */
+    }
+
+    .text-overlay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 100%;
+    }
+
+    .text {
+        color: white;
+        font-size: 40px; /* Adjust font size as needed */
+    }
+
+</style>

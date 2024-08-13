@@ -1,31 +1,47 @@
 ﻿@model List<Burgerci_Proje.Models.HamburgerViewModel>
 @{
     var garnitures = ViewBag.Garnitures as List<Burgerci_Proje.Models.GarnitureViewModel> ?? new List<Burgerci_Proje.Models.GarnitureViewModel>();
-    Layout = "~/Views/AdminLayout/Index.cshtml";
+    if(ViewBag.IsAdmin == "True")
+    {
+        Layout = "~/Views/AdminLayout/Index.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_UserLayout.cshtml";
+    }
 }
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
 
 
 <div class="container">
-        @*<a href="@Url.Action("CreateHamburger", "Hamburger")" class="btn btn-outline-danger btn-sm">Create Hamburger</a>*@
-    <br />
+    @* <a href="@Url.Action("CreateHamburger", "Hamburger")" class="btn btn-outline-danger btn-sm">Create Hamburger</a> *@
+
 
     @if (ViewBag.IsAdmin == "True")
     {
         <a href="/Hamburger/CreateHamburger" class="btn btn-primary mt-4">Add New Hamburger</a>
     }
+    else
+    {
+        <br />
+        <br />
+        <div class="bgimg-container">
+            <div class="bgimg">
+                <img src="@Url.Content("~/Images/hamburgerlist.jpg")" alt="Hamburgers" class="bgimg-image" />
+                <div class="text-overlay">
+                    <span class="text">HAMBURGERS</span>
+                </div>
+            </div>
+        </div>
 
-    <br />
-    <div class="row">
-        
+    }
+
+    <div class="row mt-2">
         @foreach (var hamburger in Model)
         {
             <div class="col-md-3 mb-4">
                 <div class="card h-100">
-
-                    <img src="~/Images/@hamburger.Photo" class="img-fluid rounded-start" alt="@hamburger.Name"  style="width:200px;height:150px; object-fit: cover;" />
-
-
+                    <img src="~/Images/@hamburger.Photo" class="img-fluid rounded-start" alt="@hamburger.Name" style="width:200px;height:150px; object-fit: cover;" />
                     <div class="card-body">
                         <h5 class="card-title">@hamburger.Name</h5>
                         <p class="card-text">
@@ -56,21 +72,14 @@
                             }
                             else
                             {
-                                // <a href="@Url.Action("AddHamburgerToOrder", "Order", new {id = hamburger.Id})" class="btn btn-primary btn-sm">Add To Cart</a>
-
                                 <form asp-action="AddToBasketHamburger" method="POST" style="display:inline">
-
                                     <input type="hidden" name="Id" value="@hamburger.Id" />
                                     <input type="hidden" name="Name" value="@hamburger.Name" />
                                     <input type="hidden" name="Quantity" value="@hamburger.Quantity" />
                                     <input type="hidden" name="Price" value="@hamburger.Price" />
-
                                     <button type="submit" class="btn btn-outline-primary btn-sm me-2">
-
                                         <i class="bi bi-hand-thumbs-up"></i> Add To Cart
-
                                     </button>
-
                                 </form>
                             }
                         </div>
@@ -78,9 +87,7 @@
                 </div>
             </div>
         }
-
     </div>
-
 </div>
 
 <style>
@@ -105,4 +112,66 @@
         padding: 0.25rem 0.5rem;
         font-size: 0.875rem;
     }
+
+    body, html {
+        height: 100%;
+    }
+
+    body, h1, h2, h3, h4, h5, h6 {
+        font-family: "Amatic SC", sans-serif;
+    }
+
+    .menu {
+        display: none;
+    }
+
+    .bgimg {
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-image: url('@Url.Content("~/Images/homepage.jpg")');
+        min-height: 90%;
+    }
+
+    /* Added margin-top to row */
+    .row.mt-2 {
+        margin-top: 10px; /* Adjust this value as needed to control the spacing */
+    }
+
+    .bgimg {
+        margin-bottom: 0px; /* Remove extra space below the image */
+    }
+
+    .bgimg-container {
+        width: 100%;
+        height: 100px; /* Adjust height as needed */
+        position: relative;
+        margin-bottom: 0; /* Remove extra space below */
+    }
+
+    .bgimg {
+        position: relative;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .bgimg-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Ensure the image covers the container */
+    }
+
+    .text-overlay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 100%;
+    }
+
+    .text {
+        color: white;
+        font-size: 40px; /* Adjust font size as needed */
+    }
+
 </style>

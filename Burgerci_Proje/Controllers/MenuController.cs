@@ -35,6 +35,7 @@ namespace Burgerci_Proje.Controllers
 
             var allMenus = await _menuService.GetAllMenus();
             var allMenusMapped = _mapper.Map<List<MenuViewModel>>(allMenus);
+            ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
 
             return View(allMenusMapped);
         }

@@ -21,6 +21,7 @@ namespace Burgerci_Proje.Controllers
         {
             var extras = await _extraService.GetAllExtra();
             var mappedExtras = _mapper.Map<List<ExtraViewModel>>(extras);
+            ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
             return View(mappedExtras);
         }
 
