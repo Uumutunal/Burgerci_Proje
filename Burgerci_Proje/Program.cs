@@ -1,10 +1,12 @@
 using BLL.Abstract;
 using BLL.Concrete;
 using BLL.Mapping;
+using Burgerci_Proje.Entities;
 using DAL.AbstractRepositories;
 using DAL.ConcreteRepository;
 using DAL.Data;
 using DAL.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Burgerci_Proje
@@ -38,7 +40,6 @@ namespace Burgerci_Proje
             builder.Services.AddScoped(typeof(IOrderDetailService), typeof(OrderDetailService));
             builder.Services.AddScoped(typeof(IOrderService), typeof(OrderService));
 
-
             // Automapper
 
             builder.Services.AddAutoMapper(typeof(AutoMapperProfile), typeof(Burgerci_Proje.Mapping.AutoMapperProfile));
@@ -55,9 +56,10 @@ namespace Burgerci_Proje
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-           
+
             app.UseRouting();
             app.UseSession();
+
             app.UseAuthorization();
 
             app.MapControllerRoute(

@@ -14,6 +14,5 @@ namespace Burgerci_Proje.Entities
         public string Address { get; set; }
         public bool IsAdmin { get; set; }
         public List<Order> Orders { get; set; }
-     
     }
 }

@@ -9,7 +9,6 @@ namespace BLL.DTOs
 {
     public class UserDto : BaseDto
     {
-
         public string Username { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }

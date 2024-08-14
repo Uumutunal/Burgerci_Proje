@@ -55,11 +55,14 @@ namespace Burgerci_Proje.Controllers
             }
             return View(userViewModel);
         }
+
+        [HttpGet]
         public IActionResult Login()
         {
             ViewData["Title"] = "Login";
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
@@ -73,11 +76,10 @@ namespace Burgerci_Proje.Controllers
                 HttpContext.Session.SetString("IsAdmin", userViewModel.IsAdmin.ToString());
 
                 return RedirectToAction("MenuList", "Menu");
-
-
             }
             return View();
         }
+
         public IActionResult Logout()   
         {
             ViewData["Title"] = "Logout";
@@ -86,6 +88,4 @@ namespace Burgerci_Proje.Controllers
             return RedirectToAction("Login");
         }
     }
-
-
 }

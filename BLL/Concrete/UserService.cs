@@ -4,6 +4,7 @@ using BLL.DTOs;
 using Burgerci_Proje.Entities;
 using DAL.AbstractRepositories;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,16 +43,14 @@ namespace BLL.Concrete
         {
             var allUsers = await _userRepository.GetAllAsync();
             var theUser = allUsers.FirstOrDefault(u => u.Username == username && u.Password == password);
-
-            return _mapper.Map<UserDto>(theUser);
+            
+            return null;
         }
 
         public async Task Register(UserDto userDto)
         {
             var user = _mapper.Map<User>(userDto);
             user.Id = Guid.NewGuid();
-           
-            //user.Password = userDto.Password;
             await _userRepository.AddAsync(user);
         }
 
