@@ -39,9 +39,9 @@
 
     }
     <div class="row">
-        @foreach (var menu in Model)
-        {
-            <div class="col-md-4">
+@*         @foreach (var menu in Model)
+        { *@
+@*             <div class="col-md-4">
                 <div class="card mb-4 shadow-sm">
                     <img src="~/Images/@menu.Photo" class="img-fluid rounded-start" alt="@menu.Name" style="width:200px;height:150px; object-fit: cover;" />
                 </div>
@@ -51,7 +51,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                     </div>
                 </div>
-            </div>
+            </div> *@
             <div class="page-inner">
                 <div class="page-header">
                     @if (ViewBag.IsAdmin == "True")
@@ -79,7 +79,7 @@
                     {
                         <div class="col-md-4 mb-4">
                             <div class="card">
-                                <img src="~/Images/@menu.Photo" class="img-fluid rounded-start" alt="@menu.Name" style="width:200px;height:150px; object-fit: cover;" />
+                            <img src="~/Images/@item.Photo" class="img-fluid rounded-start" alt="@item.Name" style="width:200px;height:150px; object-fit: cover;" />
                                 <div class="card-body">
                                     <h5 class="card-title">@item.Name</h5>
                                     <p class="card-text">Contains: </p>
@@ -144,7 +144,7 @@
                     <a href="/Menu/CreateMenu" class="btn btn-primary mt-4">Add New Menu</a>
                 }
             </div>
-        }
+        @* } *@
     </div>
 </div>
 
