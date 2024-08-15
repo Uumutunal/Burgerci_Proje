@@ -44,7 +44,7 @@ namespace BLL.Concrete
             var allUsers = await _userRepository.GetAllAsync();
             var theUser = allUsers.FirstOrDefault(u => u.Username == username && u.Password == password);
             
-            return null;
+            return _mapper.Map<UserDto>(theUser);
         }
 
         public async Task Register(UserDto userDto)
