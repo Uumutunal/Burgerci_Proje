@@ -22,12 +22,15 @@ namespace Burgerci_Proje.Controllers
         {
             var extras = await _extraService.GetAllExtra();
             var mappedExtras = _mapper.Map<List<ExtraViewModel>>(extras);
+            ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
+
             return View(mappedExtras);
         }
 
         [HttpGet]
         public async Task<IActionResult> CreateExtra()
         {
+            ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
             return View();
         }
 
@@ -49,6 +52,7 @@ namespace Burgerci_Proje.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateExtra(Guid id)
         {
+            ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
             var extras = await _extraService.GetAllExtra();
             var mappedExtras = _mapper.Map<List<ExtraViewModel>>(extras);
             var extraToUpdate = mappedExtras.FirstOrDefault(x => x.Id == id);

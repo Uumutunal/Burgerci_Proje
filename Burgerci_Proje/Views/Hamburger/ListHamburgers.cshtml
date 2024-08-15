@@ -2,134 +2,115 @@
 @{
     var garnitures = ViewBag.Garnitures as List<Burgerci_Proje.Models.GarnitureViewModel> ?? new List<Burgerci_Proje.Models.GarnitureViewModel>();
     Layout = "~/Views/AdminLayout/Index.cshtml";
+    ViewData["Title"] = "HamburgerList";
+
 }
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+
 
 
 <div class="container">
-        @*<a href="@Url.Action("CreateHamburger", "Hamburger")" class="btn btn-outline-danger btn-sm">Create Hamburger</a>*@
-    <br />
+    <div class="page-inner">
+        <div class="page-header">
+            @if (ViewBag.IsAdmin != "True")
+            {
+                <h3 class="fw-bold mb-3">Hamburgers</h3>
+            }
+            else
+            {
+                <h3 class="fw-bold mb-3">Hamburger Admin Panel</h3>
+            }
+            <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                    <a href="#">
+                        <i class="icon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="@Url.Action("HamburgerList")">Hamburger</a>
+                </li>
+            </ul>
+        </div>
+        <div class="row">
+            @foreach (var hamburger in Model)
+            {
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100">
 
+                        <img src="@Url.Content("~/Images/" + hamburger.PhotoUrl)" class="card-img-top" alt="@hamburger.Name" style="width:200px;height:150px; object-fit: cover;">
 
-    <div class="page-header">
-        @if (ViewBag.IsAdmin != "True")
-        {
-            <h3 class="fw-bold mb-3">Hamburgers</h3>
-        }
-        else
-        {
-            <h3 class="fw-bold mb-3">Hamburger Admin Panel</h3>
-
-        }
-        <ul class="breadcrumbs mb-3">
-            <li class="nav-home">
-                <a href="#">
-                    <i class="icon-home"></i>
-                </a>
-            </li>
-            <li class="separator">
-                <i class="icon-arrow-right"></i>
-            </li>
-            <li class="nav-item">
-                <a href="@Url.Action("ListHamburgers")">Hamburgers</a>
-            </li>
-        </ul>
-    </div>
-    @if (ViewBag.IsAdmin == "True")
-    {
-        <a href="/Hamburger/CreateHamburger" class="btn btn-primary mt-4">Add New Hamburger</a>
-
-    }
-
-
-
-    <br />
-    <div class="row">
-        
-        @foreach (var hamburger in Model)
-        {
-            <div class="col-md-3 mb-4">
-                <div class="card h-100">
-
-                    <img src="@Url.Content("~/Images/" + hamburger.PhotoUrl)" class="card-img-top" alt="@hamburger.Name" style="width:200px;height:150px; object-fit: cover;">
-
-                    <div class="card-body">
-                        <h5 class="card-title">@hamburger.Name</h5>
-                        <p class="card-text">
-                            <strong>Garnitures:</strong><br />
-                            @if (!hamburger.SelectedGarnitureIds.Any())
-                            {
-                                <span>No garnitures selected.</span>
-                            }
-                            else
-                            {
-                                @foreach (var garniture in garnitures.Where(g => hamburger.SelectedGarnitureIds.Contains(g.Id)))
+                        <div class="card-body">
+                            <h5 class="card-title">@hamburger.Name</h5>
+                            <p class="card-text">
+                                <strong>Garnitures:</strong><br />
+                                @if (!hamburger.SelectedGarnitureIds.Any())
                                 {
-                                    <span class="garniture-name">@garniture.Name</span>
-                                    <br />
+                                    <span>No garnitures selected.</span>
                                 }
-                                @if (!garnitures.Any(g => hamburger.SelectedGarnitureIds.Contains(g.Id)))
+                                else
                                 {
-                                    <span>No matching garnitures found.</span>
-                                }
-                            }
-                        </p>
-                        <p class="card-text"><strong>Price:</strong> @hamburger.Price.ToString("C")</p>
-                        <div class="d-flex justify-content-between">
-                            @if (ViewBag.IsAdmin == "True")
-                            {
-                                <a href="@Url.Action("EditHamburger", "Hamburger", new { id = hamburger.Id })" class="btn btn-primary btn-sm">Edit</a>
-                                <a href="@Url.Action("DeleteHamburger", "Hamburger", new { id = hamburger.Id })" class="btn btn-danger btn-sm">Delete</a>
-                            }
-                            else
-                            {
-                                // <a href="@Url.Action("AddHamburgerToOrder", "Order", new {id = hamburger.Id})" class="btn btn-primary btn-sm">Add To Cart</a>
-
-                                // <form asp-action="AddToBasketHamburger" method="POST" style="display:inline">
-
-                                //     <input type="hidden" name="Id" value="@hamburger.Id" />
-                                //     <input type="hidden" name="Name" value="@hamburger.Name" />
-                                //     <input type="hidden" name="Quantity" value="@hamburger.Quantity" />
-                                //     <input type="hidden" name="Price" value="@hamburger.Price" />
-
-                                //     <button type="submit" class="btn btn-outline-primary btn-sm me-2">
-
-                                //         <i class="bi bi-hand-thumbs-up"></i> Add To Cart
-
-                                //     </button>
-
-                                // </form>
-                                <button type="button" class="btn btn-outline-primary btn-sm me-2"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#addToCartModal"
-                                        data-id="@hamburger.Id"
-                                        data-name="@hamburger.Name"
-                                        data-price="@hamburger.Price">
-                                    <i class="bi bi-hand-thumbs-up"></i> Add To Cart
-                                </button>
-
-                                <select class="form-select me-2 quantity-selector">
-                                    @for (int i = 1; i <= 10; i++)
+                                    @foreach (var garniture in garnitures.Where(g => hamburger.SelectedGarnitureIds.Contains(g.Id)))
                                     {
-                                        <option value="@i">@i</option>
+                                        <span class="garniture-name">@garniture.Name</span>
+                                        <br />
                                     }
-                                </select>
+                                    @if (!garnitures.Any(g => hamburger.SelectedGarnitureIds.Contains(g.Id)))
+                                    {
+                                        <span>No matching garnitures found.</span>
+                                    }
+                                }
+                            </p>
+                            <p class="card-text"><strong>Price:</strong> @hamburger.Price.ToString("C")</p>
+                            <div class="d-flex justify-content-between">
+                                @if (ViewBag.IsAdmin == "True")
+                                {
+                                    // <a href="@Url.Action("EditHamburger", "Hamburger", new { id = hamburger.Id })" class="btn btn-primary btn-sm">Edit</a>
+                                    // <a href="@Url.Action("DeleteHamburger", "Hamburger", new { id = hamburger.Id })" class="btn btn-danger btn-sm">Delete</a>
 
-                                <select class="form-select me-2 size-selector">
-                                    <option value="Small">Small</option>
-                                    <option value="Medium">Medium</option>
-                                    <option value="Large">Large</option>
+                                    <form asp-action="DeleteHamburger" method="post" style="display:inline">
+                                        <input type="hidden" name="id" value="@hamburger.Id" />
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                    <a href="@Url.Action("EditHamburger", new { id = hamburger.Id })" class="btn btn-success">Edit</a>
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-outline-primary btn-sm me-2"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#addToCartModal"
+                                            data-id="@hamburger.Id"
+                                            data-name="@hamburger.Name"
+                                            data-price="@hamburger.Price">
+                                        <i class="bi bi-hand-thumbs-up"></i> Add To Cart
+                                    </button>
 
-                                </select>
-                            }
+                                    <select class="form-select me-2 quantity-selector">
+                                        @for (int i = 1; i <= 10; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+
+                                    <select class="form-select me-2 size-selector">
+                                        <option value="Small">Small</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="Large">Large</option>
+
+                                    </select>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            }
+        </div>
+        @if (ViewBag.IsAdmin == "True")
+        {
+            <a href="/Hamburger/CreateHamburger" class="btn btn-primary mt-4">Add New Hamburger</a>
         }
-
     </div>
-
 </div>
 
 <style>

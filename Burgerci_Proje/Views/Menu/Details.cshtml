@@ -1,0 +1,43 @@
+﻿@model MenuViewModel
+
+@{
+    ViewData["Title"] = "Menu Details";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<h2>Menu Details</h2>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Name</h5>
+        <p class="card-text">@Model.Description</p>
+        <p class="card-text">Price: @Model.Price</p>
+        <p class="card-text">Quantity: @Model.Quantity</p>
+        <p class="card-text">Size: @Model.Size</p>
+
+        <div class="form-group">
+            <label>Hamburger:</label>
+            <p>@ViewBag.HamburgerName</p>
+        </div>
+
+        <div class="form-group">
+            <label>Drink:</label>
+            <p>@ViewBag.DrinkName</p>
+        </div>
+
+        <div class="form-group">
+            <label>Extra:</label>
+            <p>@ViewBag.ExtraName</p>
+        </div>
+
+        <div class="form-group">
+            <label>Current Photo:</label>
+            @if (Model.Photo != null)
+            {
+                <img src="@Model.Photo" alt="Menu Photo" class="img-thumbnail" style="max-height: 200px;" />
+            }
+        </div>
+    </div>
+</div>
+
+<a href="@Url.Action("MenuList", "Menu")" class="btn btn-secondary mt-3">Back to Menu List</a>

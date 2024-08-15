@@ -13,5 +13,7 @@ namespace BLL.Abstract
         Task CreateMenu(MenuDto menuDto, HamburgerDto hamburgerDto, DrinkDto drinkDto, ExtraDto extraDto);
         Task DeleteMenu(Guid menuId);
         Task<List<MenuDto>> GetMenuWithIncludes(string[] includes);
+        Task UpdateMenu(MenuDto menuDto);
+        Task<MenuDto> GetMenuById(Guid menuId);
     }
 }
