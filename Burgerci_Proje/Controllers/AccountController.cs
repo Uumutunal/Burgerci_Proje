@@ -47,7 +47,7 @@ namespace Burgerci_Proje.Controllers
             var userDto = _mapper.Map<UserDto>(userViewModel);
             await _userService.Register(userDto);
             return RedirectToAction("Login");
-            
+
             //return View(userViewModel);
         }
         public IActionResult Login()
@@ -68,21 +68,33 @@ namespace Burgerci_Proje.Controllers
                 HttpContext.Session.SetString("UserId", userViewModel.Id.ToString());
                 HttpContext.Session.SetString("Username", userViewModel.Username);
                 HttpContext.Session.SetString("IsAdmin", userViewModel.IsAdmin.ToString());
+                var isAdmin = HttpContext.Session.GetString("IsAdmin");
+                if (isAdmin == "True")
+                {
 
-                return RedirectToAction("MenuList", "Menu");
+                    return RedirectToAction("MenuList", "Menu");
 
-
+                }
+                else
+                {
+                    return RedirectToAction("UserHomePage");
+                }
             }
             return View();
         }
-        public IActionResult Logout()   
+        public IActionResult Logout()
         {
             ViewData["Title"] = "Logout";
             HttpContext.Session.Clear();
 
             return RedirectToAction("Login");
         }
+
+        public IActionResult UserHomePage()
+        {
+            return View();
+        }
+
+
     }
-
-
 }

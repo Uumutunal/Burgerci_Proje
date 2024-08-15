@@ -35,6 +35,7 @@ namespace Burgerci_Proje.Controllers
 
             var allMenus = await _menuService.GetAllMenus();
             var allMenusMapped = _mapper.Map<List<MenuViewModel>>(allMenus);
+            ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
 
             return View(allMenusMapped);
         }
@@ -66,7 +67,8 @@ namespace Burgerci_Proje.Controllers
 
             try
             {
-                // Fotoðraf yükleme iþlemi
+
+                // FotoÃ°raf yÃ¼kleme iÃ¾lemi
                 if (menuViewModel.PhotoUrl != null)
                 {
                     var fileName = Path.GetFileName(menuViewModel.PhotoUrl.FileName);
@@ -80,17 +82,15 @@ namespace Burgerci_Proje.Controllers
                     menuViewModel.Photo = fileName;
                 }
 
-                // DTO'larý almak
+                // DTO'larÃ½ almak
                 var hamburgerDto = await _hamburgerService.GetHamburgerByIdAsync(menuViewModel.HamburgerId);
-
-
                 var drinkDto = await _drinkService.GetDrinkById(menuViewModel.DrinkId);
                 var extraDto = await _extraService.GetExtraById(menuViewModel.ExtraId);
 
-                // Menü DTO'suna verileri atama
+                // MenÃ¼ DTO'suna verileri atama
                 var menuDto = _mapper.Map<MenuDto>(menuViewModel);
 
-                // Menü ve iliþkili öðeleri kaydetme
+                // MenÃ¼ ve iliÃ¾kili Ã¶Ã°eleri kaydetme
                 await _menuService.CreateMenu(menuDto, hamburgerDto, drinkDto, extraDto);
 
                 return RedirectToAction("MenuList");
@@ -101,7 +101,7 @@ namespace Burgerci_Proje.Controllers
             }
 
 
-            // Formu yeniden göster
+            // Formu yeniden gÃ¶ster
             ViewBag.AllHamburgers = await GetHamburgers();
             ViewBag.AllDrinks = await GetDrinks();
             ViewBag.AllExtras = await GetExtras();
@@ -198,10 +198,10 @@ namespace Burgerci_Proje.Controllers
                 return NotFound();
             }
 
-            // Menüye ait hamburgeri al
+            // MenÃ¼ye ait hamburgeri al
             var hamburger = await _hamburgerService.GetHamburgerByIdAsync(menuDto.HamburgerId);
 
-            // Menüye ait içecek ve ekstra verilerini al
+            // MenÃ¼ye ait iÃ§ecek ve ekstra verilerini al
             var drink = await _drinkService.GetDrinkById(menuDto.DrinkId);
             var extra = await _extraService.GetExtraById(menuDto.ExtraId);
 
@@ -210,7 +210,7 @@ namespace Burgerci_Proje.Controllers
             ViewBag.DrinkName = drink?.Name;
             ViewBag.ExtraName = extra?.Name;
 
-            // Menü ViewModel'ini oluþtur ve View'a geç
+            // MenÃ¼ ViewModel'ini oluÃ¾tur ve View'a geÃ§
             var menuViewModel = _mapper.Map<MenuViewModel>(menuDto);
 
             return View(menuViewModel);

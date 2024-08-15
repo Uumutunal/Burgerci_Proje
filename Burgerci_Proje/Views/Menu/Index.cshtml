@@ -1,13 +1,38 @@
 ﻿
 @model List<MenuViewModel>
-
-
-@*Menüleri listele*@
+@{
+    var garnitures = ViewBag.Garnitures as List<Burgerci_Proje.Models.GarnitureViewModel> ?? new List<Burgerci_Proje.Models.GarnitureViewModel>();
+    if (ViewBag.IsAdmin == "True")
+    {
+        Layout = "~/Views/AdminLayout/Index.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_UserLayout.cshtml";
+    }
+}
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <div class="container">
+    @if (ViewBag.IsAdmin == "True")
+    {
+        <a href="/Hamburger/CreateHamburger" class="btn btn-primary mt-4">Add New Hamburger</a>
+    }
+    else
+    {
+        <br />
+        <br />
+        <div class="bgimg-container">
+            <div class="bgimg">
+                <img src="@Url.Content("~/Images/hamburgerlist.jpg")" alt="Hamburgers" class="bgimg-image" />
+                <div class="text-overlay">
+                    <span class="text">HAMBURGERS</span>
+                </div>
+            </div>
+        </div>
 
+    }
     @foreach (var item in Model)
     {
         <div class="card mb-3" style="max-width: 540px;">

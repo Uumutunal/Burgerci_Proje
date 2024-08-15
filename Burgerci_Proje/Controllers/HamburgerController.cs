@@ -38,22 +38,23 @@ namespace Burgerci_Proje.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateHamburger(HamburgerViewModel hamburgerViewModel)
         {
+        
             ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
+            if (hamburgerViewModel.PhotoUrl != null)
+            {
+                var fileName = Path.GetFileName(hamburgerViewModel.PhotoUrl.FileName);
+                var filePath = Path.Combine("wwwroot", "Images", fileName);
 
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await hamburgerViewModel.PhotoUrl.CopyToAsync(stream);
+                }
+
+                hamburgerViewModel.Photo = fileName;
+            }
             if (ModelState.IsValid)
             {
-                if (hamburgerViewModel.PhotoUrl != null)
-                {
-                    var fileName = Path.GetFileName(hamburgerViewModel.PhotoUrl.FileName);
-                    var filePath = Path.Combine("wwwroot", "Images", fileName);
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await hamburgerViewModel.PhotoUrl.CopyToAsync(stream);
-                    }
-
-                    hamburgerViewModel.Photo = fileName;
-                }
+            
                 var hamburgerDto = _mapper.Map<HamburgerDto>(hamburgerViewModel);
                 var selectedGarnitureIds = hamburgerViewModel.SelectedGarnitureIds;
                 var garnitureDtos = await _garnitureService.GetGarnituresByIds(selectedGarnitureIds);

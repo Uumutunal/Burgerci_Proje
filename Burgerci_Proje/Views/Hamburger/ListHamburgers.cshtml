@@ -1,10 +1,22 @@
 ﻿@model List<Burgerci_Proje.Models.HamburgerViewModel>
 @{
     var garnitures = ViewBag.Garnitures as List<Burgerci_Proje.Models.GarnitureViewModel> ?? new List<Burgerci_Proje.Models.GarnitureViewModel>();
-    Layout = "~/Views/AdminLayout/Index.cshtml";
+
+    if(ViewBag.IsAdmin == "True")
+    {
+        Layout = "~/Views/AdminLayout/Index.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_UserLayout.cshtml";
+    }
+
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+
     ViewData["Title"] = "HamburgerList";
 
 }
+
 
 
 
@@ -39,7 +51,7 @@
                 <div class="col-md-3 mb-4">
                     <div class="card h-100">
 
-                        <img src="@Url.Content("~/Images/" + hamburger.PhotoUrl)" class="card-img-top" alt="@hamburger.Name" style="width:200px;height:150px; object-fit: cover;">
+                        <img src="~/Images/@hamburger.Photo" class="img-fluid rounded-start" alt="@hamburger.Name" style="width:200px;height:150px; object-fit: cover;" />
 
                         <div class="card-body">
                             <h5 class="card-title">@hamburger.Name</h5>
@@ -61,6 +73,7 @@
                                         <span>No matching garnitures found.</span>
                                     }
                                 }
+
                             </p>
                             <p class="card-text"><strong>Price:</strong> @hamburger.Price.ToString("C")</p>
                             <div class="d-flex justify-content-between">
@@ -135,6 +148,68 @@
         padding: 0.25rem 0.5rem;
         font-size: 0.875rem;
     }
+
+    body, html {
+        height: 100%;
+    }
+
+    body, h1, h2, h3, h4, h5, h6 {
+        font-family: "Amatic SC", sans-serif;
+    }
+
+    .menu {
+        display: none;
+    }
+
+    .bgimg {
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-image: url('@Url.Content("~/Images/homepage.jpg")');
+        min-height: 90%;
+    }
+
+    /* Added margin-top to row */
+    .row.mt-2 {
+        margin-top: 10px; /* Adjust this value as needed to control the spacing */
+    }
+
+    .bgimg {
+        margin-bottom: 0px; /* Remove extra space below the image */
+    }
+
+    .bgimg-container {
+        width: 100%;
+        height: 100px; /* Adjust height as needed */
+        position: relative;
+        margin-bottom: 0; /* Remove extra space below */
+    }
+
+    .bgimg {
+        position: relative;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .bgimg-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Ensure the image covers the container */
+    }
+
+    .text-overlay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 100%;
+    }
+
+    .text {
+        color: white;
+        font-size: 40px; /* Adjust font size as needed */
+    }
+
 </style>
 
 
