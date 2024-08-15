@@ -66,22 +66,22 @@ namespace Burgerci_Proje.Controllers
            
                 try
                 {
-                    // Fotoðraf yükleme iþlemi
-                    if (menuViewModel.PhotoUrl != null)
+                // Fotoðraf yükleme iþlemi
+                if (menuViewModel.PhotoUrl != null)
+                {
+                    var fileName = Path.GetFileName(menuViewModel.PhotoUrl.FileName);
+                    var filePath = Path.Combine("wwwroot", "Images", fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        var fileName = Path.GetFileName(menuViewModel.PhotoUrl.FileName);
-                        var filePath = Path.Combine("wwwroot", "Images", fileName);
-
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await menuViewModel.PhotoUrl.CopyToAsync(stream);
-                        }
-
-                        menuViewModel.Photo = fileName;
+                        await menuViewModel.PhotoUrl.CopyToAsync(stream);
                     }
 
-                    // DTO'larý almak
-                    var hamburgerDto = await _hamburgerService.GetHamburgerByIdAsync(menuViewModel.HamburgerId);
+                    menuViewModel.Photo = fileName;
+                }
+
+                // DTO'larý almak
+                var hamburgerDto = await _hamburgerService.GetHamburgerByIdAsync(menuViewModel.HamburgerId);
                     var drinkDto = await _drinkService.GetDrinkById(menuViewModel.DrinkId);
                     var extraDto = await _extraService.GetExtraById(menuViewModel.ExtraId);
 
