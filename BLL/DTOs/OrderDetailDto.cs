@@ -14,6 +14,7 @@ namespace BLL.DTOs
         public Guid? DrinkId { get; set; }
         public Guid? ExtraId { get; set; }
         public int Quantity { get; set; }
+        public string? Size { get; set; }
         public double Price { get; set; }
         public OrderDto OrderDto { get; set; }
         public MenuDto MenuDto { get; set; }

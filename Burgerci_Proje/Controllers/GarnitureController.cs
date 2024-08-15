@@ -28,6 +28,10 @@ namespace Burgerci_Proje.Controllers
                 return View();
             }
             */
+
+            ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
+
+
             var garnitures = await _garnitureService.GetAllGarnitures();
             var mappedGarnitures = _mapper.Map<List<GarnitureViewModel>>(garnitures);
             return View(mappedGarnitures);

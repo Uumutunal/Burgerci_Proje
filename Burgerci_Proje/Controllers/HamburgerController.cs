@@ -28,6 +28,8 @@ namespace Burgerci_Proje.Controllers
         [HttpGet]
         public async Task<IActionResult> CreateHamburger()
         {
+            ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
+
             var garnitures = await _garnitureService.GetAllGarnitures();
             ViewBag.Garnitures = _mapper.Map<List<GarnitureViewModel>>(garnitures);
             return View();
@@ -36,6 +38,8 @@ namespace Burgerci_Proje.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateHamburger(HamburgerViewModel hamburgerViewModel)
         {
+        
+            ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
             if (hamburgerViewModel.PhotoUrl != null)
             {
                 var fileName = Path.GetFileName(hamburgerViewModel.PhotoUrl.FileName);
@@ -122,7 +126,7 @@ namespace Burgerci_Proje.Controllers
             return View(hamburgerViewModel);
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> DeleteHamburger(Guid id)
         {
             await _hamburgerService.DeleteHamburger(id);

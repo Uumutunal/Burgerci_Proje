@@ -35,12 +35,15 @@ namespace Burgerci_Proje.Controllers
         [HttpGet]
         public async Task<IActionResult> CreateDrink() 
         {
+            ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateDrink(DrinkViewModel drinkViewModel)
         {
+            ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
+
             var drinkDto = _mapper.Map<DrinkDto>(drinkViewModel);
             await _drinkService.CreateDrink(drinkDto);
             return RedirectToAction("DrinkList");
@@ -56,6 +59,8 @@ namespace Burgerci_Proje.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateDrink(Guid id)
         {
+            ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
+
             var drinks = await _drinkService.GetAllDrinks();
             var mappedDrinks = _mapper.Map<List<DrinkViewModel>>(drinks);
             var drinkToUpdate = mappedDrinks.FirstOrDefault(x => x.Id == id);

@@ -4,6 +4,7 @@ using BLL.Concrete;
 using BLL.DTOs;
 using Burgerci_Proje.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Burgerci_Proje.Controllers
 {
@@ -22,12 +23,14 @@ namespace Burgerci_Proje.Controllers
             var extras = await _extraService.GetAllExtra();
             var mappedExtras = _mapper.Map<List<ExtraViewModel>>(extras);
             ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
+
             return View(mappedExtras);
         }
 
         [HttpGet]
         public async Task<IActionResult> CreateExtra()
         {
+            ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
             return View();
         }
 
@@ -49,6 +52,7 @@ namespace Burgerci_Proje.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateExtra(Guid id)
         {
+            ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
             var extras = await _extraService.GetAllExtra();
             var mappedExtras = _mapper.Map<List<ExtraViewModel>>(extras);
             var extraToUpdate = mappedExtras.FirstOrDefault(x => x.Id == id);
@@ -61,6 +65,17 @@ namespace Burgerci_Proje.Controllers
             var extraDto = _mapper.Map<ExtraDto>(extraViewModel);
             await _extraService.UpdateExtra(extraDto);
             return RedirectToAction("ExtraList");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddToBasketExtra(ExtraViewModel extraViewModel)
+        {
+
+            //var menu = await _menuService.GetMenuWithIncludes(new[] { "Hamburger", "Drink", "Extra" });
+
+            TempData["ExtraData"] = JsonConvert.SerializeObject(extraViewModel);
+
+            return RedirectToAction("OrderExtra", "Order");
         }
     }
 }
