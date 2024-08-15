@@ -9,60 +9,61 @@
     {
         Layout = "~/Views/Shared/_UserLayout.cshtml";
     }
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+
 }
 
 <div class="container">
-    @if (ViewBag.IsAdmin == "True")
-    {
-        <a href="/Extra/CreateExtra" class="btn btn-primary mt-4">Add New Extra</a>
-    }
-    else
-    {
-        <br />
-        <br />
-        <div class="bgimg-container">
-            <div class="bgimg">
-                <img src="@Url.Content("~/Images/extralist.jpg")" alt="Extras" class="bgimg-image" />
-                <div class="text-overlay">
-                    <span class="text">EXTRAS</span>
-                </div>
-            </div>
-        </div>
-
-    }
-   
-   @*  <div class="page-inner">
+    <div class="page-inner">
         <div class="page-header">
             @if (ViewBag.IsAdmin != "True")
             {
-                <h3 class="fw-bold mb-3">Extras</h3>
+                <br />
+                <br />
+                <div class="bgimg-container">
+                    <div class="bgimg">
+                        <img src="@Url.Content("~/Images/extralist.jpg")" alt="Extras" class="bgimg-image" />
+                        <div class="text-overlay">
+                            <span class="text">EXTRAS</span>
+                        </div>
+                    </div>
+                </div>
             }
             else
             {
                 <h3 class="fw-bold mb-3">Extra Admin Panel</h3>
+                <ul class="breadcrumbs mb-3">
+                    <li class="nav-home">
+                        <a href="#">
+                            <i class="icon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="icon-arrow-right"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("ExtraList")">Extras</a>
+                    </li>
+                </ul>
             }
-            <ul class="breadcrumbs mb-3">
-                <li class="nav-home">
-                    <a href="#">
-                        <i class="icon-home"></i>
-                    </a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="@Url.Action("ExtraList")">Extras</a>
-                </li>
-            </ul>
-        </div> *@
+            
+        </div>
+        @if (ViewBag.IsAdmin == "True")
+        {
+            <a href="/Extra/CreateExtra" class="btn btn-primary mt-4">Add New Extra</a>
+        }
+ 
         <div class="row">
             @foreach (var item in Model)
             {
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="@item.PhotoUrl" class="card-img-top" alt="@item.Name" style="height: 200px; object-fit: cover;">
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100">
+
+                        <img src="~/Images/@item.Photo" class="img-fluid rounded-start" alt="@item.Name" style="width:200px;height:150px; object-fit: cover;" />
+
                         <div class="card-body">
-                            <h5 class="card-title">@item.Name</h5>
+                            <h4 class="card-title">@item.Name</h4>
+                            <h6 class="card-text">@item.Description</h6>
                             <p class="card-text">@item.Price.ToString("C")</p>
                             <div class="d-flex justify-content-between">
                                 @if (ViewBag.IsAdmin == "True")
@@ -104,11 +105,6 @@
                 </div>
             }
         </div>
-
-        @if (ViewBag.IsAdmin == "True")
-        {
-            <a href="/Drink/CreateDrink" class="btn btn-primary mt-4">Add New Extra</a>
-        }
 
     </div>
 </div>
@@ -192,10 +188,9 @@
     }
 
     .text {
-        color:black;
+        color: black;
         font-size: 60px; /* Adjust font size as needed */
     }
-
 
 </style>
 

@@ -12,141 +12,126 @@
     {
         Layout = "~/Views/Shared/_UserLayout.cshtml";
     }
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
 
 }
 
 
 <div class="container">
+    <div class="page-inner">
+        <div class="page-header">
 
-
-    @if (ViewBag.IsAdmin == "True")
-    {
-        <a href="/Menu/CreateMenu" class="btn btn-primary mt-4">Add New Menu</a>
-
-    }
-    else
-    {
-        <br />
-        <br />
-        <div class="bgimg-container">
-            <div class="bgimg">
-                <img src="@Url.Content("~/Images/menulist.jpg")" alt="Menus" class="bgimg-image" />
-                <div class="text-overlay">
-                    <span class="text">MENUS</span>
-                </div>
-            </div>
-        </div>
-
-    }
-    <div class="row">
-@*         @foreach (var menu in Model)
-        { *@
-@*             <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
-                    <img src="~/Images/@menu.Photo" class="img-fluid rounded-start" alt="@menu.Name" style="width:200px;height:150px; object-fit: cover;" />
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">@menu.Name</h5>
-                    <p class="card-text">@menu.Description</p>
-                    <div class="d-flex justify-content-between align-items-center">
+            @if (ViewBag.IsAdmin == "True")
+            {
+                <h3 class="fw-bold mb-3">Menu Admin Panel</h3>
+                <ul class="breadcrumbs mb-3">
+                    <li class="nav-home">
+                        <a href="#">
+                            <i class="icon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="icon-arrow-right"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("MenuList")">Menus</a>
+                    </li>
+                </ul>
+        
+            }
+            else
+            {
+                <br />
+                <br />
+                <div class="bgimg-container">
+                    <div class="bgimg">
+                        <img src="@Url.Content("~/Images/menulist.jpg")" alt="Menus" class="bgimg-image" />
+                        <div class="text-overlay">
+                            <span class="text">MENUS</span>
+                        </div>
                     </div>
                 </div>
-            </div> *@
-            <div class="page-inner">
-                <div class="page-header">
-                    @if (ViewBag.IsAdmin == "True")
-                    {
-                        <h3 class="fw-bold mb-3">Menu Admin Panel</h3>
 
-                        <ul class="breadcrumbs mb-3">
-                            <li class="nav-home">
-                                <a href="#">
-                                    <i class="icon-home"></i>
-                                </a>
-                            </li>
-                            <li class="separator">
-                                <i class="icon-arrow-right"></i>
-                            </li>
-                            <li class="nav-item">
-                                <a href="@Url.Action("MenuList")">Menus</a>
-                            </li>
-                        </ul>
-                    }
+            }
+        </div>
+        @if (ViewBag.IsAdmin == "True")
+        {
+            <a href="/Menu/CreateMenu" class="btn btn-primary mt-4">Add New Menu</a>
+        }
+        <div class="row">
+          
+    
+            @foreach (var item in Model)
+            {
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 ">
 
-                </div>
-                <div class="row">
-                    @foreach (var item in Model)
-                    {
-                        <div class="col-md-4 mb-4">
-                            <div class="card">
-                            <img src="~/Images/@item.Photo" class="img-fluid rounded-start" alt="@item.Name" style="width:200px;height:150px; object-fit: cover;" />
-                                <div class="card-body">
-                                    <h5 class="card-title">@item.Name</h5>
-                                    <p class="card-text">Contains: </p>
-                                    <p class="card-text">Hamburger: @item.HamburgerViewModel.Name</p>
-                                    <p class="card-text">Drink: @item.DrinkViewModel.Name</p>
-                                    @if (@item.ExtraViewModel != null)
-                                    {
-                                        <p class="card-text">Extra: @item.ExtraViewModel.Name</p>
-                                    }
-                                    else
-                                    {
-                                        <p class="card-text">Extra: </p>
-                                    }
-                                    <p class="card-text">@item.Price.ToString("C")</p>
+                        <img src="~/Images/@item.Photo" class="img-fluid rounded-start" alt="@item.Name" style="width:200px;height:150px; object-fit: cover;" />
 
-                                    <div class="btn-group">
-                                        @if (ViewBag.IsAdmin == "True")
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Name</h5>
+                            <h6 class="card-title">@item.Description</h6>
+                            <p class="card-text">Contains: </p>
+                            <p class="card-text">Hamburger: @item.HamburgerViewModel.Name</p>
+                            <p class="card-text">Drink: @item.DrinkViewModel.Name</p>
+                            @if (@item.ExtraViewModel != null)
+                            {
+                                <p class="card-text">Extra: @item.ExtraViewModel.Name</p>
+                            }
+                            else
+                            {
+                                <p class="card-text">Extra: </p>
+                            }
+                            <p class="card-text">@item.Price.ToString("C")</p>
+
+                            <div class="d-flex justify-content-between">
+                                @if (ViewBag.IsAdmin == "True")
+                                {
+                                    <a href="@Url.Action("EditMenu", "Menu", new { id = item.Id })" class="btn btn-primary btn-sm">Edit</a>
+                                    <form asp-action="DeleteMenu" method="post" style="display:inline">
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                   // <a href="@Url.Action("DeleteMenu", "Menu", new { id = item.Id })" class="btn btn-danger btn-sm">Delete</a>
+                                    <a href="@Url.Action("Details", "Menu", new { id = item.Id })" class="btn btn-info btn-sm">Details</a>
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-outline-primary btn-sm me-2"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#addToCartModal"
+                                            data-id="@item.Id"
+                                            data-hamburgerId="@item.HamburgerId"
+                                            data-drinkId="@item.DrinkId"
+                                            data-name="@item.Name"
+                                            data-price="@item.Price">
+                                        <i class="bi bi-hand-thumbs-up"></i> Add To Cart
+                                    </button>
+
+                                    <select class="form-select me-2 quantity-selector">
+                                        @for (int i = 1; i <= 10; i++)
                                         {
-                                            <a href="@Url.Action("EditMenu", "Menu", new { id = item.Id })" class="btn btn-primary btn-sm">Edit</a>
-                                            <a href="@Url.Action("DeleteMenu", "Menu", new { id = item.Id })" class="btn btn-danger btn-sm">Delete</a>
-                                            <a href="@Url.Action("Details", "Menu", new { id = item.Id })" class="btn btn-info btn-sm">Details</a>
+                                            <option value="@i">@i</option>
                                         }
-                                        else
-                                        {
+                                    </select>
 
+                                    <select class="form-select me-2 size-selector">
+                                        <option value="Small">Small</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="Large">Large</option>
 
-                                            <button type="button" class="btn btn-outline-primary btn-sm me-2"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#addToCartModal"
-                                                    data-id="@item.Id"
-                                                    data-hamburgerId="@item.HamburgerId"
-                                                    data-drinkId="@item.DrinkId"
-                                                    data-name="@item.Name"
-                                                    data-price="@item.Price">
-                                                <i class="bi bi-hand-thumbs-up"></i> Add To Cart
-                                            </button>
-
-                                            <select class="form-select me-2 quantity-selector">
-                                                @for (int i = 1; i <= 10; i++)
-                                                {
-                                                    <option value="@i">@i</option>
-                                                }
-                                            </select>
-
-                                            <select class="form-select me-2 size-selector">
-                                                <option value="Small">Small</option>
-                                                <option value="Medium">Medium</option>
-                                                <option value="Large">Large</option>
-
-                                            </select>
-                                        }
-                                    </div>
-                                    <div>
-                                    </div>
-                                </div>
+                                    </select>
+                                }
                             </div>
                         </div>
-                    }
+                    </div>
                 </div>
-                @if (ViewBag.IsAdmin == "True")
-                {
-                    <a href="/Menu/CreateMenu" class="btn btn-primary mt-4">Add New Menu</a>
-                }
-            </div>
-        @* } *@
+            }
+        </div>
+      
     </div>
 </div>
+
 
 
 <!-- Bootstrap Modal -->

@@ -37,6 +37,18 @@ namespace Burgerci_Proje.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateExtra(ExtraViewModel extraViewModel)
         {
+            if (extraViewModel.PhotoUrl != null)
+            {
+                var fileName = Path.GetFileName(extraViewModel.PhotoUrl.FileName);
+                var filePath = Path.Combine("wwwroot", "Images", fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await extraViewModel.PhotoUrl.CopyToAsync(stream);
+                }
+
+                extraViewModel.Photo = fileName;
+            }
             var extraDto = _mapper.Map<ExtraDto>(extraViewModel);
             await _extraService.CreateExtra(extraDto);
             return RedirectToAction("ExtraList");

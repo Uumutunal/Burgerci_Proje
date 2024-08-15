@@ -42,6 +42,18 @@ namespace Burgerci_Proje.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateDrink(DrinkViewModel drinkViewModel)
         {
+            if (drinkViewModel.PhotoUrl != null)
+            {
+                var fileName = Path.GetFileName(drinkViewModel.PhotoUrl.FileName);
+                var filePath = Path.Combine("wwwroot", "Images", fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await drinkViewModel.PhotoUrl.CopyToAsync(stream);
+                }
+
+                drinkViewModel.Photo = fileName;
+            }
             ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
 
             var drinkDto = _mapper.Map<DrinkDto>(drinkViewModel);

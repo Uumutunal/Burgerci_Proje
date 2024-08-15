@@ -2,21 +2,20 @@
 
 @{
     ViewBag.Title = "Menu List";
-
-    Layout = "~/Views/AdminLayout/Index.cshtml";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
     double totalPrice = 0;
 }
 
-
-<h2>Order List</h2>
-
-
-<div class="page-inner">
-    <div class="page-header">
-        <h3 class="fw-bold mb-3">Cart</h3>
+<br />
+<br />
+<div class="bgimg-container">
+    <div class="bgimg">
+        <img src="@Url.Content("~/Images/orderlist.jpg")" alt="Orders" class="bgimg-image" />
+        <div class="text-overlay">
+            <span class="text">ORDER LIST</span>
+        </div>
     </div>
 </div>
-
 
 @if (Model == null || !Model.Any())
 {
@@ -25,64 +24,151 @@
 else
 {
     <div class="container">
-        <div class="row">
+        <div class="row d-flex flex-wrap">
             @foreach (var order in Model)
             {
                 <div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
+                        <img src="@(
+                            order.MenuViewModel?.PhotoUrl ??
+                            order.HamburgerViewModel?.PhotoUrl ??
+                            order.DrinkViewModel?.PhotoUrl ??
+                            order.ExtraViewModel?.PhotoUrl)"
+                             class="card-img-top" style="height: 200px; object-fit: cover;">
+
                         <div class="card-body">
-                            @if (order.MenuViewModel != null)
-                            {
-                                <h5 class="card-title">Menu Name : @order.MenuViewModel.Name</h5>
-                                <img src="@order.MenuViewModel.PhotoUrl" class="card-img-top" style="height: 200px; object-fit: cover;">
+                            <h5 class="card-title">
+                                @if (order.MenuViewModel != null)
+                                {
+                                    <span>Menu Name: @order.MenuViewModel.Name</span>
+                                }
+                                @if (order.HamburgerViewModel != null)
+                                {
+                                    <span>Hamburger Name: @order.HamburgerViewModel.Name</span>
+                                }
+                                @if (order.DrinkViewModel != null)
+                                {
+                                    <span>Drink Name: @order.DrinkViewModel.Name</span>
+                                }
+                                @if (order.ExtraViewModel != null)
+                                {
+                                    <span>Extra Name: @order.ExtraViewModel.Name</span>
+                                }
+                            </h5>
 
+                            <h5 class="card-title">Size: @order.Size</h5>
+                            <p class="card-text">Quantity: @order.Quantity</p>
 
+                            @{
+                                totalPrice += order.Price;
                             }
-                            @if (order.HamburgerViewModel != null)
-                            {
-                                <h5 class="card-title">Hamburger Name : @order.HamburgerViewModel.Name</h5>
-                                <img src="@order.HamburgerViewModel.PhotoUrl" class="card-img-top" style="height: 200px; object-fit: cover;">
-
-
-                            }
-                            @if (order.DrinkViewModel != null)
-                            {
-                                <h5 class="card-title">Drink Name : @order.DrinkViewModel.Name</h5>
-                                <img src="@order.DrinkViewModel.PhotoUrl" class="card-img-top" style="height: 200px; object-fit: cover;">
-
-
-                            }
-                            @if (order.ExtraViewModel != null)
-                            {
-                                <h5 class="card-title">Extra Name : @order.ExtraViewModel.Name</h5>
-                                <img src="@order.ExtraViewModel.PhotoUrl" class="card-img-top" style="height: 200px; object-fit: cover;">
-
-
-                            }
-                            <h5 class="card-title">Size : @order.Size</h5>
-
-                            <p class="card-text">Quantity : @order.Quantity</p>
-
-                            @{totalPrice += order.Price;}
 
                             <div class="d-flex justify-content-between align-items-center">
                                 <small class="text-muted">@($"{order.Price:C}")</small>
+                                <form asp-action="DeleteOrderDetail" method="post" style="display:inline;">
+                                    <input type="hidden" name="orderDetailId" value="@order.Id" />
+                                    <input type="hidden" name="OrderId" value="@order.OrderId" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
                             </div>
-                            <form asp-action="DeleteOrderDetail" method="post" style="display:inline;">
-                                <input type="hidden" name="orderDetailId" value="@order.Id" />
-                                <input type="hidden" name="OrderId" value="@order.OrderId" />
-                                <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                            </form>
                         </div>
                     </div>
                 </div>
             }
         </div>
-        <form asp-action="ConfirmOrder" method="post" style="display:inline;">
-            <input type="hidden" name="id" value="@Model[0].OrderId" />
-            <button type="submit" class="btn btn-primary mt-4">Confirm Order | Total Price = @($"{totalPrice:C}")</button>
-        </form>
 
-
+        <div class="d-flex justify-content-end mt-4">
+            <form asp-action="ConfirmOrder" method="post">
+                <input type="hidden" name="id" value="@Model[0].OrderId" />
+                <button type="submit" class="btn btn-primary">
+                    Confirm Order | Total Price: @($"{totalPrice:C}")
+                </button>
+            </form>
+        </div>
     </div>
 }
+<style>
+    .card-img-top {
+        object-fit: cover;
+    }
+
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .garniture-name {
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    body, html {
+        height: 100%;
+    }
+
+    body, h1, h2, h3, h4, h5, h6 {
+        font-family: "Amatic SC", sans-serif;
+    }
+
+    .menu {
+        display: none;
+    }
+
+    .bgimg {
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-image: url('@Url.Content("~/Images/homepage.jpg")');
+        min-height: 90%;
+    }
+
+    /* Added margin-top to row */
+    .row.mt-2 {
+        margin-top: 10px; /* Adjust this value as needed to control the spacing */
+    }
+
+    .bgimg {
+        margin-bottom: 0px; /* Remove extra space below the image */
+    }
+
+    .bgimg-container {
+        width: 100%;
+        height: 100px; /* Adjust height as needed */
+        position: relative;
+        margin-bottom: 0; /* Remove extra space below */
+    }
+
+    .bgimg {
+        position: relative;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .bgimg-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Ensure the image covers the container */
+    }
+
+    .text-overlay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 100%;
+    }
+
+    .text {
+        color: white;
+        font-size: 40px; /* Adjust font size as needed */
+    }
+
+</style>

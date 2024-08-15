@@ -58,9 +58,9 @@ namespace Burgerci_Proje.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
-            var hashedPassword = SHA_Hasher.ComputeSha256Hash(password);
+           // var hashedPassword = SHA_Hasher.ComputeSha256Hash(password);
 
-            var userDto = await _userService.Login(username, hashedPassword);
+            var userDto = await _userService.Login(username, password);
             if (userDto != null)
             {
                 var userViewModel = _mapper.Map<UserViewModel>(userDto);

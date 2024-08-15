@@ -26,27 +26,48 @@
         <div class="page-header">
             @if (ViewBag.IsAdmin != "True")
             {
-                <h3 class="fw-bold mb-3">Hamburgers</h3>
+                <br />
+                <br />
+                <div class="bgimg-container">
+                    <div class="bgimg">
+                        <img src="@Url.Content("~/Images/hamburgerlist.jpg")" alt="Hamburgers" class="bgimg-image" />
+                        <div class="text-overlay">
+                            <span class="text">HAMBURGERS</span>
+                        </div>
+                    </div>
+                </div>
             }
             else
             {
                 <h3 class="fw-bold mb-3">Hamburger Admin Panel</h3>
+
+                <ul class="breadcrumbs mb-3">
+                    <li class="nav-home">
+                        <a href="#">
+                            <i class="icon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="icon-arrow-right"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("HamburgerList")">Hamburger</a>
+                    </li>
+                </ul>
+             
+
             }
-            <ul class="breadcrumbs mb-3">
-                <li class="nav-home">
-                    <a href="#">
-                        <i class="icon-home"></i>
-                    </a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="@Url.Action("HamburgerList")">Hamburger</a>
-                </li>
-            </ul>
+            
         </div>
+        @if (ViewBag.IsAdmin == "True")
+        {
+            <a href="/Hamburger/CreateHamburger" class="btn btn-primary mt-4">Add New Hamburger</a>
+          
+
+        }
         <div class="row">
+         
+           
             @foreach (var hamburger in Model)
             {
                 <div class="col-md-3 mb-4">
@@ -120,10 +141,7 @@
                 </div>
             }
         </div>
-        @if (ViewBag.IsAdmin == "True")
-        {
-            <a href="/Hamburger/CreateHamburger" class="btn btn-primary mt-4">Add New Hamburger</a>
-        }
+       
     </div>
 </div>
 

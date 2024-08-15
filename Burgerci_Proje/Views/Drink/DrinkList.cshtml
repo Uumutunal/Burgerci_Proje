@@ -9,58 +9,59 @@
     {
         Layout = "~/Views/Shared/_UserLayout.cshtml";
     }
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+
 }
 
 <div class="container">
     <div class="page-inner">
         <div class="page-header">
-            @if (ViewBag.IsAdmin != "True")
+           
+            @if(ViewBag.IsAdmin == "True")
             {
-                <h3 class="fw-bold mb-3">Drinks</h3>
+                <h3 class="fw-bold mb-3">Drink Admin Panel</h3>
+                <ul class="breadcrumbs mb-3">
+                    <li class="nav-home">
+                        <a href="#">
+                            <i class="icon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="icon-arrow-right"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("DrinkList")">Drinks</a>
+                    </li>
+                </ul>
             }
             else
             {
-                <h3 class="fw-bold mb-3">Drink Admin Panel</h3>
+                <br />
+                <br />
+                <div class="bgimg-container">
+                    <div class="bgimg">
+                        <img src="@Url.Content("~/Images/drinklist.jpg")" alt="Drinks" class="bgimg-image" />
+                        <div class="text-overlay">
+                            <span class="text">DRINKS</span>
+                        </div>
+                    </div>
+                </div>
             }
-            <ul class="breadcrumbs mb-3">
-                <li class="nav-home">
-                    <a href="#">
-                        <i class="icon-home"></i>
-                    </a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="@Url.Action("DrinkList")">Drinks</a>
-                </li>
-            </ul>
+           
         </div>
         @if (ViewBag.IsAdmin == "True")
         {
             <a href="/Drink/CreateDrink" class="btn btn-primary mt-4">Add New Drink</a>
         }
-        else
-        {
-            <br />
-            <br />
-            <div class="bgimg-container">
-                <div class="bgimg">
-                    <img src="@Url.Content("~/Images/drinklist.jpg")" alt="Drinks" class="bgimg-image" />
-                    <div class="text-overlay">
-                        <span class="text">DRINKS</span>
-                    </div>
-                </div>
-            </div>
-
-        }
+       
        
         <div class="row">
             @foreach (var item in Model)
             {
                 <div class="col-md-3 mb-4">
                     <div class="card h-100">
-                        <img src="@item.PhotoUrl" class="card-img-top" alt="@item.Name" style="height: 200px; object-fit: cover;">
+                        <img src="~/Images/@item.Photo" class="img-fluid rounded-start" alt="@item.Name" style="width:200px;height:150px; object-fit: cover;" />
+
                         <div class="card-body">
                             <h5 class="card-title">@item.Name</h5>
                             <p class="card-text">@item.Price.ToString("C")</p>
@@ -194,10 +195,7 @@
 
 </style>
 
-        @if (ViewBag.IsAdmin == "True")
-        {
-            <a href="/Drink/CreateDrink" class="btn btn-primary mt-4">Add New Drink</a>
-        }
+      
     </div>
 </div>
 
