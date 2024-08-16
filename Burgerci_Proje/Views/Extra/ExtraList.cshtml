@@ -48,11 +48,13 @@
             }
             
         </div>
+    
         @if (ViewBag.IsAdmin == "True")
         {
+            <hr />
             <a href="/Extra/CreateExtra" class="btn btn-primary mt-4">Add New Extra</a>
         }
- 
+        <hr />
         <div class="row">
             @foreach (var item in Model)
             {
@@ -136,7 +138,7 @@
     }
 
     body, h1, h2, h3, h4, h5, h6 {
-        font-family: "Amatic SC", sans-serif;
+        font-family: "Courier New", Courier, monospace;
     }
 
     .menu {

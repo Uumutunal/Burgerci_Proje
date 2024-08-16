@@ -79,9 +79,10 @@ namespace Burgerci_Proje.Controllers
 
 
                 var mapped = _mapper.Map<List<OrderDetailViewModel>>(userOrderDetails);
+               
                 return View(mapped);
             }
-
+            
             return View();
 
         }

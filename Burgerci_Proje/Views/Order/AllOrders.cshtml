@@ -5,7 +5,6 @@
     Layout = "~/Views/Shared/_UserLayout.cshtml";
     double totalPrice = 0;
 }
-
 <br />
 <br />
 <div class="bgimg-container">
@@ -19,130 +18,83 @@
 
 @if (Model == null || !Model.Any())
 {
-    <p>No orders found.</p>
+    <div class="container mt-5">
+        <p class="text-center">No orders found.</p>
+    </div>
 }
 else
 {
-    <div class="container">
-        <div class="row d-flex flex-wrap">
+    <div class="container mt-5">
+        <div class="order-grid">
             @foreach (var order in Model)
             {
-                <div class="col-md-4">
-                    <div class="card mb-4 shadow-sm">
-                        <img src="@(
-                            order.MenuViewModel?.PhotoUrl ??
-                            order.HamburgerViewModel?.PhotoUrl ??
-                            order.DrinkViewModel?.PhotoUrl ??
-                            order.ExtraViewModel?.PhotoUrl)"
-                             class="card-img-top" style="height: 200px; object-fit: cover;">
-
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                @if (order.MenuViewModel != null)
-                                {
-                                    <span>Menu Name: @order.MenuViewModel.Name</span>
-                                }
-                                @if (order.HamburgerViewModel != null)
-                                {
-                                    <span>Hamburger Name: @order.HamburgerViewModel.Name</span>
-                                }
-                                @if (order.DrinkViewModel != null)
-                                {
-                                    <span>Drink Name: @order.DrinkViewModel.Name</span>
-                                }
-                                @if (order.ExtraViewModel != null)
-                                {
-                                    <span>Extra Name: @order.ExtraViewModel.Name</span>
-                                }
-                            </h5>
-
-                            <h5 class="card-title">Size: @order.Size</h5>
-                            <p class="card-text">Quantity: @order.Quantity</p>
-
-                            @{
-                                totalPrice += order.Price;
+                <div class="card shadow-sm">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h5 class="card-title">
+                            @if (order.MenuViewModel != null)
+                            {
+                                <span>Menu Name: @order.MenuViewModel.Name</span>
+                                <br />
                             }
+                            @if (order.HamburgerViewModel != null)
+                            {
+                                <span>Hamburger Name: @order.HamburgerViewModel.Name</span>
+                                <br />
+                            }
+                            @if (order.DrinkViewModel != null)
+                            {
+                                <span>Drink Name: @order.DrinkViewModel.Name</span>
+                                <br />
+                            }
+                            @if (order.ExtraViewModel != null)
+                            {
+                                <span>Extra Name: @order.ExtraViewModel.Name</span>
+                            }
+                        </h5>
+                        <h5 class="card-subtitle mb-2 text-muted">Size: @order.Size</h5>
+                        <p class="card-text">Quantity: @order.Quantity</p>
 
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">@($"{order.Price:C}")</small>
-                                <form asp-action="DeleteOrderDetail" method="post" style="display:inline;">
-                                    <input type="hidden" name="orderDetailId" value="@order.Id" />
-                                    <input type="hidden" name="OrderId" value="@order.OrderId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                                </form>
-                            </div>
+                        @{
+                            totalPrice += order.Price;
+                        }
+
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <small class="text-muted">@($"{order.Price:C}")</small>
+                            <form asp-action="DeleteOrderDetail" method="post" style="display:inline;">
+                                <input type="hidden" name="orderDetailId" value="@order.Id" />
+                                <input type="hidden" name="OrderId" value="@order.OrderId" />
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             }
         </div>
-
+        <hr />
+    
         <div class="d-flex justify-content-end mt-4">
             <form asp-action="ConfirmOrder" method="post">
                 <input type="hidden" name="id" value="@Model[0].OrderId" />
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-primary btn-lg confirm-btn">
                     Confirm Order | Total Price: @($"{totalPrice:C}")
                 </button>
             </form>
         </div>
     </div>
 }
+
 <style>
-    .card-img-top {
-        object-fit: cover;
-    }
-
-    .card-body {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
-    .garniture-name {
-        display: block;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .btn-sm {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.875rem;
-    }
-
     body, html {
         height: 100%;
-    }
-
-    body, h1, h2, h3, h4, h5, h6 {
-        font-family: "Amatic SC", sans-serif;
-    }
-
-    .menu {
-        display: none;
-    }
-
-    .bgimg {
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-image: url('@Url.Content("~/Images/homepage.jpg")');
-        min-height: 90%;
-    }
-
-    /* Added margin-top to row */
-    .row.mt-2 {
-        margin-top: 10px; /* Adjust this value as needed to control the spacing */
-    }
-
-    .bgimg {
-        margin-bottom: 0px; /* Remove extra space below the image */
+        font-family: "Courier New", Courier, monospace;
+        margin: 0;
     }
 
     .bgimg-container {
         width: 100%;
-        height: 100px; /* Adjust height as needed */
+        height: 100px;
         position: relative;
-        margin-bottom: 0; /* Remove extra space below */
+        margin-bottom: 0;
     }
 
     .bgimg {
@@ -154,7 +106,7 @@ else
     .bgimg-image {
         width: 100%;
         height: 100%;
-        object-fit: cover; /* Ensure the image covers the container */
+        object-fit: cover;
     }
 
     .text-overlay {
@@ -168,7 +120,58 @@ else
 
     .text {
         color: white;
-        font-size: 40px; /* Adjust font size as needed */
+        font-size: 40px;
     }
 
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .order-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+    }
+
+    .card {
+        transition: transform 0.2s;
+    }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        color: white;
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+        .btn-sm:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+    .btn-lg.confirm-btn {
+        padding: 0.5rem 1rem;
+        font-size: 1.25rem;
+        background-color: #007bff;
+        border-color: #007bff;
+        color: white;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+        .btn-lg.confirm-btn:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+            transform: scale(1.05);
+        }
+
+    .d-flex.justify-content-end {
+        justify-content: flex-end;
+        padding-bottom: 20px;
+    }
 </style>
