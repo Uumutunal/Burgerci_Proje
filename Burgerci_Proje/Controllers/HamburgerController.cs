@@ -40,21 +40,29 @@ namespace Burgerci_Proje.Controllers
         {
         
             ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
-            if (hamburgerViewModel.PhotoUrl != null)
-            {
-                var fileName = Path.GetFileName(hamburgerViewModel.PhotoUrl.FileName);
-                var filePath = Path.Combine("wwwroot", "Images", fileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await hamburgerViewModel.PhotoUrl.CopyToAsync(stream);
-                }
-
-                hamburgerViewModel.Photo = fileName;
-            }
+            
             if (ModelState.IsValid)
             {
-            
+                if (hamburgerViewModel.PhotoUrl != null)
+                {
+                    var fileName = Path.GetFileName(hamburgerViewModel.PhotoUrl.FileName);
+                    var filePath = Path.Combine("wwwroot", "Images", fileName);
+
+                    // Klasörün var olup olmadığını kontrol et, yoksa oluştur
+                    var directory = Path.GetDirectoryName(filePath);
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await hamburgerViewModel.PhotoUrl.CopyToAsync(stream);
+                    }
+
+                    hamburgerViewModel.Photo = fileName;
+                }
+
                 var hamburgerDto = _mapper.Map<HamburgerDto>(hamburgerViewModel);
                 var selectedGarnitureIds = hamburgerViewModel.SelectedGarnitureIds;
                 var garnitureDtos = await _garnitureService.GetGarnituresByIds(selectedGarnitureIds);
@@ -107,12 +115,28 @@ namespace Burgerci_Proje.Controllers
                     var fileName = Path.GetFileName(hamburgerViewModel.PhotoUrl.FileName);
                     var filePath = Path.Combine("wwwroot", "Images", fileName);
 
+                    // Klasörün var olup olmadığını kontrol et, yoksa oluştur
+                    var directory = Path.GetDirectoryName(filePath);
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
                         await hamburgerViewModel.PhotoUrl.CopyToAsync(stream);
                     }
 
                     hamburgerViewModel.Photo = fileName;
+                }
+                else
+                {
+                    // Yeni bir fotoğraf yüklenmediyse, var olan fotoğrafı koru
+                    var existingHamburger = await _hamburgerService.GetHamburgerByIdAsync(hamburgerViewModel.Id);
+                    if (existingHamburger != null)
+                    {
+                        hamburgerViewModel.Photo = existingHamburger.Photo;
+                    }
                 }
 
                 var hamburgerDto = _mapper.Map<HamburgerDto>(hamburgerViewModel);

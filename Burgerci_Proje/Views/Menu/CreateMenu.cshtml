@@ -35,27 +35,30 @@
                         <div class="card-title">Add Menu Operation</div>
                     </div>
                     <div class="card-body">
-                        <form asp-action="CreateMenu" method="post" enctype="multipart/form-data" enctype="multipart/form-data">
+                        <form asp-action="CreateMenu" method="post" enctype="multipart/form-data" id="menuForm">
                             <div class="form-group">
                                 <label asp-for="Name"></label>
-                                <input asp-for="Name" class="form-control" />
+                                <input asp-for="Name" type="text" class="form-control" id="Name" placeholder="Enter menu name" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="Description"></label>
-                                <textarea asp-for="Description" class="form-control"></textarea>
+                                <textarea asp-for="Description" class="form-control" id="Description" placeholder="Enter menu description"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="Price"></label>
-                                <input asp-for="Price" class="form-control" />
+                                <input asp-for="Price" type="number" class="form-control" id="Price" placeholder="Enter menu price" step="0.01" />
+                                <span asp-validation-for="Price" class="text-danger"></span>
                             </div>
                             <div data-mdb-input-init class="form-group form-outline mb-4">
                                 <label asp-for="PhotoUrl" class="form-label">ADD PHOTO</label>
-                                <input asp-for="PhotoUrl" class="form-control form-control-lg" type="file" />
+                                <input asp-for="PhotoUrl" class="form-control form-control-lg" type="file" id="PhotoUrl" />
                             </div>
 
                             <div class="form-group">
                                 <label>Hamburgers</label>
-                                <div>
+                                <div id="hamburgersSection">
                                     @if (ViewBag.AllHamburgers != null)
                                     {
                                         foreach (var hamburger in ViewBag.AllHamburgers as List<HamburgerViewModel>)
@@ -75,7 +78,7 @@
 
                             <div class="form-group">
                                 <label>Drinks</label>
-                                <div>
+                                <div id="drinksSection">
                                     @if (ViewBag.AllDrinks != null)
                                     {
                                         foreach (var drink in ViewBag.AllDrinks as List<DrinkViewModel>)
@@ -95,7 +98,7 @@
 
                             <div class="form-group">
                                 <label>Extras</label>
-                                <div>
+                                <div id="extrasSection">
                                     @if (ViewBag.AllExtras != null)
                                     {
                                         foreach (var extra in ViewBag.AllExtras as List<ExtraViewModel>)
@@ -111,6 +114,9 @@
                                         <p>No extras available.</p>
                                     }
                                 </div>
+                                <div id="validationAlert" class="alert alert-danger" style="display:none;">
+                                    Please select at least one hamburger, one drink, and one extra before saving the menu.
+                                </div>
                             </div>
 
                             <button type="submit" class="btn btn-primary">Save</button>
@@ -123,3 +129,42 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.querySelector("#menuForm");
+            const validationAlert = document.querySelector("#validationAlert");
+
+            form.addEventListener("submit", function (event) {
+                const hamburgerSelected = document.querySelectorAll('input[name="HamburgerId"]:checked').length > 0;
+                const drinkSelected = document.querySelectorAll('input[name="DrinkId"]:checked').length > 0;
+                const extraSelected = document.querySelectorAll('input[name="ExtraId"]:checked').length > 0;
+
+                if (!hamburgerSelected || !drinkSelected || !extraSelected) {
+                    event.preventDefault(); // Formun gönderilmesini engelle
+                    validationAlert.style.display = "block"; // Uyarı mesajını göster
+                } else {
+                    validationAlert.style.display = "none"; // Uyarı mesajını gizle
+                }
+            });
+
+            // Checkbox seçildiğinde uyarıyı gizle
+            document.querySelectorAll('input[name="HamburgerId"], input[name="DrinkId"], input[name="ExtraId"]').forEach(input => {
+                input.addEventListener("change", function () {
+                    const hamburgerSelected = document.querySelectorAll('input[name="HamburgerId"]:checked').length > 0;
+                    const drinkSelected = document.querySelectorAll('input[name="DrinkId"]:checked').length > 0;
+                    const extraSelected = document.querySelectorAll('input[name="ExtraId"]:checked').length > 0;
+
+                    if (hamburgerSelected && drinkSelected && extraSelected) {
+                        validationAlert.style.display = "none";
+                    }
+                });
+            });
+        });
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

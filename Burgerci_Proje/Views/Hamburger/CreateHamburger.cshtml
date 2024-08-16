@@ -38,21 +38,22 @@
                         <form asp-action="CreateHamburger" method="post" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label asp-for="Name"></label>
-                                <input asp-for="Name" class="form-control" />
+                                <input asp-for="Name" type="text" class="form-control" id="Name" placeholder="Enter hamburger name" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="Description"></label>
-                                <textarea asp-for="Description" class="form-control"></textarea>
+                                <textarea asp-for="Description" class="form-control" id="Description" placeholder="Enter hamburger description"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="Price"></label>
-                                <input asp-for="Price" class="form-control" />
+                                <input asp-for="Price" type="number" class="form-control" id="Price" placeholder="Enter hamburger price" step="0.01" />
+                                <span asp-validation-for="Price" class="text-danger"></span>
                             </div>
                             <div data-mdb-input-init class="form-group form-outline mb-4">
                                 <label asp-for="PhotoUrl" class="form-label">ADD PHOTO</label>
-
                                 <input asp-for="PhotoUrl" class="form-control form-control-lg" type="file" id="PhotoUrl"  />
-
                             </div>
                             <div class="form-group">
                                 <label>Garnitures</label>
@@ -78,21 +79,8 @@
     </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

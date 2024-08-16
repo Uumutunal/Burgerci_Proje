@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240810120836_foto")]
-    partial class foto
+    [Migration("20240816015412_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -311,9 +311,9 @@ namespace DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("0e2bb489-ad51-4e99-9d4c-da03012aff49"),
+                            Id = new Guid("91fe6ace-aff8-42f0-90f9-dd7682ad1c29"),
                             Address = "İstanbul",
-                            CreatedDate = new DateTime(2024, 8, 10, 15, 8, 34, 974, DateTimeKind.Local).AddTicks(1282),
+                            CreatedDate = new DateTime(2024, 8, 16, 4, 54, 11, 387, DateTimeKind.Local).AddTicks(9536),
                             Email = "admin@admin.com",
                             IsAdmin = true,
                             IsDeleted = false,
@@ -426,6 +426,9 @@ namespace DAL.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
+
+                    b.Property<string>("Size")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
