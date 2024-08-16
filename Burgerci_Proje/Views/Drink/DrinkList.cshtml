@@ -59,19 +59,7 @@
                         <div class="card-title" style="font-size: 1.5rem; font-weight: bold;">Drink List</div>
                         <a href="/Drink/CreateDrink" class="btn btn-primary mt-4">Add New Drink</a>
                     }
-                    else
-                    {
-                        <br />
-                        <br />
-                        <div class="bgimg-container">
-                            <div class="bgimg">
-                                <img src="@Url.Content("~/Images/drinklist.jpg")" alt="Drinks" class="bgimg-image" />
-                                <div class="text-overlay">
-                                    <span class="text">DRINKS</span>
-                                </div>
-                            </div>
-                        </div>
-                    }
+                   
                 </div>
             </div>
             <div class="card-body">
@@ -79,14 +67,13 @@
                     @foreach (var item in Model)
                     {
                         <div class="col-md-3 mb-4" style="flex: 1 1 300px;">
-                            <div class="card" style="width: 300px; height: 400px; margin: auto; display: flex; flex-direction: column;">
+                            <div class="card shadow-sm" style="width: 100%; height: 100%; display: flex; flex-direction: column;">
                                 <img src="@Url.Content("~/images/" + item.Photo)" class="card-img-top" alt="@item.Name" style="width: 100%; height: 250px; object-fit: cover;">
-                                <div class="card-body">
+                                <div class="card-body d-flex flex-column justify-content-between">
                                     <h5 class="card-title">@item.Name</h5>
                                     <p class="card-text">@item.Price.ToString("C")</p>
                                     <div class="d-flex justify-content-between">
                                         @if (ViewBag.IsAdmin == "True")
-
                                         {
                                             <form asp-action="DeleteDrink" method="post" style="display:inline">
                                                 <input type="hidden" name="id" value="@item.Id" />
@@ -104,22 +91,6 @@
                                                     data-price="@item.Price">
                                                 <i class="bi bi-hand-thumbs-up"></i> Add To Cart
                                             </button>
-
-                                            @* <select class="form-select me-2 quantity-selector">
-                                                @for (int i = 1; i <= 10; i++)
-                                                {
-                                                    <option value="@i">@i</option>
-                                                }
-                                            </select>
-
-                                            <select class="form-select me-2 size-selector">
-                                                <option value="Small">Small</option>
-                                                <option value="Medium">Medium</option>
-                                                <option value="Large">Large</option>
-
-                                            </select> *@
-
-                                            // İçecekte manasız.
                                         }
                                     </div>
                                 </div>
@@ -128,6 +99,7 @@
                     }
                 </div>
             </div>
+
         </div>
     </div>
 </div>
