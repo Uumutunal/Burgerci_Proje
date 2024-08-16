@@ -35,7 +35,7 @@
                         <div class="card-title">Update Hamburger Operation</div>
                     </div>
                     <div class="card-body">
-                        <form class="form" asp-controller="Hamburger" asp-action="EditHamburger" method="post" enctype="multipart/form-data">
+                        <form class="form" asp-controller="Hamburger" asp-action="EditHamburger" method="post" enctype="multipart/form-data" id="menuForm">
                             <input type="hidden" asp-for="Id" class="form-control" />
                             <div class="form-group">
                                 <label for="Name">Hamburger Name</label>
@@ -57,17 +57,26 @@
                             </div>
                             <div class="form-group">
                                 <label>Garnitures</label>
-                                <div>
-                                    @foreach (var garniture in ViewBag.Garnitures as List<GarnitureViewModel>)
+                                <div id="garnituresSection">
+                                    @if (ViewBag.Garnitures != null && ViewBag.Garnitures.Count > 0)
                                     {
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="garniture_@garniture.Id" name="SelectedGarnitureIds" value="@garniture.Id"
-                                            @(Model.SelectedGarnitureIds.Contains(garniture.Id) ? "checked" : "") />
-                                            <label class="form-check-label" for="garniture_@garniture.Id">@garniture.Name</label>
-                                        </div>
+                                        foreach (var garniture in ViewBag.Garnitures as List<GarnitureViewModel>)
+                                        {
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="garniture_@garniture.Id" name="SelectedGarnitureIds" value="@garniture.Id"
+                                                @(Model.SelectedGarnitureIds.Contains(garniture.Id) ? "checked" : "") />
+                                                <label class="form-check-label" for="garniture_@garniture.Id">@garniture.Name</label>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p>No garnitures available.</p>
                                     }
                                 </div>
-                            </div>
+                                <div id="validationAlert" class="alert alert-danger" style="display:none;">
+                                    Please select at least one hamburger, one drink, and one extra before saving the menu.
+                                </div>
                             <div data-mdb-input-init class="form-group form-outline mb-4">
                                 <label asp-for="PhotoUrl" class="form-label">ADD PHOTO</label>
                                 <input asp-for="PhotoUrl" class="form-control form-control-lg" type="file" id="PhotoUrl" />
@@ -84,6 +93,38 @@
 </div>
 
 @section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.querySelector("#menuForm");
+            const validationAlert = document.querySelector("#validationAlert");
+
+            form.addEventListener("submit", function (event) {
+                // Seçili garniture sayısını kontrol et
+                const garnituresSelected = document.querySelectorAll('input[name="SelectedGarnitureIds"]:checked').length > 0;
+
+                if (!garnituresSelected) {
+                    event.preventDefault(); // Formun gönderilmesini engelle
+                    validationAlert.style.display = "block"; // Uyarı mesajını göster
+                } else {
+                    validationAlert.style.display = "none"; // Uyarı mesajını gizle
+                }
+            });
+
+            // Checkbox seçildiğinde uyarıyı gizle
+            document.querySelectorAll('input[name="SelectedGarnitureIds"]').forEach(input => {
+                input.addEventListener("change", function () {
+                    const garnituresSelected = document.querySelectorAll('input[name="SelectedGarnitureIds"]:checked').length > 0;
+
+                    if (garnituresSelected) {
+                        validationAlert.style.display = "none";
+                    } else {
+                        validationAlert.style.display = "block"; // Eğer checkbox işareti kaldırılırsa uyarıyı göster
+                    }
+                });
+            });
+        });
+    </script>
+
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
