@@ -40,6 +40,8 @@ namespace DAL.Data
                 IsAdmin = true
 
             });
+
+           
         }
     }
 }
