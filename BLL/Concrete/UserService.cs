@@ -59,6 +59,12 @@ namespace BLL.Concrete
         {
             var user = await _userRepository.GetByIdAsync(userDto.Id);
 
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            // Kullanıcı bilgilerini güncelle
             user.Photo = userDto.Photo;
             user.Email = userDto.Email;
             user.PhoneNumber = userDto.PhoneNumber;

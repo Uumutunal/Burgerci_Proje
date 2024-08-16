@@ -110,6 +110,6 @@ namespace Burgerci_Proje.Controllers
             return View();
         }
 
-
+        
     }
 }
