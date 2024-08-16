@@ -64,15 +64,20 @@ namespace Burgerci_Proje.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateMenu(MenuViewModel menuViewModel)
         {
-
-            try
+            if (ModelState.IsValid)
             {
-
-                // Fotoðraf yükleme iþlemi
+                // Fotoğraf yükleme işlemi
                 if (menuViewModel.PhotoUrl != null)
                 {
                     var fileName = Path.GetFileName(menuViewModel.PhotoUrl.FileName);
                     var filePath = Path.Combine("wwwroot", "Images", fileName);
+
+                    // Klasörün var olup olmadığını kontrol et, yoksa oluştur
+                    var directory = Path.GetDirectoryName(filePath);
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
@@ -94,10 +99,6 @@ namespace Burgerci_Proje.Controllers
                 await _menuService.CreateMenu(menuDto, hamburgerDto, drinkDto, extraDto);
 
                 return RedirectToAction("MenuList");
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", "An error occurred while creating the menu.");
             }
 
 
@@ -164,29 +165,45 @@ namespace Burgerci_Proje.Controllers
         [HttpPost]
         public async Task<IActionResult> EditMenu(MenuViewModel menuViewModel)
         {
-
-            // Handle the file upload if a new photo is provided
-            if (menuViewModel.PhotoUrl != null)
+            if (ModelState.IsValid)
             {
-                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-                var uniqueFileName = $"{Guid.NewGuid()}_{menuViewModel.PhotoUrl.FileName}";
-                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                // Handle the file upload if a new photo is provided
+                if (menuViewModel.PhotoUrl != null)
                 {
-                    await menuViewModel.PhotoUrl.CopyToAsync(fileStream);
+                    var fileName = Path.GetFileName(menuViewModel.PhotoUrl.FileName);
+                    var filePath = Path.Combine("wwwroot", "Images", fileName);
+
+                    // Klasörün var olup olmadığını kontrol et, yoksa oluştur
+                    var directory = Path.GetDirectoryName(filePath);
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await menuViewModel.PhotoUrl.CopyToAsync(stream);
+                    }
+
+                    menuViewModel.Photo = fileName;
+                }
+                else
+                {
+                    // Yeni bir fotoğraf yüklenmediyse, var olan fotoğrafı koru
+                    var existingMenu = await _menuService.GetMenuById(menuViewModel.Id);
+                    if (existingMenu != null)
+                    {
+                        menuViewModel.Photo = existingMenu.Photo;
+                    }
                 }
 
-                menuViewModel.Photo = $"/images/{uniqueFileName}";
+                var menu = _mapper.Map<MenuDto>(menuViewModel);
+
+                await _menuService.UpdateMenu(menu);
+
+                return RedirectToAction("MenuList");
             }
-
-            var menu = _mapper.Map<MenuDto>(menuViewModel);
-
-
-
-            await _menuService.UpdateMenu(menu);
-
-            return RedirectToAction("MenuList");
+            return View(menuViewModel);
         }
 
         [HttpGet]
@@ -217,7 +234,7 @@ namespace Burgerci_Proje.Controllers
         }
 
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> DeleteMenu(Guid id)
         {
             await _menuService.DeleteMenu(id);

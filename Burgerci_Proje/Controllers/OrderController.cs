@@ -54,6 +54,7 @@ namespace Burgerci_Proje.Controllers
         {
             var extraDataJson = TempData["ExtraData"] as string;
             var extraDto = JsonConvert.DeserializeObject<ExtraDto>(extraDataJson);
+            // Bura sorulacak. extraViewModel'ı kullanmıyoruz?
             var extraViewModel = _mapper.Map<ExtraViewModel>(extraDto);
 
             return RedirectToAction("AddExtraToOrder");

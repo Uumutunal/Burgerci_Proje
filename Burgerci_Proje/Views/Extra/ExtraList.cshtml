@@ -12,26 +12,7 @@
 }
 
 <div class="container">
-    @if (ViewBag.IsAdmin == "True")
-    {
-        <a href="/Extra/CreateExtra" class="btn btn-primary mt-4">Add New Extra</a>
-    }
-    else
-    {
-        <br />
-        <br />
-        <div class="bgimg-container">
-            <div class="bgimg">
-                <img src="@Url.Content("~/Images/extralist.jpg")" alt="Extras" class="bgimg-image" />
-                <div class="text-overlay">
-                    <span class="text">EXTRAS</span>
-                </div>
-            </div>
-        </div>
-
-    }
-   
-   @*  <div class="page-inner">
+    <div class="page-inner">
         <div class="page-header">
             @if (ViewBag.IsAdmin != "True")
             {
@@ -54,64 +35,87 @@
                     <a href="@Url.Action("ExtraList")">Extras</a>
                 </li>
             </ul>
-        </div> *@
-        <div class="row">
-            @foreach (var item in Model)
-            {
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="@item.PhotoUrl" class="card-img-top" alt="@item.Name" style="height: 200px; object-fit: cover;">
-                        <div class="card-body">
-                            <h5 class="card-title">@item.Name</h5>
-                            <p class="card-text">@item.Price.ToString("C")</p>
-                            <div class="d-flex justify-content-between">
-                                @if (ViewBag.IsAdmin == "True")
-                                {
-                                    <form asp-action="DeleteExtra" method="post" style="display:inline">
-                                        <input type="hidden" name="id" value="@item.Id" />
-                                        <button type="submit" class="btn btn-danger">Delete</button>
-                                    </form>
-                                    <a href="@Url.Action("UpdateExtra", new { id = item.Id })" class="btn btn-success">Edit</a>
-                                }
-                                else
-                                {
-                                    <button type="button" class="btn btn-outline-primary btn-sm me-2"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#addToCartModal"
-                                            data-id="@item.Id"
-                                            data-name="@item.Name"
-                                            data-price="@item.Price">
-                                        <i class="bi bi-hand-thumbs-up"></i> Add To Cart
-                                    </button>
-
-                                    <select class="form-select me-2 quantity-selector">
-                                        @for (int i = 1; i <= 10; i++)
-                                        {
-                                            <option value="@i">@i</option>
-                                        }
-                                    </select>
-
-                                    <select class="form-select me-2 size-selector">
-                                        <option value="Small">Small</option>
-                                        <option value="Medium">Medium</option>
-                                        <option value="Large">Large</option>
-
-                                    </select>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
         </div>
 
-        @if (ViewBag.IsAdmin == "True")
-        {
-            <a href="/Drink/CreateDrink" class="btn btn-primary mt-4">Add New Extra</a>
-        }
+        <div class="card">
+            <div class="card-header" style="padding: 15px;">
+                <div class="d-flex justify-content-between align-items-center" style="display: flex; justify-content: space-between; align-items: center;">
+                    @if (ViewBag.IsAdmin == "True")
+                    {
+                        <div class="card-title" style="font-size: 1.5rem; font-weight: bold;">Extra List</div>
+                        <a href="/Extra/CreateExtra" class="btn btn-primary mt-4">Add New Extra</a>
+                    }
+                    else
+                    {
+                        <br />
+                        <br />
+                        <div class="bgimg-container">
+                            <div class="bgimg">
+                                <img src="@Url.Content("~/Images/extralist.jpg")" alt="Extras" class="bgimg-image" />
+                                <div class="text-overlay">
+                                    <span class="text">EXTRAS</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row" style="display: flex; flex-wrap: wrap; gap: 15px;">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-md-4 mb-4" style="flex: 1 1 300px;">
+                            <div class="card" style="width: 300px; height: 400px; margin: auto; display: flex; flex-direction: column;">
+                                <img src="@Url.Content("~/images/" + item.Photo)" class="card-img-top" alt="@item.Name" style="width: 100%; height: 200px; object-fit: cover;">
+                                <div class="card-body">
+                                    <h5 class="card-title">@item.Name</h5>
+                                    <p class="card-text">@item.Description</p>
+                                    <p class="card-text">@item.Price.ToString("C")</p>
+                                    <div class="d-flex justify-content-between">
+                                        @if (ViewBag.IsAdmin == "True")
+                                        {
+                                            <form asp-action="DeleteExtra" method="post" style="display:inline">
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+                                            <a href="@Url.Action("UpdateExtra", new { id = item.Id })" class="btn btn-success">Edit</a>
+                                        }
+                                        else
+                                        {
+                                            <button type="button" class="btn btn-outline-primary btn-sm me-2"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#addToCartModal"
+                                                    data-id="@item.Id"
+                                                    data-name="@item.Name"
+                                                    data-price="@item.Price">
+                                                <i class="bi bi-hand-thumbs-up"></i> Add To Cart
+                                            </button>
 
+                                            @* <select class="form-select me-2 quantity-selector">
+                                                @for (int i = 1; i <= 10; i++)
+                                                {
+                                                    <option value="@i">@i</option>
+                                                }
+                                            </select>
+
+                                            <select class="form-select me-2 size-selector">
+                                                <option value="Small">Small</option>
+                                                <option value="Medium">Medium</option>
+                                                <option value="Large">Large</option>
+
+                                            </select> *@
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
 <style>
     .card-img-top {
         object-fit: cover;
@@ -192,10 +196,9 @@
     }
 
     .text {
-        color:black;
+        color: black;
         font-size: 60px; /* Adjust font size as needed */
     }
-
 
 </style>
 
@@ -250,3 +253,31 @@
         });
     });
 </script>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var deleteButtons = document.querySelectorAll('form[action*="/DeleteExtra"] button[type="submit"]');
+            deleteButtons.forEach(function (button) {
+                button.addEventListener('click', function (event) {
+                    event.preventDefault(); // Formun hemen gönderilmesini engelle
+                    var form = button.closest('form'); // İlgili formu bul
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "Do you want to delete this item?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!',
+                        cancelButtonText: 'Cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit(); // Onay verildiyse formu gönder
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+}

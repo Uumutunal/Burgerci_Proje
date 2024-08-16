@@ -37,9 +37,32 @@ namespace Burgerci_Proje.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateExtra(ExtraViewModel extraViewModel)
         {
-            var extraDto = _mapper.Map<ExtraDto>(extraViewModel);
-            await _extraService.CreateExtra(extraDto);
-            return RedirectToAction("ExtraList");
+            if (ModelState.IsValid)
+            {
+                if (extraViewModel.PhotoUrl != null)
+                {
+                    var fileName = Path.GetFileName(extraViewModel.PhotoUrl.FileName);
+                    var filePath = Path.Combine("wwwroot", "Images", fileName);
+
+                    // Klasörün var olup olmadığını kontrol et, yoksa oluştur
+                    var directory = Path.GetDirectoryName(filePath);
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await extraViewModel.PhotoUrl.CopyToAsync(stream);
+                    }
+
+                    extraViewModel.Photo = fileName;
+                }
+                var extraMappedDto = _mapper.Map<ExtraDto>(extraViewModel);
+                await _extraService.CreateExtra(extraMappedDto);
+                return RedirectToAction("ExtraList");
+            }
+            return View(extraViewModel);
         }
 
         [HttpPost]
@@ -62,9 +85,42 @@ namespace Burgerci_Proje.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateExtra(ExtraViewModel extraViewModel)
         {
-            var extraDto = _mapper.Map<ExtraDto>(extraViewModel);
-            await _extraService.UpdateExtra(extraDto);
-            return RedirectToAction("ExtraList");
+            if (ModelState.IsValid)
+            {
+                if (extraViewModel.PhotoUrl != null)
+                {
+                    var fileName = Path.GetFileName(extraViewModel.PhotoUrl.FileName);
+                    var filePath = Path.Combine("wwwroot", "Images", fileName);
+
+                    // Klasörün var olup olmadığını kontrol et, yoksa oluştur
+                    var directory = Path.GetDirectoryName(filePath);
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await extraViewModel.PhotoUrl.CopyToAsync(stream);
+                    }
+
+                    extraViewModel.Photo = fileName;
+                }
+                else
+                {
+                    // Yeni bir fotoğraf yüklenmediyse, var olan fotoğrafı koru
+                    var existingExtra = await _extraService.GetExtraById(extraViewModel.Id);
+                    if (existingExtra != null)
+                    {
+                        extraViewModel.Photo = existingExtra.Photo;
+                    }
+                }
+
+                var extraDto = _mapper.Map<ExtraDto>(extraViewModel);
+                await _extraService.UpdateExtra(extraDto);
+                return RedirectToAction("ExtraList");
+            }
+            return View(extraViewModel);
         }
 
         [HttpPost]
