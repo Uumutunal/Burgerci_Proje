@@ -14,6 +14,6 @@ namespace Burgerci_Proje.Models
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
         public bool IsAdmin { get; set; } = false;
-        public List<OrderViewModel> OrderViewModels { get; set; }
+        public List<OrderViewModel>? OrderViewModels { get; set; }
     }
 }

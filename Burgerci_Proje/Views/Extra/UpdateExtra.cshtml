@@ -36,11 +36,13 @@
                         <div class="card-title">Update Extra Operation</div>
                     </div>
                     <div class="card-body">
-                        <form class="form" asp-controller="Extra" asp-action="UpdateExtra" method="post">
+                        <form class="form" asp-controller="Extra" asp-action="UpdateExtra" method="post" enctype="multipart/form-data">
+                            <input type="hidden" asp-for="Id" />
                             <div class="form-group">
                                 <label for="Name">Extra Name</label>
                                 <br />
                                 <input asp-for="Name" type="text" class="form-control" id="Name" placeholder="Enter extra name" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="Description"></label>
@@ -50,13 +52,14 @@
                                 <label for="Price">Price</label>
                                 <br />
                                 <input asp-for="Price" type="number" class="form-control" id="Price" placeholder="Enter extra price" step="0.01" />
+                                <span asp-validation-for="Price" class="text-danger"></span>
                             </div>
                             <div data-mdb-input-init class="form-group form-outline mb-4">
                                 <label asp-for="PhotoUrl" class="form-label">ADD PHOTO</label>
-                                <input asp-for="PhotoUrl" class="form-control form-control-lg" type="file" id="ImageUrl" />
+                                <input asp-for="PhotoUrl" class="form-control form-control-lg" type="file" id="PhotoUrl" />
                             </div>
                             <div class="form-group">
-                                <input type="submit" value="Update Drink" class="btn btn-success btn-block" />
+                                <input type="submit" value="Update Extra" class="btn btn-success btn-block" />
                             </div>
                         </form>
                     </div>
@@ -66,3 +69,8 @@
     </div>
 </div>
 
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

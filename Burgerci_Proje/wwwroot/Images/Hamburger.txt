@@ -1,0 +1,11 @@
+MVC HAMBURGER PROJESİ
+
+-- BaseEntity -> Id - CreatedDate - DeletedDate - ModifiedDate - IsDeleted
+-- Drink ->  Name - Price - ImageUrl
+-- Hamburger -> Name - Description - Price - ImageUrl
+-- Snack -> Name - Description - Price - ImageUrl
+-- Menu -> Name - Price - ImageUrl
+-- Customer -> Name - Surname - Address - PhonoNo - IsAdmin
+-- Ingredient -> Name
+-- BurgerIngredient - IngredientId - HamburgerId - Ingredient Ingredient - Hamburger Hamburger
+-- OrderDetails -> CustomerId - MenuId - List<Menu> Menus - Customer Customer

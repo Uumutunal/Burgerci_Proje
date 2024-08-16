@@ -46,9 +46,13 @@ namespace Burgerci_Proje.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateGarniture(GarnitureViewModel garnitureViewModel)
         {
-            var garnitureDto = _mapper.Map<GarnitureDto>(garnitureViewModel);
-            await _garnitureService.CreateGarniture(garnitureDto);
-            return RedirectToAction("GarnitureList");
+            if (ModelState.IsValid)
+            {
+                var garnitureDto = _mapper.Map<GarnitureDto>(garnitureViewModel);
+                await _garnitureService.CreateGarniture(garnitureDto);
+                return RedirectToAction("GarnitureList");
+            }
+            return View(garnitureViewModel);
         }
 
         [HttpPost]
@@ -70,9 +74,13 @@ namespace Burgerci_Proje.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateGarniture(GarnitureViewModel garnitureViewModel)
         {
-            var garnitureDto = _mapper.Map<GarnitureDto>(garnitureViewModel);
-            await _garnitureService.UpdateGarniture(garnitureDto);
-            return RedirectToAction("GarnitureList");
+            if (ModelState.IsValid)
+            {
+                var garnitureDto = _mapper.Map<GarnitureDto>(garnitureViewModel);
+                await _garnitureService.UpdateGarniture(garnitureDto);
+                return RedirectToAction("GarnitureList");
+            }
+            return View(garnitureViewModel);
         }
     }
 }

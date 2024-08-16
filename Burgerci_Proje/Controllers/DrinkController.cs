@@ -33,7 +33,7 @@ namespace Burgerci_Proje.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> CreateDrink() 
+        public async Task<IActionResult> CreateDrink()
         {
             ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
             return View();
@@ -56,9 +56,32 @@ namespace Burgerci_Proje.Controllers
             }
             ViewBag.IsAdmin = HttpContext.Session.GetString("IsAdmin");
 
-            var drinkDto = _mapper.Map<DrinkDto>(drinkViewModel);
-            await _drinkService.CreateDrink(drinkDto);
-            return RedirectToAction("DrinkList");
+            if (ModelState.IsValid)
+            {
+                if (drinkViewModel.PhotoUrl != null)
+                {
+                    var fileName = Path.GetFileName(drinkViewModel.PhotoUrl.FileName);
+                    var filePath = Path.Combine("wwwroot", "Images", fileName);
+
+                    // Klasörün var olup olmadığını kontrol et, yoksa oluştur
+                    var directory = Path.GetDirectoryName(filePath);
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await drinkViewModel.PhotoUrl.CopyToAsync(stream);
+                    }
+
+                    drinkViewModel.Photo = fileName;
+                }
+                var drinkMappedDto = _mapper.Map<DrinkDto>(drinkViewModel);
+                await _drinkService.CreateDrink(drinkMappedDto);
+                return RedirectToAction("DrinkList");
+            }
+            return View(drinkViewModel);
         }
 
         [HttpPost]
@@ -82,9 +105,41 @@ namespace Burgerci_Proje.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateDrink(DrinkViewModel drinkViewModel)
         {
-            var drinkDto = _mapper.Map<DrinkDto>(drinkViewModel);
-            await _drinkService.UpdateDrink(drinkDto);
-            return RedirectToAction("DrinkList");
+            if (ModelState.IsValid)
+            {
+                if (drinkViewModel.PhotoUrl != null)
+                {
+                    var fileName = Path.GetFileName(drinkViewModel.PhotoUrl.FileName);
+                    var filePath = Path.Combine("wwwroot", "Images", fileName);
+
+                    // Klasörün var olup olmadığını kontrol et, yoksa oluştur
+                    var directory = Path.GetDirectoryName(filePath);
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await drinkViewModel.PhotoUrl.CopyToAsync(stream);
+                    }
+
+                    drinkViewModel.Photo = fileName;
+                }
+                else
+                {
+                    // Yeni bir fotoğraf yüklenmediyse, var olan fotoğrafı koru
+                    var existingDrink = await _drinkService.GetDrinkById(drinkViewModel.Id);
+                    if (existingDrink != null)
+                    {
+                        drinkViewModel.Photo = existingDrink.Photo;
+                    }
+                }
+                var drinkDto = _mapper.Map<DrinkDto>(drinkViewModel);
+                await _drinkService.UpdateDrink(drinkDto);
+                return RedirectToAction("DrinkList");
+            }
+            return View(drinkViewModel);
         }
 
         [HttpPost]

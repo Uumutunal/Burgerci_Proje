@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     Layout = null;
 }
 
@@ -9,23 +8,21 @@
 @await Component.InvokeAsync("_HeadLayoutComponentPartial")
 
 <body>
-	<div class="wrapper">
+    <div class="wrapper">
 
-		@await Component.InvokeAsync("_SidebarLayoutComponentPartial")
+        @await Component.InvokeAsync("_SidebarLayoutComponentPartial")
 
-		@await Component.InvokeAsync("_MainPanelLayoutComponentPartial")
+        @await Component.InvokeAsync("_MainPanelLayoutComponentPartial")
 
-		@RenderBody()
+        @RenderBody()
 
-		@await Component.InvokeAsync("_FooterLayoutComponentPartial")
+        @await Component.InvokeAsync("_FooterLayoutComponentPartial")
 
-	</div>
+    </div>
 
-	@await Component.InvokeAsync("_CustomTemplateLayoutComponentPartial")
+    @await Component.InvokeAsync("_ScriptLayoutComponentPartial")
 
-	</div>
-
-	@await Component.InvokeAsync("_ScriptLayoutComponentPartial")
+    @RenderSection("Scripts", required: false)
 
 </body>
 </html>

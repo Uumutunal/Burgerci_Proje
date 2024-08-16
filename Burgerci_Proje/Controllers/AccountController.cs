@@ -28,33 +28,47 @@ namespace Burgerci_Proje.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(UserViewModel userViewModel)
         {
-            if (userViewModel.PhotoUrl != null)
+            if (ModelState.IsValid)
             {
-                var fileName = Path.GetFileName(userViewModel.PhotoUrl.FileName);
-                var filePath = Path.Combine("wwwroot", "Images", fileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                if (userViewModel.PhotoUrl != null)
                 {
-                    await userViewModel.PhotoUrl.CopyToAsync(stream);
+                    var fileName = Path.GetFileName(userViewModel.PhotoUrl.FileName);
+                    var filePath = Path.Combine("wwwroot", "Images", fileName);
+
+                    // Klasörün var olup olmadığını kontrol et, yoksa oluştur
+                    var directory = Path.GetDirectoryName(filePath);
+
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await userViewModel.PhotoUrl.CopyToAsync(stream);
+                    }
+
+                    userViewModel.Photo = fileName;
                 }
 
-                userViewModel.Photo = fileName;
+                var hashedPassword = SHA_Hasher.ComputeSha256Hash(userViewModel.Password);
+                userViewModel.Password = hashedPassword;
+
+                var userDto = _mapper.Map<UserDto>(userViewModel);
+                await _userService.Register(userDto);
+                return RedirectToAction("Login");
             }
 
-            var hashedPassword = SHA_Hasher.ComputeSha256Hash(userViewModel.Password);
-            userViewModel.Password = hashedPassword;
-
-            var userDto = _mapper.Map<UserDto>(userViewModel);
-            await _userService.Register(userDto);
-            return RedirectToAction("Login");
-
-            //return View(userViewModel);
+            return View(userViewModel);
         }
+
+        [HttpGet]
         public IActionResult Login()
         {
             ViewData["Title"] = "Login";
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
@@ -82,6 +96,7 @@ namespace Burgerci_Proje.Controllers
             }
             return View();
         }
+
         public IActionResult Logout()
         {
             ViewData["Title"] = "Logout";
