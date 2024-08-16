@@ -4,6 +4,7 @@ using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240815161603_extrafoto")]
+    partial class extrafoto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -308,11 +311,9 @@ namespace DAL.Migrations
                     b.HasData(
                         new
                         {
-
-                            Id = new Guid("91fe6ace-aff8-42f0-90f9-dd7682ad1c29"),
+                            Id = new Guid("d349ba9a-df86-4640-88b7-381c87946701"),
                             Address = "İstanbul",
-                            CreatedDate = new DateTime(2024, 8, 16, 4, 54, 11, 387, DateTimeKind.Local).AddTicks(9536),
-
+                            CreatedDate = new DateTime(2024, 8, 15, 19, 16, 2, 407, DateTimeKind.Local).AddTicks(1393),
                             Email = "admin@admin.com",
                             IsAdmin = true,
                             IsDeleted = false,

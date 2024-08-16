@@ -9,32 +9,45 @@
     {
         Layout = "~/Views/Shared/_UserLayout.cshtml";
     }
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+
 }
 
 <div class="container">
     <div class="page-inner">
         <div class="page-header">
-            @if (ViewBag.IsAdmin != "True")
+           
+            @if(ViewBag.IsAdmin == "True")
             {
-                <h3 class="fw-bold mb-3">Drinks</h3>
+                <h3 class="fw-bold mb-3">Drink Admin Panel</h3>
+                <ul class="breadcrumbs mb-3">
+                    <li class="nav-home">
+                        <a href="#">
+                            <i class="icon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="icon-arrow-right"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("DrinkList")">Drinks</a>
+                    </li>
+                </ul>
             }
             else
             {
-                <h3 class="fw-bold mb-3">Drink Admin Panel</h3>
+                <br />
+                <br />
+                <div class="bgimg-container">
+                    <div class="bgimg">
+                        <img src="@Url.Content("~/Images/drinklist.jpg")" alt="Drinks" class="bgimg-image" />
+                        <div class="text-overlay">
+                            <span class="text">DRINKS</span>
+                        </div>
+                    </div>
+                </div>
             }
-            <ul class="breadcrumbs mb-3">
-                <li class="nav-home">
-                    <a href="#">
-                        <i class="icon-home"></i>
-                    </a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="@Url.Action("DrinkList")">Drinks</a>
-                </li>
-            </ul>
+           
         </div>
 
 
@@ -73,6 +86,7 @@
                                     <p class="card-text">@item.Price.ToString("C")</p>
                                     <div class="d-flex justify-content-between">
                                         @if (ViewBag.IsAdmin == "True")
+
                                         {
                                             <form asp-action="DeleteDrink" method="post" style="display:inline">
                                                 <input type="hidden" name="id" value="@item.Id" />
@@ -145,7 +159,7 @@
     }
 
     body, h1, h2, h3, h4, h5, h6 {
-        font-family: "Amatic SC", sans-serif;
+        font-family: "Courier New", Courier, monospace;
     }
 
     .menu {

@@ -37,6 +37,7 @@ namespace Burgerci_Proje.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateExtra(ExtraViewModel extraViewModel)
         {
+
             if (ModelState.IsValid)
             {
                 if (extraViewModel.PhotoUrl != null)
@@ -63,6 +64,7 @@ namespace Burgerci_Proje.Controllers
                 return RedirectToAction("ExtraList");
             }
             return View(extraViewModel);
+
         }
 
         [HttpPost]

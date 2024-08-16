@@ -9,6 +9,8 @@
     {
         Layout = "~/Views/Shared/_UserLayout.cshtml";
     }
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+
 }
 
 <div class="container">
@@ -16,26 +18,35 @@
         <div class="page-header">
             @if (ViewBag.IsAdmin != "True")
             {
-                <h3 class="fw-bold mb-3">Extras</h3>
+                <br />
+                <br />
+                <div class="bgimg-container">
+                    <div class="bgimg">
+                        <img src="@Url.Content("~/Images/extralist.jpg")" alt="Extras" class="bgimg-image" />
+                        <div class="text-overlay">
+                            <span class="text">EXTRAS</span>
+                        </div>
+                    </div>
+                </div>
             }
             else
             {
                 <h3 class="fw-bold mb-3">Extra Admin Panel</h3>
+                <ul class="breadcrumbs mb-3">
+                    <li class="nav-home">
+                        <a href="#">
+                            <i class="icon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="icon-arrow-right"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("ExtraList")">Extras</a>
+                    </li>
+                </ul>
             }
-            <ul class="breadcrumbs mb-3">
-                <li class="nav-home">
-                    <a href="#">
-                        <i class="icon-home"></i>
-                    </a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="@Url.Action("ExtraList")">Extras</a>
-                </li>
-            </ul>
-        </div>
+
 
         <div class="card">
             <div class="card-header" style="padding: 15px;">
@@ -45,19 +56,7 @@
                         <div class="card-title" style="font-size: 1.5rem; font-weight: bold;">Extra List</div>
                         <a href="/Extra/CreateExtra" class="btn btn-primary mt-4">Add New Extra</a>
                     }
-                    else
-                    {
-                        <br />
-                        <br />
-                        <div class="bgimg-container">
-                            <div class="bgimg">
-                                <img src="@Url.Content("~/Images/extralist.jpg")" alt="Extras" class="bgimg-image" />
-                                <div class="text-overlay">
-                                    <span class="text">EXTRAS</span>
-                                </div>
-                            </div>
-                        </div>
-                    }
+                 
                 </div>
             </div>
             <div class="card-body">
@@ -73,6 +72,7 @@
                                     <p class="card-text">@item.Price.ToString("C")</p>
                                     <div class="d-flex justify-content-between">
                                         @if (ViewBag.IsAdmin == "True")
+
                                         {
                                             <form asp-action="DeleteExtra" method="post" style="display:inline">
                                                 <input type="hidden" name="id" value="@item.Id" />
@@ -113,6 +113,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 
@@ -144,7 +145,7 @@
     }
 
     body, h1, h2, h3, h4, h5, h6 {
-        font-family: "Amatic SC", sans-serif;
+        font-family: "Courier New", Courier, monospace;
     }
 
     .menu {
